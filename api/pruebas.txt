@@ -1,0 +1,4 @@
+antlr4 -Dlanguage=CSharp -o api/analyzer -package analyzer -visitor 
+-no-listener api/grammars/*.g4 (genera la gramatica)
+
+
