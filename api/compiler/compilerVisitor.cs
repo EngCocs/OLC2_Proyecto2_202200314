@@ -8,6 +8,7 @@ public class CompilerVisitor : LanguageBaseVisitor<Object?>
     private Dictionary<string, int> variables = new ();
     //usamo esto par la posicion de las variables
     private int currentPosition = 0;
+    
     public CompilerVisitor()
     {
         
@@ -17,16 +18,16 @@ public class CompilerVisitor : LanguageBaseVisitor<Object?>
     public override Object? VisitProgram(LanguageParser.ProgramContext context)
     {
          // Setup del frame pointer
-    c.Comment("Guardar FP previo y establecer FP = SP");
-    c.Push(Register.FP); // Guardamos el valor anterior de x29
-    c.Mov(Register.FP, Register.SP); // x29 = sp
+    // c.Comment("Guardar FP previo y establecer FP = SP");
+    // c.Push(Register.FP); // Guardamos el valor anterior de x29
+    // c.Mov(Register.FP, Register.SP); // x29 = sp
         foreach (var dcl in context.dcl())
         {
             Visit(dcl);
         }
-        c.Comment("Restaurar FP antes de finalizar");
-    c.Pop(Register.FP); // Restauramos x29
-        File.WriteAllText("output.s", c.ToString());
+    //     c.Comment("Restaurar FP antes de finalizar");
+    // c.Pop(Register.FP); // Restauramos x29
+    //     File.WriteAllText("output.s", c.ToString());
 
        
       // Si existe una función main, la invoca con una lista vacia de argumentos
@@ -50,8 +51,45 @@ public class CompilerVisitor : LanguageBaseVisitor<Object?>
     // VisitVarDcl
     public override Object? VisitVarDcl(LanguageParser.VarDclContext context)
 {
-     // aqui delegamos a la funcion de declaracion de variables
-    return VisitChildren(context);//hacemos visit a los hijos
+    // Verificamos si la declaración es del tipo 'var' con inicialización:
+    var explicitInit = context.explicitVarDeclWithInit();
+    if (explicitInit != null)
+    {
+        var varName = explicitInit.ID().GetText();
+        c.Comment("Declaración de variable con inicialización: " + varName);
+        // Procesamos la expresión de inicialización:
+        Visit(explicitInit.expr());
+        c.TagObjet(varName);
+        return null;
+    }
+
+    // Verificamos si es la variante sin inicialización:
+    var explicitNoInit = context.explicitVarDeclWithoutInit();
+    if (explicitNoInit != null)
+    {
+        var varName = explicitNoInit.ID().GetText();
+        c.Comment("Declaración de variable sin inicialización: " + varName);
+        c.TagObjet(varName);
+        return null;
+    }
+    // Verificamos si es la declaración implícita:
+    var implicitDecl = context.implicitVarDecl();
+    if (implicitDecl != null)
+    {
+        // Delegamos en el método VisitImplicitVarDecl
+        return VisitImplicitVarDecl(implicitDecl);
+    }
+
+    throw new Exception("Tipo de declaración de variable desconocido.");
+
+    //var = varName = context.ID().GetText();
+    //C.Comment("Declaración de variable: " + varName);
+    // Visit la expresión de inicialización:
+    // Visit(context.expr());
+    //c.TagObjet(varName);
+
+    
+    
 }
 
 
@@ -72,28 +110,32 @@ public class CompilerVisitor : LanguageBaseVisitor<Object?>
     // Declaración implícita (inferencia de tipo):
     public override Object? VisitImplicitVarDecl(LanguageParser.ImplicitVarDeclContext context)
     {
-        string varName= context.ID().GetText();
-        //VAMOS a dejar el valor en el staxk
-        Visit(context.expr());
-        //extraemos el valor a un registro temporal
-        //c.Pop(Register.X0); // Pop the value to assign
-        //reselvamos el espacio para la variable en el stack
-        currentPosition -= 8;
-
-        //c.Str(Register.X0, Register.FP, currentPosition); // esto es para guardar el valor en la variable
-        //guardamos el nombre de la variable y su posicion en el stack
-        variables.Add(varName, currentPosition);
-        c.Comment("Variable " + varName + " assigned to stack position " + currentPosition);
-        c.Comment($"Declaración variable implícita '{varName}' almacenada en [SP + {currentPosition}]");
-        
-        return null;
+        // Obtenemos el nombre de la variable, por ejemplo, "a" en "a := 5;"
+    string varName = context.ID().GetText();
+    
+    // Evaluamos la expresión de inicialización. Se espera que el método Visit
+    // empuje un objeto al stack de ArmGenerator (por ejemplo, mediante PushConstant)
+    Visit(context.expr());
+    
+    // Con la nueva lógica, ya no manejamos un offset con currentPosition,
+    // sino que confiamos en el stack interno.
+    // Se etiqueta el último objeto del stack con el ID de la variable.
+    c.TagObjet(varName);
+    
+    // Emitimos un comentario para la generación de código ARM.
+    c.Comment($"Declaración variable implícita '{varName}' almacenada en el stack.");
+    
+    // Opcionalmente, si antes usabas un diccionario para registrar variables,
+    // ya no es necesario, pues ArmGenerator mantiene internamente los objetos.
+    return null;
     }
 
     // VisitExprStmt
     public override Object? VisitExprStmt(LanguageParser.ExprStmtContext context)
     {
         Visit(context.expr());
-        c.Pop(Register.X0); // Descartamos el valor porque no lo necesitamos
+        c.Comment("Expresión de declaración");
+        c.PopObjet(Register.X0); // Descartamos el valor porque no lo necesitamos
         return null;
     }
 
@@ -102,8 +144,11 @@ public class CompilerVisitor : LanguageBaseVisitor<Object?>
     {
         c.Comment("Print statement");
         Visit(context.expr());
-        c.Pop(Register.X0); // Pop the value to print
-        c.PrintInterger(Register.X0); // Call the print function
+        var value= c.PopObjet(Register.X0); // Pop the value to print
+        if(value.Type == StackObjet.StackObjetType.Int){
+            c.PrintInterger(Register.X0); // Call the print function
+        }
+        
         return null;
     }
 
@@ -114,15 +159,19 @@ public class CompilerVisitor : LanguageBaseVisitor<Object?>
     {
         string varName = context.ID().GetText();
         
-        if(!variables.ContainsKey(varName))
-        {
-            throw new Exception($"Variable '{varName}' no declarada");
-        }
-        int position = variables[varName];
+        // if(!variables.ContainsKey(varName))
+        // {
+        //     throw new Exception($"Variable '{varName}' no declarada");
+        // }
+        var (offset, obj) = c.GetObjet(varName);
+        c.Mov(Register.X0, offset); // Cargamos la dirección de la variable en x1
+        c.Add(Register.X0, Register.SP, Register.X0); // Sumamos el FP para obtener la dirección real
+        c.Ldr(Register.X0, Register.X0); // Cargamos el valor de la variable en x0
+        c.Push(Register.X0); // Hacemos push del valor de la variable en el stack
+        var newObjet= c.CloneObjet(obj);
+        newObjet.ID= null;
+        c.PushObjet(newObjet); // Hacemos push del objeto de la variable en el stack
         
-        c.Ldr(Register.X0, Register.FP, position); // cargamos el valor de la variable en el registro X0
-        c.Push(Register.X0); // hacemos push del valor de la variable en el stack
-        c.Comment($"Acceso a variable '{varName}' en [SP + {position}]");
 
         return null;
     }
@@ -152,9 +201,9 @@ public class CompilerVisitor : LanguageBaseVisitor<Object?>
         var value= context.INT().GetText();
 
         c.Comment("Constant : " + value);
-        c.Mov(Register.X0, int.Parse(value));
-        c.Push(Register.X0);
-        //c.Pop(Register.X0); 
+        var IntObject = c.IntObject();
+        c.PushConstant(IntObject, int.Parse(value));
+        
         return null;
     }
 
@@ -175,8 +224,8 @@ public class CompilerVisitor : LanguageBaseVisitor<Object?>
         Visit(context.expr(0));//vist 1 : top --> [1]
         Visit(context.expr(1));// //vist 2 : top --> [1,2]
 
-        c.Pop(Register.X1); //pop 2 : top --> [1]
-        c.Pop(Register.X0); //pop 1 : top --> []
+        var right = c.PopObjet(Register.X1); //pop 2 : top --> [1]
+        var left = c.PopObjet(Register.X0); //pop 1 : top --> []
 
         if (opetarion == "+")
         {
@@ -188,6 +237,7 @@ public class CompilerVisitor : LanguageBaseVisitor<Object?>
         }
         c.Comment("Operation : " + opetarion);
         c.Push(Register.X0); //push x0 : top --> [x0]
+        c.PushObjet(c.CloneObjet(left));
         
         c.Comment("Result : " + Register.X0);
         c.Comment("Push result : " + Register.X0);
@@ -216,28 +266,23 @@ public class CompilerVisitor : LanguageBaseVisitor<Object?>
     public override Object? VisitAssign(LanguageParser.AssignContext context)
 {
     // El lado izquierdo de la asignación
-    var leftExpr = context.expr(0);
-
-    // Verificamos si es un identificador simple
-    if (leftExpr is LanguageParser.IdentifierContext identifier)
+    var assignee = context.expr(0);
+    
+    if(assignee is LanguageParser.IdentifierContext idContext)
     {
-        string varName = identifier.ID().GetText();
-
-        if (!variables.ContainsKey(varName))
-            throw new Exception($"Variable '{varName}' no declarada.");
-
-        // Evaluamos la expresión del lado derecho
-        Visit(context.expr(1));
-        c.Pop(Register.X0);
-
-        int position = variables[varName];
-        c.Str(Register.X0, Register.FP, position);
-        c.Comment($"Asignación: variable '{varName}' actualizada en [FP + {position}]");
-
-        return null;
+        string varName = idContext.ID().GetText();
+        c.Comment("Asignación a variable: " + varName);
+        Visit(context.expr(1)); // Visitamos la expresión del lado derecho
+        var valueObjeet = c.PopObjet(Register.X0); // Pop the value to assign
+        var (offset, varObject) = c.GetObjet(varName);
+        c.Mov(Register.X1, offset); // Cargamos la dirección de la variable en x1
+        c.Add(Register.X1, Register.SP, Register.X1); // Sumamos el FP para obtener la dirección real
+        c.Str(Register.X0, Register.X1); // Guardamos el valor en la dirección de la variable
+        c.Push(Register.X0); // Hacemos push del valor de la variable en el stack
+        c.PushObjet(c.CloneObjet(varObject)); // Hacemos push del objeto de la variable en el stack
     }
 
-    throw new Exception("Lado izquierdo de la asignación no es un identificador simple.");
+    return null;
 }
 
 
@@ -283,6 +328,19 @@ private string UnescapeString(string str)
     // VisitBlockStmt
     public override Object? VisitBlockStmt(LanguageParser.BlockStmtContext context)
     {
+        c.Comment("Bloque de código");
+        c.NewScope();
+        foreach(var dcl in context.dcl())
+        {
+            Visit(dcl);
+        }
+        int bytesToRemove = c.EndScope();
+        if(bytesToRemove > 0)
+        {   
+            c.Comment("Remover " + bytesToRemove + " bytes del stack");
+            c.Mov(Register.X0, bytesToRemove);
+            c.Add(Register.SP, Register.SP, Register.X0); // Ajustamos el stack
+        }
         return null;
     }
 

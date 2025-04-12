@@ -854,7 +854,7 @@ private string UnescapeString(string str)
         }
         
         // Agregamos el método al diccionario del struct
-        structVal.LenguageStruct.AddMethod(methodName, new ForaneaFuntion(currentEnvironment, context));
+       structVal.LenguageStruct.AddMethod(methodName, new ForaneaFuntion(currentEnvironment, context));
         
         // (Opcionalmente, puedes declarar el método globalmente si lo deseas)
         return defaultVoid;

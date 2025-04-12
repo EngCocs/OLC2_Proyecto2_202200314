@@ -1,47 +1,45 @@
 .text
 .global _start
 _start:
-// Guardar FP previo y establecer FP = SP
-STR x29, [SP, #-8]!
-MOV x29, sp
-// Constant : 12
-MOV x0, #12
+// Constant : 120
+MOV x0, #120
 STR x0, [SP, #-8]!
-// Variable a assigned to stack position -8
-// Declaración variable implícita 'a' almacenada en [SP + -8]
-// Constant : 12
-MOV x0, #12
+// Declaración variable implícita 'a' almacenada en el stack.
+// Bloque de código
+// Constant : 3
+MOV x0, #3
 STR x0, [SP, #-8]!
-// Variable b assigned to stack position -16
-// Declaración variable implícita 'b' almacenada en [SP + -16]
-// AddSub
-LDR x0, [x29, #-8]
+// Declaración variable implícita 'a' almacenada en el stack.
+// Asignación a variable: a
+// Constant : 99
+MOV x0, #99
 STR x0, [SP, #-8]!
-// Acceso a variable 'a' en [SP + -8]
-LDR x0, [x29, #-16]
-STR x0, [SP, #-8]!
-// Acceso a variable 'b' en [SP + -16]
-LDR x1, [SP], #8
 LDR x0, [SP], #8
-ADD x0, x0, x1
-// Operation : +
+MOV x1, #0
+ADD x1, sp, x1
+STR x0, [x1, #0]
 STR x0, [SP, #-8]!
-// Result : x0
-// Push result : x0
-// Variable c assigned to stack position -24
-// Declaración variable implícita 'c' almacenada en [SP + -24]
+// Expresión de declaración
+LDR x0, [SP], #8
 // Print statement
-LDR x0, [x29, #-24]
+MOV x0, #0
+ADD x0, sp, x0
+LDR x0, [x0, #0]
 STR x0, [SP, #-8]!
-// Acceso a variable 'c' en [SP + -24]
 LDR x0, [SP], #8
 MOV X0, x0
 BL print_integer
-// Restaurar FP antes de finalizar
-LDR x29, [SP], #8
+// Remover 8 bytes del stack
+MOV x0, #8
+ADD sp, sp, x0
+// Print statement
 MOV x0, #0
-MOV x8, #93
-SVC #0
+ADD x0, sp, x0
+LDR x0, [x0, #0]
+STR x0, [SP, #-8]!
+LDR x0, [SP], #8
+MOV X0, x0
+BL print_integer
 MOV x0, #0
 MOV x8, #93
 SVC #0

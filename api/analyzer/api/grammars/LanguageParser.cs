@@ -268,7 +268,12 @@ public partial class LanguageParser : Parser {
 			if (typedVisitor != null) return typedVisitor.VisitVarDcl(this);
 			else return visitor.VisitChildren(this);
 		}
-	}
+
+            internal object ID()
+            {
+                throw new NotImplementedException();
+            }
+        }
 
 	[RuleVersion(0)]
 	public VarDclContext varDcl() {
