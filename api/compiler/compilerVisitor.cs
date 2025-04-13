@@ -134,40 +134,62 @@ public class CompilerVisitor : LanguageBaseVisitor<Object?>
     // Declaración explícita con tipo sin valor inicial:
     public override Object? VisitExplicitVarDeclWithoutInit(LanguageParser.ExplicitVarDeclWithoutInitContext context)
     {
-        // Obtenemos el identificador y el tipo declarado.
-    string varName = context.ID().GetText();
+        string varName = context.ID().GetText();
     string typeDeclared = context.typeSpecifier().GetText();
     
     c.Comment($"Declaración explícita sin inicialización: {varName}, tipo: {typeDeclared}");
+
+    // Obtiene el valor por defecto directamente
+    object defaultValue = GetDefaultValueForType(typeDeclared)!;
     
-    // Creamos un objeto por defecto dependiendo del tipo declarado.
+    // Crea un objeto por defecto (StackObjet) en función del tipo
     StackObjet defaultObj;
     switch (typeDeclared)
     {
-         case "int":
-             defaultObj = c.IntObject();
-             break;
-         case "float64":
-             defaultObj = c.FloatObject();
-             break;
-         case "string":
-             defaultObj = c.StringObject();
-             break;
-         case "bool":
-             defaultObj = c.BoolObject();
-             break;
-         case "rune":
-             defaultObj = c.CharObject();
-             break;
-         default:
-             throw new Exception($"Tipo declarado desconocido: {typeDeclared}");
+        case "int":
+            defaultObj = c.IntObject();
+            break;
+        case "float64":
+            defaultObj = c.FloatObject();
+            break;
+        case "string":
+            defaultObj = c.StringObject();
+            break;
+        case "bool":
+            defaultObj = c.BoolObject();
+            break;
+        case "rune":
+            defaultObj = c.CharObject();
+            break;
+        default:
+            throw new Exception($"Tipo declarado desconocido: {typeDeclared}");
     }
     
-    // Se empuja el objeto por defecto al stack.
-    c.PushObjet(defaultObj);
-    // Se etiqueta con el identificador de la variable.
+    // Utiliza PushConstant para empujar el valor por defecto.
+   
+    switch (typeDeclared)
+    {
+        case "int":
+            c.PushConstant(defaultObj, (int)defaultValue);
+            break;
+        case "float64":
+            c.PushConstant(defaultObj, (double)defaultValue);
+            break;
+        case "string":
+            c.PushConstant(defaultObj, (string)defaultValue);
+            break;
+        case "bool":
+            c.PushConstant(defaultObj, (bool)defaultValue);
+            break;
+        case "rune":
+            c.PushConstant(defaultObj, (char)defaultValue);
+            break;
+    }
+    
+    // Etiqueta el objeto recién empujado con el identificador de la variable.
     c.TagObjet(varName);
-        return null;
+    
+    return null;
     }
 
     // Declaración implícita (inferencia de tipo):
@@ -488,7 +510,22 @@ private string UnescapeString(string str)
 
     public Object? GetDefaultValueForType(string declaredType)
     {
-        return null;
+        if (declaredType.StartsWith("[]"))
+    {
+        // Si es un slice, puedes devolver una lista vacía
+        return new List<object>();
+    }
+
+    return declaredType switch
+    {
+        "int" => 0,
+        "float64" => 0.0,
+        "string" => "",
+        "bool" => false,
+        "rune" => '\0',
+        _ => throw new Exception("Tipo desconocido")
+    };
+        
     }
      //VisitFuncDcl
     public override Object? VisitFuncDcl(LanguageParser.FuncDclContext context)
