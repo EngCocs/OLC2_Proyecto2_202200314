@@ -55,22 +55,12 @@ public class CompilerVisitor : LanguageBaseVisitor<Object?>
     var explicitInit = context.explicitVarDeclWithInit();
     if (explicitInit != null)
     {
-        var varName = explicitInit.ID().GetText();
-        c.Comment("Declaración de variable con inicialización: " + varName);
-        // Procesamos la expresión de inicialización:
-        Visit(explicitInit.expr());
-        c.TagObjet(varName);
-        return null;
+        return VisitExplicitVarDeclWithInit(explicitInit);
     }
-
-    // Verificamos si es la variante sin inicialización:
     var explicitNoInit = context.explicitVarDeclWithoutInit();
     if (explicitNoInit != null)
     {
-        var varName = explicitNoInit.ID().GetText();
-        c.Comment("Declaración de variable sin inicialización: " + varName);
-        c.TagObjet(varName);
-        return null;
+        return VisitExplicitVarDeclWithoutInit(explicitNoInit);
     }
     // Verificamos si es la declaración implícita:
     var implicitDecl = context.implicitVarDecl();
@@ -98,12 +88,85 @@ public class CompilerVisitor : LanguageBaseVisitor<Object?>
     // Declaración explícita con tipo y valor inicial:
     public override Object? VisitExplicitVarDeclWithInit(LanguageParser.ExplicitVarDeclWithInitContext context)
     {
+        // Obtenemos el identificador y el tipo declarado.
+    string varName = context.ID().GetText();
+    string typeDeclared = context.typeSpecifier().GetText(); // Ejemplo: "int", "float64", etc.
+    
+    c.Comment($"Declaración explícita con inicialización: {varName}, tipo: {typeDeclared}");
+    
+    // Se evalúa la expresión de inicialización (se espera que empuje un objeto al stack).
+    Visit(context.expr());
+    
+    // Obtenemos el objeto resultante (de la cima del stack).
+    var exprObj = c.GetLastObjet();
+    
+    // Opcional: Verificamos que el tipo de la expresión coincide con el declarado.
+    bool typeMatches = false;
+    switch (typeDeclared)
+    {
+         case "int":
+             typeMatches = exprObj.Type == StackObjet.StackObjetType.Int;
+             break;
+         case "float64":
+             typeMatches = exprObj.Type == StackObjet.StackObjetType.Float;
+             break;
+         case "string":
+             typeMatches = exprObj.Type == StackObjet.StackObjetType.String;
+             break;
+         case "bool":
+             typeMatches = exprObj.Type == StackObjet.StackObjetType.Bool;
+             break;
+         case "rune":
+             typeMatches = exprObj.Type == StackObjet.StackObjetType.Char;
+             break;
+         default:
+             throw new Exception($"Tipo declarado desconocido: {typeDeclared}");
+    }
+    
+    if (!typeMatches)
+        throw new Exception($"El tipo de la expresión no coincide con el tipo declarado para la variable '{varName}'.");
+    
+    // Se etiqueta el objeto de la cima con el nombre de la variable.
+    c.TagObjet(varName);
         return null;
     }
 
     // Declaración explícita con tipo sin valor inicial:
     public override Object? VisitExplicitVarDeclWithoutInit(LanguageParser.ExplicitVarDeclWithoutInitContext context)
     {
+        // Obtenemos el identificador y el tipo declarado.
+    string varName = context.ID().GetText();
+    string typeDeclared = context.typeSpecifier().GetText();
+    
+    c.Comment($"Declaración explícita sin inicialización: {varName}, tipo: {typeDeclared}");
+    
+    // Creamos un objeto por defecto dependiendo del tipo declarado.
+    StackObjet defaultObj;
+    switch (typeDeclared)
+    {
+         case "int":
+             defaultObj = c.IntObject();
+             break;
+         case "float64":
+             defaultObj = c.FloatObject();
+             break;
+         case "string":
+             defaultObj = c.StringObject();
+             break;
+         case "bool":
+             defaultObj = c.BoolObject();
+             break;
+         case "rune":
+             defaultObj = c.CharObject();
+             break;
+         default:
+             throw new Exception($"Tipo declarado desconocido: {typeDeclared}");
+    }
+    
+    // Se empuja el objeto por defecto al stack.
+    c.PushObjet(defaultObj);
+    // Se etiqueta con el identificador de la variable.
+    c.TagObjet(varName);
         return null;
     }
 
@@ -147,6 +210,9 @@ public class CompilerVisitor : LanguageBaseVisitor<Object?>
         var value= c.PopObjet(Register.X0); // Pop the value to print
         if(value.Type == StackObjet.StackObjetType.Int){
             c.PrintInterger(Register.X0); // Call the print function
+        }
+        else if(value.Type == StackObjet.StackObjetType.String){
+            c.PrintString(Register.X0); // Call the print function
         }
         
         return null;
@@ -304,6 +370,10 @@ public class CompilerVisitor : LanguageBaseVisitor<Object?>
     // VisitString
     public override Object? VisitString(LanguageParser.StringContext context)
 {
+    var value = context.STRING().GetText().Trim('"'); // Eliminar las comillas
+    c.Comment("String: " + value);
+    var stringObject = c.StringObject();
+    c.PushConstant(stringObject, value); // Convertir a bytes y hacer push
     return null;
 }
 

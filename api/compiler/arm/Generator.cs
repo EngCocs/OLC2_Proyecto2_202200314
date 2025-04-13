@@ -39,7 +39,19 @@ public class ArmGenerator
                 //logica para float
                 break;
             case StackObjet.StackObjetType.String:
-                //logica para string
+                List<byte> stringArray = Utils.StringToBytesArrays((string)value);
+                Push(Register.HP);
+                for (int i = 0; i < stringArray.Count; i++)
+                {
+                    var charCode = stringArray[i];
+                    Comment($"Pusing char {charCode}");
+                    Mov("w0", charCode);
+                    Strb("w0", Register.HP);
+                    //slaces hay que utilizar hp
+                    Mov(Register.X0,1);
+                    Add(Register.HP, Register.HP, Register.X0);
+                   
+                }
                 break;
             case StackObjet.StackObjetType.Bool:
                 //logica para bool
@@ -93,6 +105,7 @@ public class ArmGenerator
             ID= null
         };
     }
+
     public StackObjet BoolObject()
     {
         return new StackObjet
@@ -173,6 +186,12 @@ public class ArmGenerator
         }
         throw new Exception($"No se encontró el objeto con ID: {id}");
     }
+    public StackObjet GetLastObjet()
+{
+    if (stack.Count > 0)
+        return stack.Last();
+    throw new Exception("El stack está vacío.");
+}
 
     
 
@@ -204,6 +223,10 @@ public class ArmGenerator
     public void Str(string rd, string rs1, int offset=0)
     {
         instructions.Add($"STR {rd}, [{rs1}, #{offset}]");
+    }
+    public void Strb(string rs1, string rs2)
+    {
+        instructions.Add($"STRB {rs1}, [{rs2}]");
     }
     public void Ldr(string rd, string rs1, int offset=0)
     {
@@ -247,6 +270,12 @@ public void Mov(string rd, string rs)
         instructions.Add($"BL print_integer");
        
     }
+    public void PrintString(string rs)
+    {
+        stanlib.Use("print_string");
+        instructions.Add($"MOV X0, {rs}");
+        instructions.Add($"BL print_string");
+    }
 
     public void Comment(string comment)
     {
@@ -255,9 +284,12 @@ public void Mov(string rd, string rs)
     public override string ToString()
     {
         var sb = new StringBuilder();
+        sb.AppendLine(".data");
+        sb.AppendLine("heap: .space 4096");
         sb.AppendLine(".text");
         sb.AppendLine(".global _start");
         sb.AppendLine("_start:");
+        sb.AppendLine("  adr x10, heap");
 
         EndProgram();
         foreach (var instruction in instructions)

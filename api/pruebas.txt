@@ -2,3 +2,34 @@ antlr4 -Dlanguage=CSharp -o api/analyzer -package analyzer -visitor
 -no-listener api/grammars/*.g4 (genera la gramatica)
 
 
+-------------------------------var---------------------
+a := 120;
+
+{
+    a := 3;
+    a = 99+31;
+    print(a);
+}
+print(a);
+
+-------------------------------------------------------------------
+puntos := 0;
+	puntosDeclaracion := 0;
+	var entero int = 42;
+	print( entero);
+	
+	 {
+		puntosDeclaracion = puntosDeclaracion + 1;
+		
+	}
+	 {
+		puntosDeclaracion = puntosDeclaracion + 1;
+		
+	}
+	 {
+		puntosDeclaracion = puntosDeclaracion - 1;
+		
+	} 
+
+	print(puntosDeclaracion);
+--------------------------------------------
