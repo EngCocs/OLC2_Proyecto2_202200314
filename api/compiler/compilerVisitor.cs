@@ -236,6 +236,9 @@ public class CompilerVisitor : LanguageBaseVisitor<Object?>
         else if(value.Type == StackObjet.StackObjetType.String){
             c.PrintString(Register.X0); // Call the print function
         }
+        else if(value.Type == StackObjet.StackObjetType.Bool){
+            c.PrintInterger(Register.X0); // Call the print function
+        }
         
         return null;
     }
@@ -385,6 +388,15 @@ public class CompilerVisitor : LanguageBaseVisitor<Object?>
     // VisitBoolean
     public override Object? VisitBoolean(LanguageParser.BooleanContext context)
     {
+        // Obtiene el literal "true" o "false"
+    var boolText = context.BOOL().GetText();
+    c.Comment("Boolean: " + boolText);
+    // USO  BoolObject()
+    var boolObj = c.BoolObject();
+    // Convierte el texto a su valor booleano (true o false)
+    bool value = boolText.Equals("true", StringComparison.OrdinalIgnoreCase);
+    // PushConstant para empujar el valor booleano al stack ZI.
+    c.PushConstant(boolObj, value);
        return null; 
     }
 

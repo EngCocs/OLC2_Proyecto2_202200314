@@ -7,7 +7,11 @@ public class StandarLibrary
 
     public void Use(string functions){
         usedFunctions.Add(functions);
+        
     }
+    
+
+
 
     public string GetFunctiosDefinitions(){
         var functios = new List<string>();
@@ -24,6 +28,7 @@ public class StandarLibrary
         }
         return string.Join("\n", functios);
     }
+
 
 
 private readonly static Dictionary<string, string> FunctionDefinitions = new Dictionary<string, string>
@@ -176,7 +181,35 @@ print_done:
     ldp     x19, x20, [sp], #16
     ldp     x29, x30, [sp], #16
     ret
-    " }
+    " },
+    { "print_bool_as_string", @"
+//--------------------------------------------------------------
+// print_bool_as_string - Interpreta x0 como booleano y lo imprime
+//
+// Input:
+//   x0 - 0 para false, 1 para true
+//--------------------------------------------------------------
+print_bool_as_string:
+    cmp x0, #0
+    beq print_false_lbl
+    adr x0, true_str_lbl
+    b 1f
+print_false_lbl:
+    adr x0, false_str_lbl
+1:
+    bl print_string
+    ret
+
+.balign 8
+true_str_lbl:
+    .ascii ""true\n\0""
+
+.balign 8
+false_str_lbl:
+    .ascii ""false\n\0""
+" },
+
+
 
     };
 }

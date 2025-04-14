@@ -36,7 +36,7 @@ public class ArmGenerator
                 Push(Register.X0);
                 break;
             case StackObjet.StackObjetType.Float:
-                //logica para float
+                
                 break;
             case StackObjet.StackObjetType.String:
                 List<byte> stringArray = Utils.StringToBytesArrays((string)value);
@@ -54,10 +54,15 @@ public class ArmGenerator
                 }
                 break;
             case StackObjet.StackObjetType.Bool:
-                //logica para bool
+                // Representamos false como 0 y true como 1.
+                bool b = (bool)value;
+                Mov(Register.X0, b ? 1 : 0);
+                Push(Register.X0);
                 break;
             case StackObjet.StackObjetType.Char:
                 //logica para char
+                Mov(Register.X0, (char)value);
+                Push(Register.X0);
                 break;
             case StackObjet.StackObjetType.Void:
                 //logica para void
@@ -241,6 +246,10 @@ public void Mov(string rd, string rs)
 {
     instructions.Add($"MOV {rd}, {rs}"); // Copia de un registro a otro
 }
+public void FMOV(string rd, string rs)
+{
+    instructions.Add($"FMOV {rd}, {rs}");
+}
 
     public void Push(string rs)
     {
@@ -276,6 +285,14 @@ public void Mov(string rd, string rs)
         instructions.Add($"MOV X0, {rs}");
         instructions.Add($"BL print_string");
     }
+    public void PrintBoolAsString(string rs)
+{
+    stanlib.Use("print_bool_as_string");  // << esto ahora SÍ funcionará
+    stanlib.Use("print_string");
+    instructions.Add($"MOV X0, {rs}");
+    instructions.Add($"BL print_bool_as_string");
+}
+
 
     public void Comment(string comment)
     {
