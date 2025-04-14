@@ -1,37 +1,31 @@
-
 using System.Collections.Generic;
 
-public class StandarLibrary
+public class StandardLibrary
 {
-    private readonly HashSet<string> usedFunctions = new HashSet<string>();
+    private readonly HashSet<string> UsedFunctions = new HashSet<string>();
 
-    public void Use(string functions){
-        usedFunctions.Add(functions);
-        
+    public void Use(string function)
+    {
+        UsedFunctions.Add(function);
     }
-    
 
+    public string GetFunctionDefinitions()
+    {
+        var functions = new List<string>();
 
-
-    public string GetFunctiosDefinitions(){
-        var functios = new List<string>();
-        foreach (var function in usedFunctions)
+        foreach (var function in UsedFunctions)
         {
             if (FunctionDefinitions.TryGetValue(function, out var definition))
             {
-                functios.Add(definition);
-            }
-            else
-            {
-                throw new KeyNotFoundException($"Function '{function}' no encontrada en la biblioteca estándar.");
+                functions.Add(definition);
             }
         }
-        return string.Join("\n", functios);
+
+
+        return string.Join("\n\n", functions);
     }
 
-
-
-private readonly static Dictionary<string, string> FunctionDefinitions = new Dictionary<string, string>
+    private readonly static Dictionary<string, string> FunctionDefinitions = new Dictionary<string, string>
     {
         { "print_integer", @"
 //--------------------------------------------------------------
@@ -40,6 +34,7 @@ private readonly static Dictionary<string, string> FunctionDefinitions = new Dic
 // Input:
 //   x0 - The integer value to print
 //--------------------------------------------------------------
+.balign 4
 print_integer:
     // Save registers
     stp x29, x30, [sp, #-16]!  // Save frame pointer and link register
@@ -136,7 +131,7 @@ print_result:
     ldp x19, x20, [sp], #16
     ldp x29, x30, [sp], #16    // Restore frame pointer and link register
     ret                        // Return to caller
-
+.p2align 2
 minus_sign:
     .ascii ""-""               // Minus sign"
     },
@@ -148,6 +143,7 @@ minus_sign:
 // Input:
 //   x0 - The address of the null-terminated string to print
 //--------------------------------------------------------------
+.balign 4
 print_string:
     // Save link register and other registers we'll use
     stp     x29, x30, [sp, #-16]!
@@ -181,35 +177,7 @@ print_done:
     ldp     x19, x20, [sp], #16
     ldp     x29, x30, [sp], #16
     ret
-    " },
-    { "print_bool_as_string", @"
-//--------------------------------------------------------------
-// print_bool_as_string - Interpreta x0 como booleano y lo imprime
-//
-// Input:
-//   x0 - 0 para false, 1 para true
-//--------------------------------------------------------------
-print_bool_as_string:
-    cmp x0, #0
-    beq print_false_lbl
-    adr x0, true_str_lbl
-    b 1f
-print_false_lbl:
-    adr x0, false_str_lbl
-1:
-    bl print_string
-    ret
-
-.balign 8
-true_str_lbl:
-    .ascii ""true\n\0""
-
-.balign 8
-false_str_lbl:
-    .ascii ""false\n\0""
-" },
-
-
+    " }
 
     };
 }

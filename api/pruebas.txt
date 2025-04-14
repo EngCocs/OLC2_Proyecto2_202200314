@@ -33,3 +33,26 @@ puntos := 0;
 
 	print(puntosDeclaracion);
 --------------------------------------------
+puntos := 0;
+	puntosDeclaracion := 0;
+	var hola bool = true;
+    print(hola)
+    print(" entero ");
+    print(hola);
+	
+	 {
+		puntosDeclaracion = puntosDeclaracion + 1;
+       
+		
+	}
+	 {
+		puntosDeclaracion = puntosDeclaracion + 1;
+		
+	}
+	 {
+		puntosDeclaracion = puntosDeclaracion - 1;
+		
+	} 
+
+	print(puntosDeclaracion);
+    print(" ----Este es el fin--------- ")

@@ -4,25 +4,157 @@ heap: .space 4096
 .global _start
 _start:
   adr x10, heap
-// Declaración explícita sin inicialización: hola, tipo: bool
+// Constant : 0
 MOV x0, #0
 STR x0, [SP, #-8]!
-// Declaración explícita con inicialización: hol, tipo: bool
+// Declaración variable implícita 'puntos' almacenada en el stack.
+// Constant : 0
+MOV x0, #0
+STR x0, [SP, #-8]!
+// Declaración variable implícita 'puntosDeclaracion' almacenada en el stack.
+// Declaración explícita con inicialización: hola, tipo: bool
 // Boolean: true
 MOV x0, #1
 STR x0, [SP, #-8]!
-// Boolean: true
-MOV x0, #1
-STR x0, [SP, #-8]!
-// Declaración variable implícita 'ho' almacenada en el stack.
 // Print statement
-MOV x0, #16
+MOV x0, #0
 ADD x0, sp, x0
 LDR x0, [x0, #0]
 STR x0, [SP, #-8]!
 LDR x0, [SP], #8
 MOV X0, x0
 BL print_integer
+// Print statement
+// String:  entero 
+STR x10, [SP, #-8]!
+// Pusing char 32
+MOV w0, #32
+STRB w0, [x10]
+MOV x0, #1
+ADD x10, x10, x0
+// Pusing char 101
+MOV w0, #101
+STRB w0, [x10]
+MOV x0, #1
+ADD x10, x10, x0
+// Pusing char 110
+MOV w0, #110
+STRB w0, [x10]
+MOV x0, #1
+ADD x10, x10, x0
+// Pusing char 116
+MOV w0, #116
+STRB w0, [x10]
+MOV x0, #1
+ADD x10, x10, x0
+// Pusing char 101
+MOV w0, #101
+STRB w0, [x10]
+MOV x0, #1
+ADD x10, x10, x0
+// Pusing char 114
+MOV w0, #114
+STRB w0, [x10]
+MOV x0, #1
+ADD x10, x10, x0
+// Pusing char 111
+MOV w0, #111
+STRB w0, [x10]
+MOV x0, #1
+ADD x10, x10, x0
+// Pusing char 32
+MOV w0, #32
+STRB w0, [x10]
+MOV x0, #1
+ADD x10, x10, x0
+// Pusing char 0
+MOV w0, #0
+STRB w0, [x10]
+MOV x0, #1
+ADD x10, x10, x0
+LDR x0, [SP], #8
+MOV X0, x0
+BL print_string
+// Print statement
+MOV x0, #0
+ADD x0, sp, x0
+LDR x0, [x0, #0]
+STR x0, [SP, #-8]!
+LDR x0, [SP], #8
+MOV X0, x0
+BL print_integer
+// Bloque de código
+// Asignación a variable: puntosDeclaracion
+// AddSub
+MOV x0, #8
+ADD x0, sp, x0
+LDR x0, [x0, #0]
+STR x0, [SP, #-8]!
+// Constant : 1
+MOV x0, #1
+STR x0, [SP, #-8]!
+LDR x1, [SP], #8
+LDR x0, [SP], #8
+ADD x0, x0, x1
+// Operation : +
+STR x0, [SP, #-8]!
+// Result : x0
+// Push result : x0
+LDR x0, [SP], #8
+MOV x1, #8
+ADD x1, sp, x1
+STR x0, [x1, #0]
+STR x0, [SP, #-8]!
+// Expresión de declaración
+LDR x0, [SP], #8
+// Bloque de código
+// Asignación a variable: puntosDeclaracion
+// AddSub
+MOV x0, #8
+ADD x0, sp, x0
+LDR x0, [x0, #0]
+STR x0, [SP, #-8]!
+// Constant : 1
+MOV x0, #1
+STR x0, [SP, #-8]!
+LDR x1, [SP], #8
+LDR x0, [SP], #8
+ADD x0, x0, x1
+// Operation : +
+STR x0, [SP, #-8]!
+// Result : x0
+// Push result : x0
+LDR x0, [SP], #8
+MOV x1, #8
+ADD x1, sp, x1
+STR x0, [x1, #0]
+STR x0, [SP, #-8]!
+// Expresión de declaración
+LDR x0, [SP], #8
+// Bloque de código
+// Asignación a variable: puntosDeclaracion
+// AddSub
+MOV x0, #8
+ADD x0, sp, x0
+LDR x0, [x0, #0]
+STR x0, [SP, #-8]!
+// Constant : 1
+MOV x0, #1
+STR x0, [SP, #-8]!
+LDR x1, [SP], #8
+LDR x0, [SP], #8
+SUB x0, x0, x1
+// Operation : -
+STR x0, [SP, #-8]!
+// Result : x0
+// Push result : x0
+LDR x0, [SP], #8
+MOV x1, #8
+ADD x1, sp, x1
+STR x0, [x1, #0]
+STR x0, [SP, #-8]!
+// Expresión de declaración
+LDR x0, [SP], #8
 // Print statement
 MOV x0, #8
 ADD x0, sp, x0
@@ -32,13 +164,161 @@ LDR x0, [SP], #8
 MOV X0, x0
 BL print_integer
 // Print statement
-MOV x0, #0
-ADD x0, sp, x0
-LDR x0, [x0, #0]
-STR x0, [SP, #-8]!
+// String:  ----Este es el fin--------- 
+STR x10, [SP, #-8]!
+// Pusing char 32
+MOV w0, #32
+STRB w0, [x10]
+MOV x0, #1
+ADD x10, x10, x0
+// Pusing char 45
+MOV w0, #45
+STRB w0, [x10]
+MOV x0, #1
+ADD x10, x10, x0
+// Pusing char 45
+MOV w0, #45
+STRB w0, [x10]
+MOV x0, #1
+ADD x10, x10, x0
+// Pusing char 45
+MOV w0, #45
+STRB w0, [x10]
+MOV x0, #1
+ADD x10, x10, x0
+// Pusing char 45
+MOV w0, #45
+STRB w0, [x10]
+MOV x0, #1
+ADD x10, x10, x0
+// Pusing char 69
+MOV w0, #69
+STRB w0, [x10]
+MOV x0, #1
+ADD x10, x10, x0
+// Pusing char 115
+MOV w0, #115
+STRB w0, [x10]
+MOV x0, #1
+ADD x10, x10, x0
+// Pusing char 116
+MOV w0, #116
+STRB w0, [x10]
+MOV x0, #1
+ADD x10, x10, x0
+// Pusing char 101
+MOV w0, #101
+STRB w0, [x10]
+MOV x0, #1
+ADD x10, x10, x0
+// Pusing char 32
+MOV w0, #32
+STRB w0, [x10]
+MOV x0, #1
+ADD x10, x10, x0
+// Pusing char 101
+MOV w0, #101
+STRB w0, [x10]
+MOV x0, #1
+ADD x10, x10, x0
+// Pusing char 115
+MOV w0, #115
+STRB w0, [x10]
+MOV x0, #1
+ADD x10, x10, x0
+// Pusing char 32
+MOV w0, #32
+STRB w0, [x10]
+MOV x0, #1
+ADD x10, x10, x0
+// Pusing char 101
+MOV w0, #101
+STRB w0, [x10]
+MOV x0, #1
+ADD x10, x10, x0
+// Pusing char 108
+MOV w0, #108
+STRB w0, [x10]
+MOV x0, #1
+ADD x10, x10, x0
+// Pusing char 32
+MOV w0, #32
+STRB w0, [x10]
+MOV x0, #1
+ADD x10, x10, x0
+// Pusing char 102
+MOV w0, #102
+STRB w0, [x10]
+MOV x0, #1
+ADD x10, x10, x0
+// Pusing char 105
+MOV w0, #105
+STRB w0, [x10]
+MOV x0, #1
+ADD x10, x10, x0
+// Pusing char 110
+MOV w0, #110
+STRB w0, [x10]
+MOV x0, #1
+ADD x10, x10, x0
+// Pusing char 45
+MOV w0, #45
+STRB w0, [x10]
+MOV x0, #1
+ADD x10, x10, x0
+// Pusing char 45
+MOV w0, #45
+STRB w0, [x10]
+MOV x0, #1
+ADD x10, x10, x0
+// Pusing char 45
+MOV w0, #45
+STRB w0, [x10]
+MOV x0, #1
+ADD x10, x10, x0
+// Pusing char 45
+MOV w0, #45
+STRB w0, [x10]
+MOV x0, #1
+ADD x10, x10, x0
+// Pusing char 45
+MOV w0, #45
+STRB w0, [x10]
+MOV x0, #1
+ADD x10, x10, x0
+// Pusing char 45
+MOV w0, #45
+STRB w0, [x10]
+MOV x0, #1
+ADD x10, x10, x0
+// Pusing char 45
+MOV w0, #45
+STRB w0, [x10]
+MOV x0, #1
+ADD x10, x10, x0
+// Pusing char 45
+MOV w0, #45
+STRB w0, [x10]
+MOV x0, #1
+ADD x10, x10, x0
+// Pusing char 45
+MOV w0, #45
+STRB w0, [x10]
+MOV x0, #1
+ADD x10, x10, x0
+// Pusing char 32
+MOV w0, #32
+STRB w0, [x10]
+MOV x0, #1
+ADD x10, x10, x0
+// Pusing char 0
+MOV w0, #0
+STRB w0, [x10]
+MOV x0, #1
+ADD x10, x10, x0
 LDR x0, [SP], #8
 MOV X0, x0
-BL print_integer
+BL print_string
 MOV x0, #0
 MOV x8, #93
 SVC #0
@@ -53,6 +333,7 @@ SVC #0
 // Input:
 //   x0 - The integer value to print
 //--------------------------------------------------------------
+.balign 4
 print_integer:
     // Save registers
     stp x29, x30, [sp, #-16]!  // Save frame pointer and link register
@@ -149,7 +430,50 @@ print_result:
     ldp x19, x20, [sp], #16
     ldp x29, x30, [sp], #16    // Restore frame pointer and link register
     ret                        // Return to caller
-
+.p2align 2
 minus_sign:
     .ascii "-"               // Minus sign
 
+
+//--------------------------------------------------------------
+// print_string - Prints a null-terminated string to stdout
+//
+// Input:
+//   x0 - The address of the null-terminated string to print
+//--------------------------------------------------------------
+.balign 4
+print_string:
+    // Save link register and other registers we'll use
+    stp     x29, x30, [sp, #-16]!
+    stp     x19, x20, [sp, #-16]!
+    
+    // x19 will hold the string address
+    mov     x19, x0
+    
+print_loop:
+    // Load a byte from the string
+    ldrb    w20, [x19]
+    
+    // Check if it's the null terminator (0)
+    cbz     w20, print_done
+    
+    // Prepare for write syscall
+    mov     x0, #1              // File descriptor: 1 for stdout
+    mov     x1, x19             // Address of the character to print
+    mov     x2, #1              // Length: 1 byte
+    mov     x8, #64             // syscall: write (64 on ARM64)
+    svc     #0                  // Make the syscall
+    
+    // Move to the next character
+    add     x19, x19, #1
+    
+    // Continue the loop
+    b       print_loop
+    
+print_done:
+    // Restore saved registers
+    ldp     x19, x20, [sp], #16
+    ldp     x29, x30, [sp], #16
+    ret
+    
+    

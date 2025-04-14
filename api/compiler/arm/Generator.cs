@@ -17,7 +17,7 @@ public class ArmGenerator
 {
     private List<StackObjet> stack = new List<StackObjet>();
     private readonly List<string> instructions = new List<string>();
-    private readonly StandarLibrary stanlib = new StandarLibrary();
+    private readonly StandardLibrary stanlib = new StandardLibrary();
 
     private int Depth= 0;
 
@@ -285,13 +285,7 @@ public void FMOV(string rd, string rs)
         instructions.Add($"MOV X0, {rs}");
         instructions.Add($"BL print_string");
     }
-    public void PrintBoolAsString(string rs)
-{
-    stanlib.Use("print_bool_as_string");  // << esto ahora SÍ funcionará
-    stanlib.Use("print_string");
-    instructions.Add($"MOV X0, {rs}");
-    instructions.Add($"BL print_bool_as_string");
-}
+    
 
 
     public void Comment(string comment)
@@ -316,7 +310,7 @@ public void FMOV(string rd, string rs)
         
         
         sb.AppendLine("\n\n\n//------------------------Library functios-------------------------------------");
-        sb.AppendLine(stanlib.GetFunctiosDefinitions());
+        sb.AppendLine(stanlib.GetFunctionDefinitions());
         return sb.ToString();
     }
 
