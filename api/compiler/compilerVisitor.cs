@@ -239,7 +239,10 @@ public class CompilerVisitor : LanguageBaseVisitor<Object?>
         else if(value.Type == StackObjet.StackObjetType.Bool){
             c.PrintInterger(Register.X0); // Call the print function
         }
-        
+        else if (value.Type == StackObjet.StackObjetType.Char)
+        {
+            c.PrintChar(Register.X0);
+        }
         return null;
     }
 
@@ -424,6 +427,11 @@ private string UnescapeString(string str)
     // VisitRune
     public override Object? VisitRune(LanguageParser.RuneContext context)
     {
+        string caracter = context.GetText(); // e.g., 'A'
+        char value = caracter[1]; // segundo caracter el cuol es el caracter 
+        c.Comment("Rune: " + value);
+        var obj = c.CharObject();
+        c.PushConstant(obj, value);
         return null;
         
     }

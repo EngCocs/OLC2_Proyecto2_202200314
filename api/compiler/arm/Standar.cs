@@ -177,7 +177,31 @@ print_done:
     ldp     x19, x20, [sp], #16
     ldp     x29, x30, [sp], #16
     ret
-    " }
+    " },
+    { "print_char", @"
+//--------------------------------------------------------------
+// print_char - Prints a single character in x0 to stdout
+//--------------------------------------------------------------
+.p2align 2
+print_char:
+    stp x29, x30, [sp, #-16]!
+
+    sub sp, sp, #16         // Reservamos espacio
+    strb w0, [sp]           // Guardamos el carácter en memoria (8 bits)
+
+    mov x0, #1              // fd = stdout
+    mov x1, sp              // dirección del carácter
+    mov x2, #1              // longitud: 1 byte
+    mov x8, #64             // syscall: write
+    svc #0
+
+    add sp, sp, #16         // Limpiamos
+    ldp x29, x30, [sp], #16
+    ret
+
+" },
+    
+
 
     };
 }

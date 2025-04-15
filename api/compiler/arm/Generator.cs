@@ -36,7 +36,7 @@ public class ArmGenerator
                 Push(Register.X0);
                 break;
             case StackObjet.StackObjetType.Float:
-                
+                //codigo 
                 break;
             case StackObjet.StackObjetType.String:
                 List<byte> stringArray = Utils.StringToBytesArrays((string)value);
@@ -285,6 +285,13 @@ public void FMOV(string rd, string rs)
         instructions.Add($"MOV X0, {rs}");
         instructions.Add($"BL print_string");
     }
+    public void PrintChar(string rs)
+    {
+        stanlib.Use("print_char");
+        instructions.Add($"MOV X0, {rs}");
+        instructions.Add($"BL print_char");
+    }
+
     
 
 
