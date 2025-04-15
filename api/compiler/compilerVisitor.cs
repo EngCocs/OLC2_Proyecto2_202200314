@@ -237,11 +237,15 @@ public class CompilerVisitor : LanguageBaseVisitor<Object?>
             c.PrintString(Register.X0); // Call the print function
         }
         else if(value.Type == StackObjet.StackObjetType.Bool){
-            c.PrintInterger(Register.X0); // Call the print function
+            c.PrintBool(Register.X0); // Call the print function
         }
         else if (value.Type == StackObjet.StackObjetType.Char)
         {
             c.PrintChar(Register.X0);
+        }
+        else if (value.Type == StackObjet.StackObjetType.Float)
+        {
+            c.PrintFloat(Register.D0); 
         }
         return null;
     }
@@ -342,6 +346,10 @@ public class CompilerVisitor : LanguageBaseVisitor<Object?>
     // VisitFloat
     public override Object? VisitFloat(LanguageParser.FloatContext context)
     {
+        double value = double.Parse(context.GetText(), System.Globalization.CultureInfo.InvariantCulture);
+
+        var floatObj = c.FloatObject(); // crea el StackObjet de tipo float
+        c.PushConstant(floatObj, value); // guarda en stack y genera instrucciones
         return null;
     }
 

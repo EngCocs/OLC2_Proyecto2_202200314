@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Text;
 
 public class StandardLibrary
 {
@@ -8,7 +9,24 @@ public class StandardLibrary
     {
         UsedFunctions.Add(function);
     }
+    public void AddFloatConstant(string label, double value)
+{
+    if (!floatConstants.ContainsKey(label))
+        floatConstants[label] = value;
+}
+private readonly Dictionary<string, double> floatConstants = new();
 
+public string GetFloatConstantsAsDataSection()
+{
+    var sb = new StringBuilder();
+    foreach (var kvp in floatConstants)
+    {
+        // El separador decimal debe ser punto, no coma
+        string floatVal = kvp.Value.ToString(System.Globalization.CultureInfo.InvariantCulture);
+        sb.AppendLine($"{kvp.Key}: .double {floatVal}");
+    }
+    return sb.ToString();
+}
     public string GetFunctionDefinitions()
     {
         var functions = new List<string>();
@@ -173,10 +191,38 @@ print_loop:
     b       print_loop
     
 print_done:
+    // Imprimir salto de línea
+    adr     x0, newline
+    bl      print_string_raw
     // Restore saved registers
     ldp     x19, x20, [sp], #16
     ldp     x29, x30, [sp], #16
     ret
+// Función auxiliar para imprimir sin agregar otro salto
+print_string_raw:
+    stp     x29, x30, [sp, #-16]!
+    stp     x19, x20, [sp, #-16]!
+    mov     x19, x0
+
+print_raw_loop:
+    ldrb    w20, [x19]
+    cbz     w20, print_raw_done
+    mov     x0, #1
+    mov     x1, x19
+    mov     x2, #1
+    mov     x8, #64
+    svc     #0
+    add     x19, x19, #1
+    b       print_raw_loop
+
+print_raw_done:
+    ldp     x19, x20, [sp], #16
+    ldp     x29, x30, [sp], #16
+    ret
+
+.balign 4
+newline:
+    .ascii ""\n""
     " },
     { "print_char", @"
 //--------------------------------------------------------------
@@ -190,17 +236,172 @@ print_char:
     strb w0, [sp]           // Guardamos el carácter en memoria (8 bits)
 
     mov x0, #1              // fd = stdout
-    mov x1, sp              // dirección del carácter
+    mov x1, sp              // dirección del caracter
     mov x2, #1              // longitud: 1 byte
     mov x8, #64             // syscall: write
     svc #0
+    // Imprimir salto de línea
+    adr     x0, newline
+    bl      print_string_raw
 
     add sp, sp, #16         // Limpiamos
     ldp x29, x30, [sp], #16
     ret
 
+
 " },
     
+    { "print_float", @"
+.p2align 2
+print_float:
+    stp x29, x30, [sp, #-16]!
+    stp x19, x20, [sp, #-16]!
+
+    // Parte entera
+    fcvtzs x19, d0
+    mov x0, x19
+    bl print_integer_raw
+
+    // Imprimir punto decimal
+    adr x0, dot_char
+    bl print_string_raw
+
+    // Parte decimal
+    frintz d1, d0          // d1 = parte entera
+    fsub d2, d0, d1        // d2 = d0 - parte entera
+
+    adr x9, float_decimal
+    ldr d3, [x9]           // d3 = 1000000.0
+    fmul d2, d2, d3        // d2 = decimales * 100
+    fcvtzu x20, d2         // convertir a entero
+
+    mov x0, x20
+    bl print_integer
+
+    ldp x19, x20, [sp], #16
+    ldp x29, x30, [sp], #16
+    ret
+
+.balign 4
+dot_char:
+    .ascii "".""
+
+.balign 8
+float_decimal:
+    .double 10000000.0
+" },
+
+{ "print_bool", @"
+//--------------------------------------------------------------
+// print_bool - Prints 
+//
+// Input:
+//   x0 - 0 = false, any non-zero = true
+//--------------------------------------------------------------
+.p2align 2
+print_bool:
+    stp x29, x30, [sp, #-16]!   // Save FP and LR
+
+    cmp x0, #0
+    beq print_false             // If x0 == 0, print false
+
+    // Print true
+    adr x0, true_str
+    bl print_string
+    b end_bool
+
+print_false:
+    adr x0, false_str
+    bl print_string
+
+end_bool:
+    ldp x29, x30, [sp], #16     // Restore FP and LR
+    ret
+
+.balign 4
+true_str:
+    .ascii ""true\n""
+
+.balign 4
+false_str:
+    .ascii ""false\n""
+" },
+{ "print_integer_raw", @"
+//--------------------------------------------------------------
+// print_integer_raw - Igual a print_integer pero sin salto de línea final
+//--------------------------------------------------------------
+.balign 4
+print_integer_raw:
+    stp x29, x30, [sp, #-16]!
+    stp x19, x20, [sp, #-16]!
+    stp x21, x22, [sp, #-16]!
+    stp x23, x24, [sp, #-16]!
+    stp x25, x26, [sp, #-16]!
+    stp x27, x28, [sp, #-16]!
+
+    mov x19, x0
+    cmp x19, #0
+    bge positive_number_raw
+
+    mov x0, #1
+    adr x1, minus_sign
+    mov x2, #1
+    mov w8, #64
+    svc #0
+    neg x19, x19
+
+positive_number_raw:
+    sub sp, sp, #32
+    mov x22, sp
+    mov x23, #0
+
+    cmp x19, #0
+    bne convert_loop_raw
+
+    mov w24, #48
+    strb w24, [x22, x23]
+    add x23, x23, #1
+    b print_result_raw
+
+convert_loop_raw:
+    mov x24, #10
+    udiv x25, x19, x24
+    msub x26, x25, x24, x19
+    add x26, x26, #48
+    strb w26, [x22, x23]
+    add x23, x23, #1
+    mov x19, x25
+    cbnz x19, convert_loop_raw
+
+    mov x27, #0
+reverse_loop_raw:
+    sub x28, x23, x27
+    sub x28, x28, #1
+    cmp x27, x28
+    bge print_result_raw
+    ldrb w24, [x22, x27]
+    ldrb w25, [x22, x28]
+    strb w25, [x22, x27]
+    strb w24, [x22, x28]
+    add x27, x27, #1
+    b reverse_loop_raw
+
+print_result_raw:
+    mov x0, #1
+    mov x1, x22
+    mov x2, x23
+    mov w8, #64
+    svc #0
+
+    add sp, sp, #32
+    ldp x27, x28, [sp], #16
+    ldp x25, x26, [sp], #16
+    ldp x23, x24, [sp], #16
+    ldp x21, x22, [sp], #16
+    ldp x19, x20, [sp], #16
+    ldp x29, x30, [sp], #16
+    ret
+" },
 
 
     };

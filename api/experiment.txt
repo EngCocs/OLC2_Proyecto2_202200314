@@ -1,0 +1,91 @@
+
+	puntos := 0;
+
+	print("=== Archivo de prueba básico ===");
+
+	// 1. Declaración de variables (2 puntos)
+	print("==== Declaración de variables ====");
+	puntosDeclaracion := 0;
+
+	print("Declaración explícita con tipo y valor");
+	var entero int = 42;
+	var decimal float64 = 3.14159;
+	var texto string = "Hola, mundo!";
+	var booleano bool = true;
+
+	print("entero:", entero);
+	print("decimal:", decimal);
+	print("texto:", texto);
+	print("booleano:", booleano);
+
+
+	print("\nDeclaración explícita con tipo y sin valor");
+	var enteroSinValor int;
+	var decimalSinValor float64;
+	var textoSinValor string;
+	var booleanoSinValor bool;
+
+	print("enteroSinValor:", enteroSinValor);
+	print("decimalSinValor:", decimalSinValor);
+	print("textoSinValor:", textoSinValor);
+	print("booleanoSinValor:", booleanoSinValor);
+
+
+	print("\nErrores de redeclaración");
+	
+
+	// 2. Asignación de variables (2 puntos)
+	print("\n==== Asignación de variables ====");
+	puntosAsignacion = 0;
+
+	print("Asignación con tipo correcto");
+	entero = 99;
+	decimal = 9.9;
+	texto = "Texto modificado";
+	booleano = !booleano;
+
+	print("entero:", entero);
+	print("decimal:", decimal);
+	print("texto:", texto);
+	print("booleano:", booleano);
+    ------------------------------------ mejor ---------
+
+	print("Declaracion explicita con tipo y valor");
+	var entero int = 42;
+	var decimal float64 = 3.14159;
+	var texto string = "Hola, mundo!";
+	var booleano bool = true;
+
+	print( entero);
+	print( decimal);
+	print( texto);
+	print( booleano);
+    print('c');
+
+
+	print(" Declaracion explicita con tipo y sin valor ");
+	var enteroSinValor int;
+	var decimalSinValor float64;
+	var textoSinValor string;
+	var booleanoSinValor bool;
+
+	print( enteroSinValor);
+	print( decimalSinValor);
+	print( textoSinValor);
+	print( booleanoSinValor);
+
+
+	
+
+	// 2. Asignación de variables (2 puntos)
+	print("==== Asignacion de variables ====");
+	
+	entero = 99;
+	decimal = 9.9;
+	texto = "Texto modificado";
+	booleano = booleano;
+
+	print( entero);
+	print( decimal);
+	print( texto);
+	print( booleano);

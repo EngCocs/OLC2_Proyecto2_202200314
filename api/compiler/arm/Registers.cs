@@ -76,5 +76,13 @@ public static class Register
     public static string V30 => "v30";
     public static string V31 => "v31";
 
+    // Floating-point 64-bit (double precision) registers
+    public static string D0 => "d0";
+    public static string D1 => "d1";
+    public static string D2 => "d2";
+    public static string D3 => "d3";
+   
+
+
 
 }

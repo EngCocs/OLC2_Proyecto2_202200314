@@ -36,7 +36,17 @@ public class ArmGenerator
                 Push(Register.X0);
                 break;
             case StackObjet.StackObjetType.Float:
-                //codigo 
+                // Crear una etiqueta única para esta constante float
+                string label = $"float_const_{Utils.FloatLabelCounter++}";
+                // Registrar el valor en la sección .data
+                stanlib.AddFloatConstant(label, (double)value);
+
+                // ADR x9, etiqueta
+                instructions.Add($"adr x9, {label}");
+                // LDR d0, [x9]
+                instructions.Add($"ldr d0, [x9]");
+                // STR d0, [sp, #-8]!
+                instructions.Add($"str d0, [sp, #-8]!");
                 break;
             case StackObjet.StackObjetType.String:
                 List<byte> stringArray = Utils.StringToBytesArrays((string)value);
@@ -255,6 +265,11 @@ public void FMOV(string rd, string rs)
     {
         instructions.Add($"STR {rs}, [SP, #-8]!");//AL RESTAR AUNMENTAMOS EL STACK
     }
+    public void FPush(string rd)
+    {
+        instructions.Add($"STR {rd}, [SP, #-8]!");
+    }
+
     public void Pop(string rd)
     {
         instructions.Add($"LDR {rd}, [SP], #8");//AL SUMAR RESTAMOS DEL STACK
@@ -291,6 +306,23 @@ public void FMOV(string rd, string rs)
         instructions.Add($"MOV X0, {rs}");
         instructions.Add($"BL print_char");
     }
+    public void PrintFloat(string rd)
+    {
+        stanlib.Use("print_float");
+        stanlib.Use("print_integer");  // Necesaria dentro de print_float
+        stanlib.Use("print_integer_raw");
+        stanlib.Use("print_string_raw");
+        instructions.Add($"FMOV D0, {rd}");
+        instructions.Add($"BL print_float");
+    }
+    public void PrintBool(string rs)
+{
+    stanlib.Use("print_bool");
+    instructions.Add($"MOV X0, {rs}");
+    instructions.Add($"BL print_bool");
+}
+
+
 
     
 
@@ -304,6 +336,7 @@ public void FMOV(string rd, string rs)
         var sb = new StringBuilder();
         sb.AppendLine(".data");
         sb.AppendLine("heap: .space 4096");
+        sb.AppendLine(stanlib.GetFloatConstantsAsDataSection());
         sb.AppendLine(".text");
         sb.AppendLine(".global _start");
         sb.AppendLine("_start:");

@@ -1,3 +1,5 @@
+using System.Text;
+
 public static class Utils
 {
     //convierte un string a un array de bytes
@@ -11,5 +13,11 @@ public static class Utils
        }
        result.Add(0);
        return result;
+    }
+    public static int FloatLabelCounter = 0;
+
+    public static List<byte> ConvertStringToBytes(string input)
+    {
+        return Encoding.ASCII.GetBytes(input).ToList(); // renamed method
     }
 }
