@@ -219,6 +219,10 @@ public class ArmGenerator
     {
         instructions.Add($"ADD {rd}, {rs1}, {rs2}");
     }
+    public void Add(string dst, string src, int value)
+{
+    Add(dst, src, value.ToString());
+}
 
     public void Sub(string rd, string rs1, string rs2)
     {
@@ -350,7 +354,69 @@ public void FMOV(string rd, string rs)
     instructions.Add($"MOV X0, {rs}");
     instructions.Add($"BL print_bool");
 }
+public void PrintLiteral(string text)
+{
+    List<byte> bytes = Utils.StringToBytesArrays(text);
+    
+    Mov("x9", Register.HP); // x9 = inicio del string
 
+    foreach (var b in bytes)
+    {
+        Mov("w0", b);
+        Strb("w0", Register.HP);
+        Add(Register.HP, Register.HP, 1);
+    }
+
+    // Null terminator
+    Mov("w0", 0);
+    Strb("w0", Register.HP);
+    Add(Register.HP, Register.HP, 1);
+
+    Mov("x0", "x9");
+    PrintStringRaw("x0");
+}
+
+public void PrintIntergerRaw(string rs)
+{
+    stanlib.Use("print_integer_raw");
+    instructions.Add($"MOV X0, {rs}");
+    instructions.Add("BL print_integer_raw");
+}
+
+public void PrintFloatRaw(string rd)
+{
+    stanlib.Use("print_float");
+    stanlib.Use("print_integer_raw");
+     stanlib.Use("print_integer");
+    stanlib.Use("print_string_raw");
+    instructions.Add($"FMOV D0, {rd}");
+    instructions.Add("BL print_float");
+}
+
+public void PrintStringRaw(string rs)
+{
+    stanlib.Use("print_string_raw");
+    instructions.Add($"MOV X0, {rs}");
+    instructions.Add("BL print_string_raw");
+}
+
+public void PrintBoolRaw(string rs)
+{
+    stanlib.Use("print_bool");
+    stanlib.Use("print_string"); 
+    stanlib.Use("print_string_raw");
+    instructions.Add($"MOV X0, {rs}");
+    instructions.Add("BL print_bool");
+}
+
+public void PrintCharRaw(string rs)
+{
+    stanlib.Use("print_char");
+     stanlib.Use("print_string"); 
+    stanlib.Use("print_string_raw");
+    instructions.Add($"MOV X0, {rs}");
+    instructions.Add("BL print_char");
+}
 
 
     

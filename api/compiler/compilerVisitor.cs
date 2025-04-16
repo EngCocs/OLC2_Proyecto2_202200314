@@ -225,30 +225,46 @@ public class CompilerVisitor : LanguageBaseVisitor<Object?>
     }
 
     //VisitPrintStmt
-    public override Object? VisitPrintStmt(LanguageParser.PrintStmtContext context)
+   public override Object? VisitPrintStmt(LanguageParser.PrintStmtContext context)
+{
+    c.Comment("Print statement");
+
+    var exprs = context.expr(); // IList<ExprContext>
+    int count = exprs.Count();    // ✅ CORRECTO
+
+    for (int i = 0; i < count; i++)
     {
-        c.Comment("Print statement");
-        Visit(context.expr());
-        var value= c.PopObjet(Register.X0); // Pop the value to print
-        if(value.Type == StackObjet.StackObjetType.Int){
-            c.PrintInterger(Register.X0); // Call the print function
-        }
-        else if(value.Type == StackObjet.StackObjetType.String){
-            c.PrintString(Register.X0); // Call the print function
-        }
-        else if(value.Type == StackObjet.StackObjetType.Bool){
-            c.PrintBool(Register.X0); // Call the print function
-        }
-        else if (value.Type == StackObjet.StackObjetType.Char)
+        Visit(exprs[i]);  // ✅ exprs[i], no GetChild(i)
+
+        var value = c.PopObjet(Register.X0);
+
+        switch (value.Type)
         {
-            c.PrintChar(Register.X0);
+            case StackObjet.StackObjetType.Int:
+                c.PrintIntergerRaw(Register.X0); break;
+            case StackObjet.StackObjetType.Float:
+                c.PrintFloatRaw(Register.D0); break;
+            case StackObjet.StackObjetType.String:
+                c.PrintStringRaw(Register.X0); break;
+            case StackObjet.StackObjetType.Bool:
+                c.PrintBoolRaw(Register.X0); break;
+            case StackObjet.StackObjetType.Char:
+                c.PrintCharRaw(Register.X0); break;
+            default:
+                throw new Exception("Tipo no soportado en print.");
         }
-        else if (value.Type == StackObjet.StackObjetType.Float)
-        {
-            c.PrintFloat(Register.D0); 
-        }
-        return null;
+
+        // Imprimir espacio si no es el último
+        if (i < count - 1)
+            c.PrintLiteral(" ");
     }
+
+    // Salto de línea al final
+    c.PrintLiteral("\n");
+    return null;
+}
+
+
 
     
 
@@ -277,8 +293,7 @@ public class CompilerVisitor : LanguageBaseVisitor<Object?>
     // VisitParens
     public override Object? VisitParens(LanguageParser.ParensContext context)
     {
-        //return Visit(context.expr());
-        return null;
+        return Visit(context.expr());
     }
 
     // VisitNegate
@@ -340,12 +355,15 @@ public class CompilerVisitor : LanguageBaseVisitor<Object?>
     // --- FLOAT + FLOAT ---
     if (left.Type == StackObjet.StackObjetType.Float && right.Type == StackObjet.StackObjetType.Float)
     {
-        if (opetarion == "+")
-            c.FAdd(Register.D0, Register.D0, Register.D1);
-        else
-            c.FSub(Register.D0, Register.D0, Register.D1);
+        c.FMOV("d1", "x1"); // Lado derecho (pop 2)
+        c.FMOV("d0", "x0"); // Lado izquierdo (pop 1)
 
-        c.FPush(Register.D0);
+        if (opetarion == "+")
+            c.FAdd("d0", "d0", "d1");
+        else
+            c.FSub("d0", "d0", "d1");
+
+        c.FPush("d0");
         c.PushObjet(c.FloatObject());
         return null;
     }
@@ -486,10 +504,14 @@ public class CompilerVisitor : LanguageBaseVisitor<Object?>
     // VisitString
     public override Object? VisitString(LanguageParser.StringContext context)
 {
-    var value = context.STRING().GetText().Trim('"'); // Eliminar las comillas
-    c.Comment("String: " + value);
+    string raw = context.STRING().GetText();                     // Incluye comillas
+    string cleaned = raw.Substring(1, raw.Length - 2);           // Remueve comillas
+    string value = UnescapeString(cleaned);                      // Aplica des-escape
+
+    c.Comment("String: " + value.Replace("\n", "\\n").Replace("\r", "\\r"));
+
     var stringObject = c.StringObject();
-    c.PushConstant(stringObject, value); // Convertir a bytes y hacer push
+    c.PushConstant(stringObject, value);
     return null;
 }
 

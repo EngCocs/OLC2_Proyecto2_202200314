@@ -1,4 +1,4 @@
-// Generated from /home/emilio/Escritorio/Github/2do_proyecto2/api/grammars/Language.g4 by ANTLR 4.13.1
+// Generated from /home/emilio/Escritorio/Github/OLC2_Proyecto2_202200314/api/grammars/Language.g4 by ANTLR 4.13.1
 
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ErrorNode;

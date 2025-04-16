@@ -1,5 +1,5 @@
-antlr4 -Dlanguage=CSharp -o api/analyzer -package analyzer -visitor 
--no-listener api/grammars/*.g4 (genera la gramatica)
+antlr4 -Dlanguage=CSharp -o analyzer -package analyzer -visitor -no-listener grammars/*.g4
+(genera la gramatica)
 
 
 -------------------------------var---------------------
@@ -36,7 +36,7 @@ puntos := 0;
 puntos := 0;
 	puntosDeclaracion := 0;
 	var hola bool = true;
-    print(hola)
+    print(hola);
     print(" entero ");
     print(hola);
 	
@@ -55,4 +55,4 @@ puntos := 0;
 	} 
 
 	print(puntosDeclaracion);
-    print(" ----Este es el fin--------- ")
+    print(" ----Este es el fin--------- ");

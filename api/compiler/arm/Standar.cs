@@ -149,9 +149,7 @@ print_result:
     ldp x19, x20, [sp], #16
     ldp x29, x30, [sp], #16    // Restore frame pointer and link register
     ret                        // Return to caller
-.p2align 2
-minus_sign:
-    .ascii ""-""               // Minus sign"
+"
     },
 
     { "print_string", @"
@@ -410,6 +408,9 @@ print_result_raw:
     ldp x19, x20, [sp], #16
     ldp x29, x30, [sp], #16
     ret
+    .p2align 2
+minus_sign:
+    .ascii ""-""
 " },
   { "concat_strings", @"
 //--------------------------------------------------------------
