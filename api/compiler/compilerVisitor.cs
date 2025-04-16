@@ -324,11 +324,82 @@ public class CompilerVisitor : LanguageBaseVisitor<Object?>
 
         var right = c.PopObjet(Register.X1); //pop 2 : top --> [1]
         var left = c.PopObjet(Register.X0); //pop 1 : top --> []
+        // --- INT + INT ---
+    if (left.Type == StackObjet.StackObjetType.Int && right.Type == StackObjet.StackObjetType.Int)
+    {
+        if (opetarion == "+")
+            c.Add(Register.X0, Register.X0, Register.X1);
+        else
+            c.Sub(Register.X0, Register.X0, Register.X1);
+
+        c.Push(Register.X0);
+        c.PushObjet(c.IntObject());
+        return null;
+    }
+
+    // --- FLOAT + FLOAT ---
+    if (left.Type == StackObjet.StackObjetType.Float && right.Type == StackObjet.StackObjetType.Float)
+    {
+        if (opetarion == "+")
+            c.FAdd(Register.D0, Register.D0, Register.D1);
+        else
+            c.FSub(Register.D0, Register.D0, Register.D1);
+
+        c.FPush(Register.D0);
+        c.PushObjet(c.FloatObject());
+        return null;
+    }
+
+    // --- INT + FLOAT ---
+    if (left.Type == StackObjet.StackObjetType.Int && right.Type == StackObjet.StackObjetType.Float)
+    {
+        // d0 = float (right), x0 = int (left)
+        c.FMOV("d1", "d0");            // copia float a d1
+        c.Scvtf("d2", "x0");           // convierte int a float en d2
 
         if (opetarion == "+")
-        {
-            c.Add(Register.X0, Register.X0, Register.X1); //x0= x0 + x1
-        }
+            c.FAdd("d0", "d2", "d1");  // resultado = d2 + d1
+        else
+            c.FSub("d0", "d2", "d1");  // resultado = d2 - d1
+
+        c.FPush("d0");
+        c.PushObjet(c.FloatObject());
+        return null;
+    }
+
+    // --- FLOAT + INT ---
+    if (left.Type == StackObjet.StackObjetType.Float && right.Type == StackObjet.StackObjetType.Int)
+    {
+        // d0 = float (left), x1 = int (right)
+    c.FMOV("d1", "d0");            // copia float a d1
+    c.Scvtf("d2", "x1");           // convierte int a float en d2
+
+    if (opetarion == "+")
+        c.FAdd("d0", "d1", "d2");  // resultado = d1 + d2
+    else
+        c.FSub("d0", "d1", "d2");  // resultado = d1 - d2
+
+    c.FPush("d0");
+    c.PushObjet(c.FloatObject());
+    return null;
+    }
+
+    // --- STRING + STRING ---
+    if (right.Type == StackObjet.StackObjetType.String && left.Type == StackObjet.StackObjetType.String)
+    {
+        if (opetarion != "+")
+            throw new Exception("No se puede restar strings.");
+
+           
+
+        c.concatString(); // Función de biblioteca estándar
+
+        // Resultado estará en X0
+        c.Push(Register.X0);
+        c.PushObjet(c.StringObject());
+        return null;
+    }
+
         else if (opetarion == "-")
         {
             c.Sub(Register.X0, Register.X0, Register.X1); // x0= x0 - x1

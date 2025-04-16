@@ -198,20 +198,33 @@ print_done:
     ldp     x19, x20, [sp], #16
     ldp     x29, x30, [sp], #16
     ret
-// Función auxiliar para imprimir sin agregar otro salto
+
+
+.balign 4
+newline:
+    .ascii ""\n""
+    " },
+    { "print_string_raw", @"
+//--------------------------------------------------------------
+// print_string_raw - Prints string without newline
+//--------------------------------------------------------------
+.balign 4
 print_string_raw:
     stp     x29, x30, [sp, #-16]!
     stp     x19, x20, [sp, #-16]!
+
     mov     x19, x0
 
 print_raw_loop:
     ldrb    w20, [x19]
     cbz     w20, print_raw_done
+
     mov     x0, #1
     mov     x1, x19
     mov     x2, #1
     mov     x8, #64
     svc     #0
+
     add     x19, x19, #1
     b       print_raw_loop
 
@@ -219,11 +232,7 @@ print_raw_done:
     ldp     x19, x20, [sp], #16
     ldp     x29, x30, [sp], #16
     ret
-
-.balign 4
-newline:
-    .ascii ""\n""
-    " },
+" },
     { "print_char", @"
 //--------------------------------------------------------------
 // print_char - Prints a single character in x0 to stdout
@@ -402,6 +411,55 @@ print_result_raw:
     ldp x29, x30, [sp], #16
     ret
 " },
+  { "concat_strings", @"
+//--------------------------------------------------------------
+// concat_strings - Concatena dos strings null-terminated
+// 
+// Entrada:
+//   X0 - Dirección del primer string (str1)
+//   X1 - Dirección del segundo string (str2)
+// Salida:
+//   X0 - Dirección del nuevo string en el heap (X10)
+//--------------------------------------------------------------
+.p2align 2
+concat_strings:
+    stp x29, x30, [sp, #-16]!
+    stp x19, x20, [sp, #-16]!
+    stp x21, x22, [sp, #-16]!
+
+    // Guardar direcciones de los strings
+    mov x19, x0   // str1
+    mov x20, x1   // str2
+    mov x21, x10  // Inicio del nuevo string
+
+    // Copiar str1
+copy_str1:
+    ldrb w22, [x19], #1
+    cbz w22, end_str1
+    strb w22, [x10], #1
+    b copy_str1
+
+end_str1:
+    // Copiar str2
+copy_str2:
+    ldrb w22, [x20], #1
+    cbz w22, end_str2
+    strb w22, [x10], #1
+    b copy_str2
+
+end_str2:
+    // Añadir null-terminator
+    strb wzr, [x10], #1
+
+    // Devolver dirección del nuevo string
+    mov x0, x21
+
+    ldp x21, x22, [sp], #16
+    ldp x19, x20, [sp], #16
+    ldp x29, x30, [sp], #16
+    ret
+" }
+  
 
 
     };

@@ -18,7 +18,7 @@ public class ArmGenerator
     private List<StackObjet> stack = new List<StackObjet>();
     private readonly List<string> instructions = new List<string>();
     private readonly StandardLibrary stanlib = new StandardLibrary();
-
+    
     private int Depth= 0;
 
     //-----------operacionde con el stack-----------------
@@ -50,18 +50,21 @@ public class ArmGenerator
                 break;
             case StackObjet.StackObjetType.String:
                 List<byte> stringArray = Utils.StringToBytesArrays((string)value);
-                Push(Register.HP);
+
+                string tempRegister = $"x{Utils.TempRegisterCounter++}";
+                Mov(tempRegister, Register.HP); // x9 = x10 (inicio del string)
+
                 for (int i = 0; i < stringArray.Count; i++)
                 {
                     var charCode = stringArray[i];
                     Comment($"Pusing char {charCode}");
                     Mov("w0", charCode);
                     Strb("w0", Register.HP);
-                    //slaces hay que utilizar hp
-                    Mov(Register.X0,1);
-                    Add(Register.HP, Register.HP, Register.X0);
-                   
+                    Mov(Register.X0, 1);
+                    Add(Register.HP, Register.HP, Register.X0);  
                 }
+
+                Push(tempRegister); // push la dirección correcta
                 break;
             case StackObjet.StackObjetType.Bool:
                 // Representamos false como 0 y true como 1.
@@ -269,6 +272,31 @@ public void FMOV(string rd, string rs)
     {
         instructions.Add($"STR {rd}, [SP, #-8]!");
     }
+    public void FAdd(string rd, string rs1, string rs2)
+    {
+        instructions.Add($"FADD {rd}, {rs1}, {rs2}");
+    }
+    public void FSub(string rd, string rs1, string rs2)
+    {
+        instructions.Add($"FSUB {rd}, {rs1}, {rs2}");
+    }
+    public void FDiv(string rd, string rs1, string rs2)
+    {
+        instructions.Add($"FDIV {rd}, {rs1}, {rs2}");
+    }
+    public void Fmul(string rd, string rs1, string rs2)
+    {
+        instructions.Add($"FMUL {rd}, {rs1}, {rs2}");
+    }
+    public void Scvtf(string rd, string rs)
+    {
+        instructions.Add($"SCVTF {rd}, {rs}");
+    }
+    public void concatString()
+    {
+        stanlib.Use("concat_strings"); 
+        instructions.Add("BL concat_strings");
+    }
 
     public void Pop(string rd)
     {
@@ -297,6 +325,7 @@ public void FMOV(string rd, string rs)
     public void PrintString(string rs)
     {
         stanlib.Use("print_string");
+         stanlib.Use("print_string_raw");
         instructions.Add($"MOV X0, {rs}");
         instructions.Add($"BL print_string");
     }

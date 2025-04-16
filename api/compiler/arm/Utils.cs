@@ -2,6 +2,8 @@ using System.Text;
 
 public static class Utils
 {
+    public static int TempRegisterCounter = 9; // en Utils.cs
+
     //convierte un string a un array de bytes
     public static List<byte> StringToBytesArrays(string str)
     {
