@@ -196,3 +196,5 @@ make: *** [Makefile:13: program.o] Error 1
 	print("10.5 - 5.5 =", resultadoResta2);
 	print("10 - 5.5 =", resultadoResta3);
 	print("10.5 - 5 =", resultadoResta4);
+	var a int = 10 % 3;
+	print("Resultado:", a);

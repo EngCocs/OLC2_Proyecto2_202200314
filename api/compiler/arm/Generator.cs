@@ -309,9 +309,23 @@ public void FMOV(string rd, string rs)
     {
         instructions.Add($"CMP {rs1}, #{imm}");
     }
+    public void Rem(string rd, string rs1, string rs2)
+    {
+       instructions.Add($"UDIV x22, {rs1}, {rs2}");         // x22 = rs1 / rs2
+        instructions.Add($"MSUB {rd}, x22, {rs2}, {rs1}");   // rd = rs1 - (rs2 * x22)
+    }
     public void Beq(string label)
     {
         instructions.Add($"BEQ {label}");
+    }
+    public void Neg(string rd, string rs)
+    {
+        instructions.Add($"NEG {rd}, {rs}");
+    }
+
+    public void FNeg(string rd, string rs)
+    {
+        instructions.Add($"FNEG {rd}, {rs}");
     }
     public void concatString()
     {

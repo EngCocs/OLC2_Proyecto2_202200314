@@ -307,7 +307,29 @@ public class CompilerVisitor : LanguageBaseVisitor<Object?>
     // VisitNegate
     public override Object? VisitNegate(LanguageParser.NegateContext context)
     {
-        return null;
+        c.Comment("Negación unaria");
+    Visit(context.expr()); // Procesamos la expresión dentro del signo menos
+
+    var value = c.PopObjet(Register.X0); // El resultado queda en x0 o d0
+
+    if (value.Type == StackObjet.StackObjetType.Int)
+    {
+        c.Neg(Register.X0, Register.X0); // x0 = -x0
+        c.Push(Register.X0);
+        c.PushObjet(c.IntObject());
+    }
+    else if (value.Type == StackObjet.StackObjetType.Float)
+    {
+        c.FNeg("d0", "d0"); // d0 = -d0
+        c.FPush("d0");
+        c.PushObjet(c.FloatObject());
+    }
+    else
+    {
+        throw new Exception("Negación unaria solo se permite sobre int o float64.");
+    }
+
+    return null;
     }
 
     //VisitNot
@@ -348,7 +370,7 @@ public class CompilerVisitor : LanguageBaseVisitor<Object?>
         c.Push("x0");
         c.PushObjet(c.IntObject());
     }
-    else // División con conversión implícita a float
+    else if(op == "/") // División con conversión implícita a float
     {
         c.Scvtf("d0", "x0");  // convierte numerador a float
         c.Scvtf("d1", "x1");  // convierte denominador a float
@@ -356,6 +378,17 @@ public class CompilerVisitor : LanguageBaseVisitor<Object?>
         c.FPush("d0");
         c.PushObjet(c.FloatObject());
     }
+    else if (op == "%")
+        {
+            // Validación en tiempo de ejecución: división entre cero
+            c.Cmp("x1", 0);
+            //c.ThrowIfEqual("Error: División entre 0 en módulo.");
+
+            // Módulo: x0 % x1
+            c.Rem("x0", "x0", "x1");
+            c.Push("x0");
+            c.PushObjet(c.IntObject());
+        }
     return null;
 }
 
