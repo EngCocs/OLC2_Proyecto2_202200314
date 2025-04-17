@@ -199,7 +199,7 @@ make: *** [Makefile:13: program.o] Error 1
 	var a int = 10 % 3;
 	print("Resultado:", a);
 
-	--------------------------- igualdad ----------------------------
+//--------------------------- igualdad ----------------------------
 print(1 == 1);//true
 print(1 != 1);//false
 print(13.0 == 13.0);//true
@@ -212,3 +212,9 @@ print('h' == 'a');//false
 print('H' != 'H');//false
 print("ho" != "Ha");    // true
 print("Ho" != "Ho");    // false
+//---- relacionales ------------
+print(1 < 1);//false
+print(13.0 >= 13.0);//true
+print(65 >= 70.7);//false
+print(40.6 >= 30);//true
+print('a' <= 'b');//true

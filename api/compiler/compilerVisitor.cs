@@ -530,8 +530,85 @@ public class CompilerVisitor : LanguageBaseVisitor<Object?>
     // VisitRelational
     public override Object? VisitRelationalS(LanguageParser.RelationalSContext context)
     {
+        c.Comment("Relational");
+
+    string op = context.op.Text; // Puede ser >, <, >=, <=
+
+    Visit(context.expr(0));
+    Visit(context.expr(1));
+
+    var right = c.PopObjet(Register.X1);
+    var left = c.PopObjet(Register.X0);
+
+    // --- INT vs INT ---
+    if (left.Type == StackObjet.StackObjetType.Int && right.Type == StackObjet.StackObjetType.Int)
+    {
+        c.Cmp("x0", "x1");
+        c.Set(RelationToCond(op), "x0");
+        c.Push("x0");
+        c.PushObjet(c.BoolObject());
         return null;
     }
+
+    // --- FLOAT vs FLOAT ---
+    if (left.Type == StackObjet.StackObjetType.Float && right.Type == StackObjet.StackObjetType.Float)
+    {
+        c.FMOV("d1", "x1");
+        c.FMOV("d0", "x0");
+        c.FCMP("d0", "d1");
+        c.Set(RelationToCond(op), "x0");
+        c.Push("x0");
+        c.PushObjet(c.BoolObject());
+        return null;
+    }
+
+    // --- INT vs FLOAT ---
+    if (left.Type == StackObjet.StackObjetType.Int && right.Type == StackObjet.StackObjetType.Float)
+    {
+        c.FMOV("d1", "x1"); // float right
+        c.Scvtf("d0", "x0"); // int -> float
+        c.FCMP("d0", "d1");
+        c.Set(RelationToCond(op), "x0");
+        c.Push("x0");
+        c.PushObjet(c.BoolObject());
+        return null;
+    }
+
+    // --- FLOAT vs INT ---
+    if (left.Type == StackObjet.StackObjetType.Float && right.Type == StackObjet.StackObjetType.Int)
+    {
+        c.FMOV("d0", "x0"); // float left
+        c.Scvtf("d1", "x1"); // int -> float
+        c.FCMP("d0", "d1");
+        c.Set(RelationToCond(op), "x0");
+        c.Push("x0");
+        c.PushObjet(c.BoolObject());
+        return null;
+    }
+
+    // --- RUNE vs RUNE ---
+    if (left.Type == StackObjet.StackObjetType.Char && right.Type == StackObjet.StackObjetType.Char)
+    {
+        c.Cmp("x0", "x1");
+        c.Set(RelationToCond(op), "x0");
+        c.Push("x0");
+        c.PushObjet(c.BoolObject());
+        return null;
+    }
+        return null;
+    }
+    private string RelationToCond(string op)
+    {
+        return op switch
+        {
+            ">" => "GT",
+            "<" => "LT",
+            ">=" => "GE",
+            "<=" => "LE",
+            _ => throw new Exception("Operador relacional no soportado: " + op)
+        };
+    }
+
     //VisitLogical
     public override Object? VisitLogical(LanguageParser.LogicalContext context)
     {

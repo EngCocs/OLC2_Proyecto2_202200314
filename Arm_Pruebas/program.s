@@ -1,210 +1,26 @@
 .data
 heap: .space 4096
-float_const_0: .double 13
-float_const_1: .double 13
-float_const_2: .double 0.001
-float_const_3: .double 0.001
-float_const_4: .double 35
-float_const_5: .double 98
 
 .text
 .global _start
 _start:
   adr x10, heap
-// Print statement
-// Equality / Inequality
-// Constant : 1
-MOV x0, #1
+// Constant : 0
+MOV x0, #0
 STR x0, [SP, #-8]!
-// Constant : 1
-MOV x0, #1
+// Declaración variable implícita 'puntos' almacenada en el stack.
+// Constant : 0
+MOV x0, #0
 STR x0, [SP, #-8]!
-LDR x1, [SP], #8
-LDR x0, [SP], #8
-CMP x0, x1
-CSET x0, EQ
-STR x0, [SP, #-8]!
-LDR x0, [SP], #8
-MOV X0, x0
-BL print_bool
-MOV x9, x10
-MOV w0, #10
-STRB w0, [x10]
-ADD x10, x10, 1
-MOV w0, #0
-STRB w0, [x10]
-ADD x10, x10, 1
-MOV w0, #0
-STRB w0, [x10]
-ADD x10, x10, 1
-MOV x0, x9
-MOV X0, x0
-BL print_string_raw
-// Print statement
-// Equality / Inequality
-// Constant : 1
-MOV x0, #1
-STR x0, [SP, #-8]!
-// Constant : 1
-MOV x0, #1
-STR x0, [SP, #-8]!
-LDR x1, [SP], #8
-LDR x0, [SP], #8
-CMP x0, x1
-CSET x0, NE
-STR x0, [SP, #-8]!
-LDR x0, [SP], #8
-MOV X0, x0
-BL print_bool
-MOV x9, x10
-MOV w0, #10
-STRB w0, [x10]
-ADD x10, x10, 1
-MOV w0, #0
-STRB w0, [x10]
-ADD x10, x10, 1
-MOV w0, #0
-STRB w0, [x10]
-ADD x10, x10, 1
-MOV x0, x9
-MOV X0, x0
-BL print_string_raw
-// Print statement
-// Equality / Inequality
-adr x9, float_const_0
-ldr d0, [x9]
-str d0, [sp, #-8]!
-adr x9, float_const_1
-ldr d0, [x9]
-str d0, [sp, #-8]!
-LDR x1, [SP], #8
-LDR x0, [SP], #8
-FMOV d1, x1
-FMOV d0, x0
-FCMP d0, d1
-CSET x0, EQ
-STR x0, [SP, #-8]!
-LDR x0, [SP], #8
-MOV X0, x0
-BL print_bool
-MOV x9, x10
-MOV w0, #10
-STRB w0, [x10]
-ADD x10, x10, 1
-MOV w0, #0
-STRB w0, [x10]
-ADD x10, x10, 1
-MOV w0, #0
-STRB w0, [x10]
-ADD x10, x10, 1
-MOV x0, x9
-MOV X0, x0
-BL print_string_raw
-// Print statement
-// Equality / Inequality
-adr x9, float_const_2
-ldr d0, [x9]
-str d0, [sp, #-8]!
-adr x9, float_const_3
-ldr d0, [x9]
-str d0, [sp, #-8]!
-LDR x1, [SP], #8
-LDR x0, [SP], #8
-FMOV d1, x1
-FMOV d0, x0
-FCMP d0, d1
-CSET x0, NE
-STR x0, [SP, #-8]!
-LDR x0, [SP], #8
-MOV X0, x0
-BL print_bool
-MOV x9, x10
-MOV w0, #10
-STRB w0, [x10]
-ADD x10, x10, 1
-MOV w0, #0
-STRB w0, [x10]
-ADD x10, x10, 1
-MOV w0, #0
-STRB w0, [x10]
-ADD x10, x10, 1
-MOV x0, x9
-MOV X0, x0
-BL print_string_raw
-// Print statement
-// Equality / Inequality
-// Constant : 35
-MOV x0, #35
-STR x0, [SP, #-8]!
-adr x9, float_const_4
-ldr d0, [x9]
-str d0, [sp, #-8]!
-LDR x1, [SP], #8
-LDR x0, [SP], #8
-FMOV d1, d0
-SCVTF d2, x0
-FCMP d2, d1
-CSET x0, EQ
-STR x0, [SP, #-8]!
-LDR x0, [SP], #8
-MOV X0, x0
-BL print_bool
-MOV x9, x10
-MOV w0, #10
-STRB w0, [x10]
-ADD x10, x10, 1
-MOV w0, #0
-STRB w0, [x10]
-ADD x10, x10, 1
-MOV w0, #0
-STRB w0, [x10]
-ADD x10, x10, 1
-MOV x0, x9
-MOV X0, x0
-BL print_string_raw
-// Print statement
-// Equality / Inequality
-adr x9, float_const_5
-ldr d0, [x9]
-str d0, [sp, #-8]!
-// Constant : 98
-MOV x0, #98
-STR x0, [SP, #-8]!
-LDR x1, [SP], #8
-LDR x0, [SP], #8
-FMOV d1, d0
-SCVTF d2, x1
-FCMP d1, d2
-CSET x0, NE
-STR x0, [SP, #-8]!
-LDR x0, [SP], #8
-MOV X0, x0
-BL print_bool
-MOV x9, x10
-MOV w0, #10
-STRB w0, [x10]
-ADD x10, x10, 1
-MOV w0, #0
-STRB w0, [x10]
-ADD x10, x10, 1
-MOV w0, #0
-STRB w0, [x10]
-ADD x10, x10, 1
-MOV x0, x9
-MOV X0, x0
-BL print_string_raw
-// Print statement
-// Equality / Inequality
+// Declaración variable implícita 'puntosDeclaracion' almacenada en el stack.
+// Declaración explícita con inicialización: hola, tipo: bool
 // Boolean: true
 MOV x0, #1
 STR x0, [SP, #-8]!
-// Boolean: false
+// Print statement
 MOV x0, #0
-STR x0, [SP, #-8]!
-LDR x1, [SP], #8
-LDR x0, [SP], #8
-CMP x0, x1
-CSET x0, EQ
+ADD x0, sp, x0
+LDR x0, [x0, #0]
 STR x0, [SP, #-8]!
 LDR x0, [SP], #8
 MOV X0, x0
@@ -223,17 +39,74 @@ MOV x0, x9
 MOV X0, x0
 BL print_string_raw
 // Print statement
-// Equality / Inequality
-// Boolean: false
+// String:  entero 
+MOV x27, x10
+// Pusing char 32
+MOV w0, #32
+STRB w0, [x10]
+MOV x0, #1
+ADD x10, x10, x0
+// Pusing char 101
+MOV w0, #101
+STRB w0, [x10]
+MOV x0, #1
+ADD x10, x10, x0
+// Pusing char 110
+MOV w0, #110
+STRB w0, [x10]
+MOV x0, #1
+ADD x10, x10, x0
+// Pusing char 116
+MOV w0, #116
+STRB w0, [x10]
+MOV x0, #1
+ADD x10, x10, x0
+// Pusing char 101
+MOV w0, #101
+STRB w0, [x10]
+MOV x0, #1
+ADD x10, x10, x0
+// Pusing char 114
+MOV w0, #114
+STRB w0, [x10]
+MOV x0, #1
+ADD x10, x10, x0
+// Pusing char 111
+MOV w0, #111
+STRB w0, [x10]
+MOV x0, #1
+ADD x10, x10, x0
+// Pusing char 32
+MOV w0, #32
+STRB w0, [x10]
+MOV x0, #1
+ADD x10, x10, x0
+// Pusing char 0
+MOV w0, #0
+STRB w0, [x10]
+MOV x0, #1
+ADD x10, x10, x0
+STR x27, [SP, #-8]!
+LDR x0, [SP], #8
+MOV X0, x0
+BL print_string_raw
+MOV x9, x10
+MOV w0, #10
+STRB w0, [x10]
+ADD x10, x10, 1
+MOV w0, #0
+STRB w0, [x10]
+ADD x10, x10, 1
+MOV w0, #0
+STRB w0, [x10]
+ADD x10, x10, 1
+MOV x0, x9
+MOV X0, x0
+BL print_string_raw
+// Print statement
 MOV x0, #0
-STR x0, [SP, #-8]!
-// Boolean: true
-MOV x0, #1
-STR x0, [SP, #-8]!
-LDR x1, [SP], #8
-LDR x0, [SP], #8
-CMP x0, x1
-CSET x0, NE
+ADD x0, sp, x0
+LDR x0, [x0, #0]
 STR x0, [SP, #-8]!
 LDR x0, [SP], #8
 MOV X0, x0
@@ -251,22 +124,77 @@ ADD x10, x10, 1
 MOV x0, x9
 MOV X0, x0
 BL print_string_raw
-// Print statement
-// Equality / Inequality
-// Rune: h
-MOV x0, #104
+// Bloque de código
+// Asignación a variable: puntosDeclaracion
+// AddSub
+MOV x0, #8
+ADD x0, sp, x0
+LDR x0, [x0, #0]
 STR x0, [SP, #-8]!
-// Rune: a
-MOV x0, #97
+// Constant : 1
+MOV x0, #1
 STR x0, [SP, #-8]!
 LDR x1, [SP], #8
 LDR x0, [SP], #8
-CMP x0, x1
-CSET x0, EQ
+ADD x0, x0, x1
+STR x0, [SP, #-8]!
+LDR x0, [SP], #8
+MOV x1, #8
+ADD x1, sp, x1
+STR x0, [x1, #0]
+STR x0, [SP, #-8]!
+// Expresión de declaración
+LDR x0, [SP], #8
+// Bloque de código
+// Asignación a variable: puntosDeclaracion
+// AddSub
+MOV x0, #8
+ADD x0, sp, x0
+LDR x0, [x0, #0]
+STR x0, [SP, #-8]!
+// Constant : 1
+MOV x0, #1
+STR x0, [SP, #-8]!
+LDR x1, [SP], #8
+LDR x0, [SP], #8
+ADD x0, x0, x1
+STR x0, [SP, #-8]!
+LDR x0, [SP], #8
+MOV x1, #8
+ADD x1, sp, x1
+STR x0, [x1, #0]
+STR x0, [SP, #-8]!
+// Expresión de declaración
+LDR x0, [SP], #8
+// Bloque de código
+// Asignación a variable: puntosDeclaracion
+// AddSub
+MOV x0, #8
+ADD x0, sp, x0
+LDR x0, [x0, #0]
+STR x0, [SP, #-8]!
+// Constant : 1
+MOV x0, #1
+STR x0, [SP, #-8]!
+LDR x1, [SP], #8
+LDR x0, [SP], #8
+SUB x0, x0, x1
+STR x0, [SP, #-8]!
+LDR x0, [SP], #8
+MOV x1, #8
+ADD x1, sp, x1
+STR x0, [x1, #0]
+STR x0, [SP, #-8]!
+// Expresión de declaración
+LDR x0, [SP], #8
+// Print statement
+MOV x0, #8
+ADD x0, sp, x0
+LDR x0, [x0, #0]
 STR x0, [SP, #-8]!
 LDR x0, [SP], #8
 MOV X0, x0
-BL print_bool
+BL print_integer_raw
 MOV x9, x10
 MOV w0, #10
 STRB w0, [x10]
@@ -281,141 +209,162 @@ MOV x0, x9
 MOV X0, x0
 BL print_string_raw
 // Print statement
-// Equality / Inequality
-// Rune: H
-MOV x0, #72
-STR x0, [SP, #-8]!
-// Rune: H
-MOV x0, #72
-STR x0, [SP, #-8]!
-LDR x1, [SP], #8
-LDR x0, [SP], #8
-CMP x0, x1
-CSET x0, NE
-STR x0, [SP, #-8]!
-LDR x0, [SP], #8
-MOV X0, x0
-BL print_bool
-MOV x9, x10
-MOV w0, #10
+// String:  ----Este es el fin--------- 
+MOV x28, x10
+// Pusing char 32
+MOV w0, #32
 STRB w0, [x10]
-ADD x10, x10, 1
+MOV x0, #1
+ADD x10, x10, x0
+// Pusing char 45
+MOV w0, #45
+STRB w0, [x10]
+MOV x0, #1
+ADD x10, x10, x0
+// Pusing char 45
+MOV w0, #45
+STRB w0, [x10]
+MOV x0, #1
+ADD x10, x10, x0
+// Pusing char 45
+MOV w0, #45
+STRB w0, [x10]
+MOV x0, #1
+ADD x10, x10, x0
+// Pusing char 45
+MOV w0, #45
+STRB w0, [x10]
+MOV x0, #1
+ADD x10, x10, x0
+// Pusing char 69
+MOV w0, #69
+STRB w0, [x10]
+MOV x0, #1
+ADD x10, x10, x0
+// Pusing char 115
+MOV w0, #115
+STRB w0, [x10]
+MOV x0, #1
+ADD x10, x10, x0
+// Pusing char 116
+MOV w0, #116
+STRB w0, [x10]
+MOV x0, #1
+ADD x10, x10, x0
+// Pusing char 101
+MOV w0, #101
+STRB w0, [x10]
+MOV x0, #1
+ADD x10, x10, x0
+// Pusing char 32
+MOV w0, #32
+STRB w0, [x10]
+MOV x0, #1
+ADD x10, x10, x0
+// Pusing char 101
+MOV w0, #101
+STRB w0, [x10]
+MOV x0, #1
+ADD x10, x10, x0
+// Pusing char 115
+MOV w0, #115
+STRB w0, [x10]
+MOV x0, #1
+ADD x10, x10, x0
+// Pusing char 32
+MOV w0, #32
+STRB w0, [x10]
+MOV x0, #1
+ADD x10, x10, x0
+// Pusing char 101
+MOV w0, #101
+STRB w0, [x10]
+MOV x0, #1
+ADD x10, x10, x0
+// Pusing char 108
+MOV w0, #108
+STRB w0, [x10]
+MOV x0, #1
+ADD x10, x10, x0
+// Pusing char 32
+MOV w0, #32
+STRB w0, [x10]
+MOV x0, #1
+ADD x10, x10, x0
+// Pusing char 102
+MOV w0, #102
+STRB w0, [x10]
+MOV x0, #1
+ADD x10, x10, x0
+// Pusing char 105
+MOV w0, #105
+STRB w0, [x10]
+MOV x0, #1
+ADD x10, x10, x0
+// Pusing char 110
+MOV w0, #110
+STRB w0, [x10]
+MOV x0, #1
+ADD x10, x10, x0
+// Pusing char 45
+MOV w0, #45
+STRB w0, [x10]
+MOV x0, #1
+ADD x10, x10, x0
+// Pusing char 45
+MOV w0, #45
+STRB w0, [x10]
+MOV x0, #1
+ADD x10, x10, x0
+// Pusing char 45
+MOV w0, #45
+STRB w0, [x10]
+MOV x0, #1
+ADD x10, x10, x0
+// Pusing char 45
+MOV w0, #45
+STRB w0, [x10]
+MOV x0, #1
+ADD x10, x10, x0
+// Pusing char 45
+MOV w0, #45
+STRB w0, [x10]
+MOV x0, #1
+ADD x10, x10, x0
+// Pusing char 45
+MOV w0, #45
+STRB w0, [x10]
+MOV x0, #1
+ADD x10, x10, x0
+// Pusing char 45
+MOV w0, #45
+STRB w0, [x10]
+MOV x0, #1
+ADD x10, x10, x0
+// Pusing char 45
+MOV w0, #45
+STRB w0, [x10]
+MOV x0, #1
+ADD x10, x10, x0
+// Pusing char 45
+MOV w0, #45
+STRB w0, [x10]
+MOV x0, #1
+ADD x10, x10, x0
+// Pusing char 32
+MOV w0, #32
+STRB w0, [x10]
+MOV x0, #1
+ADD x10, x10, x0
+// Pusing char 0
 MOV w0, #0
 STRB w0, [x10]
-ADD x10, x10, 1
-MOV w0, #0
-STRB w0, [x10]
-ADD x10, x10, 1
-MOV x0, x9
+MOV x0, #1
+ADD x10, x10, x0
+STR x28, [SP, #-8]!
+LDR x0, [SP], #8
 MOV X0, x0
 BL print_string_raw
-// Print statement
-// Equality / Inequality
-// String: ho
-MOV x12, x10
-// Pusing char 104
-MOV w0, #104
-STRB w0, [x10]
-MOV x0, #1
-ADD x10, x10, x0
-// Pusing char 111
-MOV w0, #111
-STRB w0, [x10]
-MOV x0, #1
-ADD x10, x10, x0
-// Pusing char 0
-MOV w0, #0
-STRB w0, [x10]
-MOV x0, #1
-ADD x10, x10, x0
-STR x12, [SP, #-8]!
-// String: Ha
-MOV x13, x10
-// Pusing char 72
-MOV w0, #72
-STRB w0, [x10]
-MOV x0, #1
-ADD x10, x10, x0
-// Pusing char 97
-MOV w0, #97
-STRB w0, [x10]
-MOV x0, #1
-ADD x10, x10, x0
-// Pusing char 0
-MOV w0, #0
-STRB w0, [x10]
-MOV x0, #1
-ADD x10, x10, x0
-STR x13, [SP, #-8]!
-LDR x1, [SP], #8
-LDR x0, [SP], #8
-BL strcmp
-CMP x0, #0
-CSET x0, NE
-STR x0, [SP, #-8]!
-LDR x0, [SP], #8
-MOV X0, x0
-BL print_bool
-MOV x9, x10
-MOV w0, #10
-STRB w0, [x10]
-ADD x10, x10, 1
-MOV w0, #0
-STRB w0, [x10]
-ADD x10, x10, 1
-MOV w0, #0
-STRB w0, [x10]
-ADD x10, x10, 1
-MOV x0, x9
-MOV X0, x0
-BL print_string_raw
-// Print statement
-// Equality / Inequality
-// String: Ho
-MOV x14, x10
-// Pusing char 72
-MOV w0, #72
-STRB w0, [x10]
-MOV x0, #1
-ADD x10, x10, x0
-// Pusing char 111
-MOV w0, #111
-STRB w0, [x10]
-MOV x0, #1
-ADD x10, x10, x0
-// Pusing char 0
-MOV w0, #0
-STRB w0, [x10]
-MOV x0, #1
-ADD x10, x10, x0
-STR x14, [SP, #-8]!
-// String: Ho
-MOV x15, x10
-// Pusing char 72
-MOV w0, #72
-STRB w0, [x10]
-MOV x0, #1
-ADD x10, x10, x0
-// Pusing char 111
-MOV w0, #111
-STRB w0, [x10]
-MOV x0, #1
-ADD x10, x10, x0
-// Pusing char 0
-MOV w0, #0
-STRB w0, [x10]
-MOV x0, #1
-ADD x10, x10, x0
-STR x15, [SP, #-8]!
-LDR x1, [SP], #8
-LDR x0, [SP], #8
-BL strcmp
-CMP x0, #0
-CSET x0, NE
-STR x0, [SP, #-8]!
-LDR x0, [SP], #8
-MOV X0, x0
-BL print_bool
 MOV x9, x10
 MOV w0, #10
 STRB w0, [x10]
@@ -555,44 +504,82 @@ print_raw_done:
 
 
 //--------------------------------------------------------------
-// strcmp - Compara dos strings null-terminated
-//
-// Entradas:
-//   x0 - dirección de string1
-//   x1 - dirección de string2
-// Salida:
-//   x0 = 0 si iguales, <0 si str1 < str2, >0 si str1 > str2
+// print_integer_raw - Igual a print_integer pero sin salto de línea final
 //--------------------------------------------------------------
 .balign 4
-strcmp:
+print_integer_raw:
     stp x29, x30, [sp, #-16]!
     stp x19, x20, [sp, #-16]!
+    stp x21, x22, [sp, #-16]!
+    stp x23, x24, [sp, #-16]!
+    stp x25, x26, [sp, #-16]!
+    stp x27, x28, [sp, #-16]!
 
-    mov x19, x0      // str1
-    mov x20, x1      // str2
+    mov x19, x0
+    cmp x19, #0
+    bge positive_number_raw
 
-strcmp_loop:
-    ldrb w0, [x19], #1
-    ldrb w1, [x20], #1
+    mov x0, #1
+    adr x1, minus_sign
+    mov x2, #1
+    mov w8, #64
+    svc #0
+    neg x19, x19
 
-    cmp w0, w1
-    b.ne strcmp_diff  // si son diferentes, saltar
+positive_number_raw:
+    sub sp, sp, #32
+    mov x22, sp
+    mov x23, #0
 
-    cbz w0, strcmp_equal  // si llegamos al final del string (null terminator)
+    cmp x19, #0
+    bne convert_loop_raw
 
-    b strcmp_loop
+    mov w24, #48
+    strb w24, [x22, x23]
+    add x23, x23, #1
+    b print_result_raw
 
-strcmp_diff:
-    sub w0, w0, w1    // resultado negativo, cero o positivo
-    b strcmp_end
+convert_loop_raw:
+    mov x24, #10
+    udiv x25, x19, x24
+    msub x26, x25, x24, x19
+    add x26, x26, #48
+    strb w26, [x22, x23]
+    add x23, x23, #1
+    mov x19, x25
+    cbnz x19, convert_loop_raw
 
-strcmp_equal:
-    mov w0, #0        // iguales
+    mov x27, #0
+reverse_loop_raw:
+    sub x28, x23, x27
+    sub x28, x28, #1
+    cmp x27, x28
+    bge print_result_raw
+    ldrb w24, [x22, x27]
+    ldrb w25, [x22, x28]
+    strb w25, [x22, x27]
+    strb w24, [x22, x28]
+    add x27, x27, #1
+    b reverse_loop_raw
 
-strcmp_end:
+print_result_raw:
+    mov x0, #1
+    mov x1, x22
+    mov x2, x23
+    mov w8, #64
+    svc #0
+
+    add sp, sp, #32
+    ldp x27, x28, [sp], #16
+    ldp x25, x26, [sp], #16
+    ldp x23, x24, [sp], #16
+    ldp x21, x22, [sp], #16
     ldp x19, x20, [sp], #16
     ldp x29, x30, [sp], #16
     ret
+    .p2align 2
+minus_sign:
+    .ascii "-"
 
     
     

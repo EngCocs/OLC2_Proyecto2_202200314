@@ -1,0 +1,31 @@
+
+
+	
+
+	// 4. Operaciones Relacionales (2 puntos)
+	print("\n==== Operaciones Relacionales ====");
+	
+
+	print("Igualdad");
+	resultadoIgualdad1 := 10 == 10;
+	resultadoIgualdad2 := 10 == 5;
+	resultadoIgualdad3 := 10.5 == 10.5;
+	resultadoIgualdad4 := 10.5 == 5.5;
+
+	print("10 == 10:", resultadoIgualdad1);
+	print("10 == 5:", resultadoIgualdad2);
+	print("10.5 == 10.5:", resultadoIgualdad3);
+	print("10.5 == 5.5:", resultadoIgualdad4);
+
+	
+
+	print("\nDesigualdad");
+	resultadoDesigualdad1 := 10 != 10;
+	resultadoDesigualdad2 := 10 != 5;
+	resultadoDesigualdad3 := 10.5 != 10.5;
+	resultadoDesigualdad4 := 10.5 != 5.5;
+
+	print("10 != 10:", resultadoDesigualdad1);
+	print("10 != 5:", resultadoDesigualdad2);
+	print("10.5 != 10.5:", resultadoDesigualdad3);
+	print("10.5 != 5.5:", resultadoDesigualdad4);
