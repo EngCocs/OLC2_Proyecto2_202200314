@@ -51,21 +51,21 @@ public class ArmGenerator
             case StackObjet.StackObjetType.String:
                 List<byte> stringArray = Utils.StringToBytesArrays((string)value);
 
-                string tempRegister = $"x{Utils.TempRegisterCounter++}";
-                Mov(tempRegister, Register.HP); // x9 = x10 (inicio del string)
+    string tempRegister = Utils.GetTempRegister(); // ✅ Registro válido
+    Mov(tempRegister, Register.HP); // tempRegister = inicio del string (heap)
 
-                for (int i = 0; i < stringArray.Count; i++)
-                {
-                    var charCode = stringArray[i];
-                    Comment($"Pusing char {charCode}");
-                    Mov("w0", charCode);
-                    Strb("w0", Register.HP);
-                    Mov(Register.X0, 1);
-                    Add(Register.HP, Register.HP, Register.X0);  
-                }
+    foreach (var charCode in stringArray)
+    {
+        Comment($"Pusing char {charCode}");
+        Mov("w0", charCode);
+        Strb("w0", Register.HP);
+        Mov(Register.X0, 1);
+        Add(Register.HP, Register.HP, Register.X0);  
+    }
 
-                Push(tempRegister); // push la dirección correcta
-                break;
+    Push(tempRegister); // guardamos la dirección inicial
+    Utils.ReleaseTempRegister(tempRegister); // ✅ lo liberamos
+    break;
             case StackObjet.StackObjetType.Bool:
                 // Representamos false como 0 y true como 1.
                 bool b = (bool)value;
@@ -344,6 +344,21 @@ public void FMOV(string rd, string rs)
         stanlib.Use(functionName);
         instructions.Add($"BL {functionName}");
     }
+    public void And(string rd, string rs1, string rs2)
+    {
+        instructions.Add($"AND {rd}, {rs1}, {rs2}");
+    }
+
+    public void Orr(string rd, string rs1, string rs2)
+    {
+        instructions.Add($"ORR {rd}, {rs1}, {rs2}");
+    }
+
+    public void Eor(string rd, string rs1, string rs2)
+    {
+        instructions.Add($"EOR {rd}, {rs1}, {rs2}");
+    }
+
 
     public void concatString()
     {

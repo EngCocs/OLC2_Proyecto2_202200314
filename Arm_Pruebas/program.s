@@ -17,8 +17,12 @@ STR x0, [SP, #-8]!
 // Boolean: true
 MOV x0, #1
 STR x0, [SP, #-8]!
+// Declaración explícita con inicialización: hola2, tipo: rune
+// Rune: E
+MOV x0, #69
+STR x0, [SP, #-8]!
 // Print statement
-MOV x0, #0
+MOV x0, #8
 ADD x0, sp, x0
 LDR x0, [x0, #0]
 STR x0, [SP, #-8]!
@@ -40,7 +44,7 @@ MOV X0, x0
 BL print_string_raw
 // Print statement
 // String:  entero 
-MOV x27, x10
+MOV x11, x10
 // Pusing char 32
 MOV w0, #32
 STRB w0, [x10]
@@ -86,7 +90,7 @@ MOV w0, #0
 STRB w0, [x10]
 MOV x0, #1
 ADD x10, x10, x0
-STR x27, [SP, #-8]!
+STR x11, [SP, #-8]!
 LDR x0, [SP], #8
 MOV X0, x0
 BL print_string_raw
@@ -110,7 +114,7 @@ LDR x0, [x0, #0]
 STR x0, [SP, #-8]!
 LDR x0, [SP], #8
 MOV X0, x0
-BL print_bool
+BL print_char
 MOV x9, x10
 MOV w0, #10
 STRB w0, [x10]
@@ -127,7 +131,7 @@ BL print_string_raw
 // Bloque de código
 // Asignación a variable: puntosDeclaracion
 // AddSub
-MOV x0, #8
+MOV x0, #16
 ADD x0, sp, x0
 LDR x0, [x0, #0]
 STR x0, [SP, #-8]!
@@ -139,7 +143,7 @@ LDR x0, [SP], #8
 ADD x0, x0, x1
 STR x0, [SP, #-8]!
 LDR x0, [SP], #8
-MOV x1, #8
+MOV x1, #16
 ADD x1, sp, x1
 STR x0, [x1, #0]
 STR x0, [SP, #-8]!
@@ -148,7 +152,7 @@ LDR x0, [SP], #8
 // Bloque de código
 // Asignación a variable: puntosDeclaracion
 // AddSub
-MOV x0, #8
+MOV x0, #16
 ADD x0, sp, x0
 LDR x0, [x0, #0]
 STR x0, [SP, #-8]!
@@ -160,7 +164,7 @@ LDR x0, [SP], #8
 ADD x0, x0, x1
 STR x0, [SP, #-8]!
 LDR x0, [SP], #8
-MOV x1, #8
+MOV x1, #16
 ADD x1, sp, x1
 STR x0, [x1, #0]
 STR x0, [SP, #-8]!
@@ -169,7 +173,7 @@ LDR x0, [SP], #8
 // Bloque de código
 // Asignación a variable: puntosDeclaracion
 // AddSub
-MOV x0, #8
+MOV x0, #16
 ADD x0, sp, x0
 LDR x0, [x0, #0]
 STR x0, [SP, #-8]!
@@ -181,14 +185,14 @@ LDR x0, [SP], #8
 SUB x0, x0, x1
 STR x0, [SP, #-8]!
 LDR x0, [SP], #8
-MOV x1, #8
+MOV x1, #16
 ADD x1, sp, x1
 STR x0, [x1, #0]
 STR x0, [SP, #-8]!
 // Expresión de declaración
 LDR x0, [SP], #8
 // Print statement
-MOV x0, #8
+MOV x0, #16
 ADD x0, sp, x0
 LDR x0, [x0, #0]
 STR x0, [SP, #-8]!
@@ -209,30 +213,25 @@ MOV x0, x9
 MOV X0, x0
 BL print_string_raw
 // Print statement
-// String:  ----Este es el fin--------- 
-MOV x28, x10
+// String:  ===Este es el fin=== 
+MOV x12, x10
 // Pusing char 32
 MOV w0, #32
 STRB w0, [x10]
 MOV x0, #1
 ADD x10, x10, x0
-// Pusing char 45
-MOV w0, #45
+// Pusing char 61
+MOV w0, #61
 STRB w0, [x10]
 MOV x0, #1
 ADD x10, x10, x0
-// Pusing char 45
-MOV w0, #45
+// Pusing char 61
+MOV w0, #61
 STRB w0, [x10]
 MOV x0, #1
 ADD x10, x10, x0
-// Pusing char 45
-MOV w0, #45
-STRB w0, [x10]
-MOV x0, #1
-ADD x10, x10, x0
-// Pusing char 45
-MOV w0, #45
+// Pusing char 61
+MOV w0, #61
 STRB w0, [x10]
 MOV x0, #1
 ADD x10, x10, x0
@@ -306,48 +305,18 @@ MOV w0, #110
 STRB w0, [x10]
 MOV x0, #1
 ADD x10, x10, x0
-// Pusing char 45
-MOV w0, #45
+// Pusing char 61
+MOV w0, #61
 STRB w0, [x10]
 MOV x0, #1
 ADD x10, x10, x0
-// Pusing char 45
-MOV w0, #45
+// Pusing char 61
+MOV w0, #61
 STRB w0, [x10]
 MOV x0, #1
 ADD x10, x10, x0
-// Pusing char 45
-MOV w0, #45
-STRB w0, [x10]
-MOV x0, #1
-ADD x10, x10, x0
-// Pusing char 45
-MOV w0, #45
-STRB w0, [x10]
-MOV x0, #1
-ADD x10, x10, x0
-// Pusing char 45
-MOV w0, #45
-STRB w0, [x10]
-MOV x0, #1
-ADD x10, x10, x0
-// Pusing char 45
-MOV w0, #45
-STRB w0, [x10]
-MOV x0, #1
-ADD x10, x10, x0
-// Pusing char 45
-MOV w0, #45
-STRB w0, [x10]
-MOV x0, #1
-ADD x10, x10, x0
-// Pusing char 45
-MOV w0, #45
-STRB w0, [x10]
-MOV x0, #1
-ADD x10, x10, x0
-// Pusing char 45
-MOV w0, #45
+// Pusing char 61
+MOV w0, #61
 STRB w0, [x10]
 MOV x0, #1
 ADD x10, x10, x0
@@ -361,7 +330,57 @@ MOV w0, #0
 STRB w0, [x10]
 MOV x0, #1
 ADD x10, x10, x0
-STR x28, [SP, #-8]!
+STR x12, [SP, #-8]!
+LDR x0, [SP], #8
+MOV X0, x0
+BL print_string_raw
+MOV x9, x10
+MOV w0, #10
+STRB w0, [x10]
+ADD x10, x10, 1
+MOV w0, #0
+STRB w0, [x10]
+ADD x10, x10, 1
+MOV w0, #0
+STRB w0, [x10]
+ADD x10, x10, 1
+MOV x0, x9
+MOV X0, x0
+BL print_string_raw
+// Print statement
+// String:  lol 
+MOV x13, x10
+// Pusing char 32
+MOV w0, #32
+STRB w0, [x10]
+MOV x0, #1
+ADD x10, x10, x0
+// Pusing char 108
+MOV w0, #108
+STRB w0, [x10]
+MOV x0, #1
+ADD x10, x10, x0
+// Pusing char 111
+MOV w0, #111
+STRB w0, [x10]
+MOV x0, #1
+ADD x10, x10, x0
+// Pusing char 108
+MOV w0, #108
+STRB w0, [x10]
+MOV x0, #1
+ADD x10, x10, x0
+// Pusing char 32
+MOV w0, #32
+STRB w0, [x10]
+MOV x0, #1
+ADD x10, x10, x0
+// Pusing char 0
+MOV w0, #0
+STRB w0, [x10]
+MOV x0, #1
+ADD x10, x10, x0
+STR x13, [SP, #-8]!
 LDR x0, [SP], #8
 MOV X0, x0
 BL print_string_raw
@@ -504,6 +523,33 @@ print_raw_done:
 
 
 //--------------------------------------------------------------
+// print_char - Prints a single character in x0 to stdout
+//--------------------------------------------------------------
+.p2align 2
+print_char:
+    stp x29, x30, [sp, #-16]!
+
+    sub sp, sp, #16         // Reservamos espacio
+    strb w0, [sp]           // Guardamos el carácter en memoria (8 bits)
+
+    mov x0, #1              // fd = stdout
+    mov x1, sp              // dirección del caracter
+    mov x2, #1              // longitud: 1 byte
+    mov x8, #64             // syscall: write
+    svc #0
+    // Imprimir salto de línea
+    adr     x0, newline
+    bl      print_string_raw
+
+    add sp, sp, #16         // Limpiamos
+    ldp x29, x30, [sp], #16
+    ret
+
+
+
+
+
+//--------------------------------------------------------------
 // print_integer_raw - Igual a print_integer pero sin salto de línea final
 //--------------------------------------------------------------
 .balign 4
@@ -580,6 +626,5 @@ print_result_raw:
     .p2align 2
 minus_sign:
     .ascii "-"
-
     
     

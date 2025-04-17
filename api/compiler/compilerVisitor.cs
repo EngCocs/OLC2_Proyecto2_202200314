@@ -305,6 +305,20 @@ public class CompilerVisitor : LanguageBaseVisitor<Object?>
     //VisitNot
     public override Object? VisitNot(LanguageParser.NotContext context)
     {
+        c.Comment("Logical NOT");
+
+        Visit(context.expr());
+
+        var value = c.PopObjet(Register.X0);
+        if (value.Type != StackObjet.StackObjetType.Bool)
+        {
+            throw new Exception("El operador ! solo se puede aplicar a valores booleanos.");
+        }
+
+        // NOT lógico: XOR con 1
+        c.Eor("x0", "x0", "#1");
+        c.Push("x0");
+        c.PushObjet(c.BoolObject());
         return null;
     }
 
@@ -612,6 +626,36 @@ public class CompilerVisitor : LanguageBaseVisitor<Object?>
     //VisitLogical
     public override Object? VisitLogical(LanguageParser.LogicalContext context)
     {
+        c.Comment("Logical Operation");
+
+        string op = context.op.Text; // && u ||
+
+        Visit(context.expr(0));
+        Visit(context.expr(1));
+
+        var right = c.PopObjet(Register.X1); // Segundo operando
+        var left = c.PopObjet(Register.X0);  // Primer operando
+
+        if (left.Type != StackObjet.StackObjetType.Bool || right.Type != StackObjet.StackObjetType.Bool)
+        {
+            throw new Exception("Los operadores lógicos solo se pueden aplicar a valores booleanos.");
+        }
+
+        if (op == "&&")
+        {
+            c.And("x0", "x0", "x1");
+        }
+        else if (op == "||")
+        {
+            c.Orr("x0", "x0", "x1");
+        }
+        else
+        {
+            throw new Exception("Operador lógico no soportado: " + op);
+        }
+
+        c.Push("x0");
+        c.PushObjet(c.BoolObject());
         return null;
     }
 

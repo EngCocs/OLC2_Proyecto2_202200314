@@ -29,3 +29,96 @@
 	print("10 != 5:", resultadoDesigualdad2);
 	print("10.5 != 10.5:", resultadoDesigualdad3);
 	print("10.5 != 5.5:", resultadoDesigualdad4);
+
+
+	// 5. Operaciones Lógicas (2 puntos)
+	print("\n==== Operaciones Lógicas ====");
+
+
+	print("AND");
+	resultadoAnd1 := true && true;
+	resultadoAnd2 := true && false;
+	resultadoAnd3 := false && true;
+	resultadoAnd4 := false && false;
+	resultadoAnd5 := (10 == 10) && (5 == 5);
+	resultadoAnd6 := (10 == 10) && (5 == 6);
+
+	print("true && true:", resultadoAnd1);
+	print("true && false:", resultadoAnd2);
+	print("false && true:", resultadoAnd3);
+	print("false && false:", resultadoAnd4);
+	print("(10 == 10) && (5 == 5):", resultadoAnd5);
+	print("(10 == 10) && (5 == 6):", resultadoAnd6);
+
+	
+
+	print("\nOR");
+	resultadoOr1 := true || true;
+	resultadoOr2 := true || false;
+	resultadoOr3 := false || true;
+	resultadoOr4 := false || false;
+	resultadoOr5 := (10 == 10) || (5 == 5);
+	resultadoOr6 := (10 == 10) || (5 == 6);
+	resultadoOr7 := (10 == 11) || (5 == 6);
+
+	print("true || true:", resultadoOr1);
+	print("true || false:", resultadoOr2);
+	print("false || true:", resultadoOr3);
+	print("false || false:", resultadoOr4);
+	print("(10 == 10) || (5 == 5):", resultadoOr5);
+	print("(10 == 10) || (5 == 6):", resultadoOr6);
+	print("(10 == 11) || (5 == 6):", resultadoOr7);
+
+
+	// 6. print (2 puntos)
+	print("\n==== print ====");
+	
+
+	print("###Validacion Manual");
+	print("Validando impresión de un solo argumento");
+	print(42);
+	print(3.14159);
+	print("Cadena de texto");
+	print(true);
+
+	print("\nValidando impresión de múltiples argumentos");
+	print("Número:", 42, "Pi:", 3.14159, "Booleano:", true);
+
+	print("\nValidando impresión de expresiones");
+	print(10 + 5);
+	print(10 > 5);
+	print(10 * 5 / 2);
+
+	
+
+
+	
+	print("OK print: correcto");
+//-------------------------------------------------------------------------------------------------------
+
+	// 7. Manejo de valor nulo (2 puntos)
+	print("\n==== Manejo de valor nulo ====");
+
+
+	print("\nOperaciones con nil");
+	// print("nilVar + 5:", nil + 5) 	// ! ERROR: Comentar esta línea para que el programa compile
+
+
+	print("OK Manejo de valor nulo: correcto");
+
+	// 8. Opcionalidad del ; (2 puntos)
+	print("\n==== Opcionalidad del ; ====");
+
+
+	print("###Validacion Manual");
+
+	// Instrucciones sin punto y coma
+	a := 10;
+	b := 20;
+	c := a + b;
+	print("a =", a);
+	print("b =", b);
+	print("c = a + b =", c);
+
+	
+	print("OK Opcionalidad del punto y coma: correcto");
