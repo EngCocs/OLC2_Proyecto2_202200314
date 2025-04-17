@@ -459,7 +459,49 @@ end_str2:
     ldp x19, x20, [sp], #16
     ldp x29, x30, [sp], #16
     ret
-" }
+" },
+    { "strcmp", @"
+//--------------------------------------------------------------
+// strcmp - Compara dos strings null-terminated
+//
+// Entradas:
+//   x0 - dirección de string1
+//   x1 - dirección de string2
+// Salida:
+//   x0 = 0 si iguales, <0 si str1 < str2, >0 si str1 > str2
+//--------------------------------------------------------------
+.balign 4
+strcmp:
+    stp x29, x30, [sp, #-16]!
+    stp x19, x20, [sp, #-16]!
+
+    mov x19, x0      // str1
+    mov x20, x1      // str2
+
+strcmp_loop:
+    ldrb w0, [x19], #1
+    ldrb w1, [x20], #1
+
+    cmp w0, w1
+    b.ne strcmp_diff  // si son diferentes, saltar
+
+    cbz w0, strcmp_equal  // si llegamos al final del string (null terminator)
+
+    b strcmp_loop
+
+strcmp_diff:
+    sub w0, w0, w1    // resultado negativo, cero o positivo
+    b strcmp_end
+
+strcmp_equal:
+    mov w0, #0        // iguales
+
+strcmp_end:
+    ldp x19, x20, [sp], #16
+    ldp x29, x30, [sp], #16
+    ret
+" },
+
   
 
 

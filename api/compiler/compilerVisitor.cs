@@ -17,34 +17,12 @@ public class CompilerVisitor : LanguageBaseVisitor<Object?>
     // VisitProgram
     public override Object? VisitProgram(LanguageParser.ProgramContext context)
     {
-         // Setup del frame pointer
-    // c.Comment("Guardar FP previo y establecer FP = SP");
-    // c.Push(Register.FP); // Guardamos el valor anterior de x29
-    // c.Mov(Register.FP, Register.SP); // x29 = sp
+         
         foreach (var dcl in context.dcl())
         {
             Visit(dcl);
         }
-    //     c.Comment("Restaurar FP antes de finalizar");
-    // c.Pop(Register.FP); // Restauramos x29
-    //     File.WriteAllText("output.s", c.ToString());
-
-       
-      // Si existe una función main, la invoca con una lista vacia de argumentos
-    // if (currentEnvironment.ExistsVariable("main"))
-    // {
-    //     Object? mainFunc = currentEnvironment.GetVariable("main", null);
-    //     if (mainFunc is FuncionValue funcValue)
-    //     {
-    //         return funcValue.invocable.Invoke(new List<Object?>(), this);
-    //     }
-    //     else
-    //     {
-    //         throw new SemnticErrorListener("La variable 'main' no es una función", null);
-    //     }
-    // }  
-        
-    // return defaultVoid;
+    
        return null;
     }
 
@@ -72,11 +50,7 @@ public class CompilerVisitor : LanguageBaseVisitor<Object?>
 
     throw new Exception("Tipo de declaración de variable desconocido.");
 
-    //var = varName = context.ID().GetText();
-    //C.Comment("Declaración de variable: " + varName);
-    // Visit la expresión de inicialización:
-    // Visit(context.expr());
-    //c.TagObjet(varName);
+    
 
     
     
@@ -198,20 +172,16 @@ public class CompilerVisitor : LanguageBaseVisitor<Object?>
         // Obtenemos el nombre de la variable, por ejemplo, "a" en "a := 5;"
     string varName = context.ID().GetText();
     
-    // Evaluamos la expresión de inicialización. Se espera que el método Visit
-    // empuje un objeto al stack de ArmGenerator (por ejemplo, mediante PushConstant)
+    
     Visit(context.expr());
     
-    // Con la nueva lógica, ya no manejamos un offset con currentPosition,
-    // sino que confiamos en el stack interno.
-    // Se etiqueta el último objeto del stack con el ID de la variable.
+    
     c.TagObjet(varName);
     
     // Emitimos un comentario para la generación de código ARM.
     c.Comment($"Declaración variable implícita '{varName}' almacenada en el stack.");
     
-    // Opcionalmente, si antes usabas un diccionario para registrar variables,
-    // ya no es necesario, pues ArmGenerator mantiene internamente los objetos.
+    
     return null;
     }
 
@@ -230,11 +200,11 @@ public class CompilerVisitor : LanguageBaseVisitor<Object?>
     c.Comment("Print statement");
 
     var exprs = context.expr(); // IList<ExprContext>
-    int count = exprs.Count();    // ✅ CORRECTO
+    int count = exprs.Count();   
 
     for (int i = 0; i < count; i++)
     {
-        Visit(exprs[i]);  // ✅ exprs[i], no GetChild(i)
+        Visit(exprs[i]);  
 
         var value = c.PopObjet(Register.X0);
 
@@ -382,7 +352,7 @@ public class CompilerVisitor : LanguageBaseVisitor<Object?>
         {
             // Validación en tiempo de ejecución: división entre cero
             c.Cmp("x1", 0);
-            //c.ThrowIfEqual("Error: División entre 0 en módulo.");
+           
 
             // Módulo: x0 % x1
             c.Rem("x0", "x0", "x1");
@@ -486,7 +456,7 @@ public class CompilerVisitor : LanguageBaseVisitor<Object?>
     // --- INT + FLOAT ---
     if (left.Type == StackObjet.StackObjetType.Int && right.Type == StackObjet.StackObjetType.Float)
     {
-        // d0 = float (right), x0 = int (left)
+        
         c.FMOV("d1", "d0");            // copia float a d1
         c.Scvtf("d2", "x0");           // convierte int a float en d2
 
@@ -503,7 +473,7 @@ public class CompilerVisitor : LanguageBaseVisitor<Object?>
     // --- FLOAT + INT ---
     if (left.Type == StackObjet.StackObjetType.Float && right.Type == StackObjet.StackObjetType.Int)
     {
-        // d0 = float (left), x1 = int (right)
+        
     c.FMOV("d1", "d0");            // copia float a d1
     c.Scvtf("d2", "x1");           // convierte int a float en d2
 
@@ -596,6 +566,96 @@ public class CompilerVisitor : LanguageBaseVisitor<Object?>
     // VisitEquality
     public override Object? VisitEquality(LanguageParser.EqualityContext context)
     {
+        c.Comment("Equality / Inequality");
+
+    var op = context.op.Text; // "==" o "!="
+    Visit(context.expr(0));
+    Visit(context.expr(1));
+
+    var right = c.PopObjet(Register.X1);
+    var left = c.PopObjet(Register.X0);
+
+    // --- INT == INT ---
+    if (left.Type == StackObjet.StackObjetType.Int && right.Type == StackObjet.StackObjetType.Int)
+    {
+        c.Cmp("x0", "x1");
+        c.Set(op == "==" ? "EQ" : "NE", "x0");
+        c.Push("x0");
+        c.PushObjet(c.BoolObject());
+        return null;
+    }
+
+    // --- FLOAT == FLOAT ---
+    if (left.Type == StackObjet.StackObjetType.Float && right.Type == StackObjet.StackObjetType.Float)
+    {
+        c.FMOV("d1", "x1");
+        c.FMOV("d0", "x0");
+        c.FCMP("d0", "d1");
+        c.Set(op == "==" ? "EQ" : "NE", "x0");
+        c.Push("x0");
+        c.PushObjet(c.BoolObject());
+        return null;
+    }
+
+    // --- INT == FLOAT ---
+    if (left.Type == StackObjet.StackObjetType.Int && right.Type == StackObjet.StackObjetType.Float)
+    {
+        c.FMOV("d1", "d0");     // d1 = right (float)
+        c.Scvtf("d2", "x0");    // d2 = left (int -> float)
+        c.FCMP("d2", "d1");
+        c.Set(op == "==" ? "EQ" : "NE", "x0");
+        c.Push("x0");
+        c.PushObjet(c.BoolObject());
+        return null;
+    }
+
+    // --- FLOAT == INT ---
+    if (left.Type == StackObjet.StackObjetType.Float && right.Type == StackObjet.StackObjetType.Int)
+    {
+        c.FMOV("d1", "d0");     // d1 = left (float)
+        c.Scvtf("d2", "x1");    // d2 = right (int -> float)
+        c.FCMP("d1", "d2");
+        c.Set(op == "==" ? "EQ" : "NE", "x0");
+        c.Push("x0");
+        c.PushObjet(c.BoolObject());
+        return null;
+    }
+
+    // --- BOOL == BOOL ---
+    if (left.Type == StackObjet.StackObjetType.Bool && right.Type == StackObjet.StackObjetType.Bool)
+    {
+        c.Cmp("x0", "x1");
+        c.Set(op == "==" ? "EQ" : "NE", "x0");
+        c.Push("x0");
+        c.PushObjet(c.BoolObject());
+        return null;
+    }
+
+    // --- CHAR == CHAR ---
+    if (left.Type == StackObjet.StackObjetType.Char && right.Type == StackObjet.StackObjetType.Char)
+    {
+        c.Cmp("x0", "x1");
+        c.Set(op == "==" ? "EQ" : "NE", "x0");
+        c.Push("x0");
+        c.PushObjet(c.BoolObject());
+        return null;
+    }
+
+    // --- STRING == STRING ---
+    if (left.Type == StackObjet.StackObjetType.String && right.Type == StackObjet.StackObjetType.String)
+    {
+        
+        // strcmp(x0, x1) -> resultado en w0 (-1, 0, 1)
+        c.CallExternal("strcmp"); // resultado en x0
+        if (op == "==")
+            c.Cmp("x0", 0);
+        else
+            c.Cmp("x0", 0);
+        c.Set(op == "==" ? "EQ" : "NE", "x0");
+        c.Push("x0");
+        c.PushObjet(c.BoolObject());
+        return null;
+    }
         return null;
     }
 

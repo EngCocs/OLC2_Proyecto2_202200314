@@ -198,3 +198,17 @@ make: *** [Makefile:13: program.o] Error 1
 	print("10.5 - 5 =", resultadoResta4);
 	var a int = 10 % 3;
 	print("Resultado:", a);
+
+	--------------------------- igualdad ----------------------------
+print(1 == 1);//true
+print(1 != 1);//false
+print(13.0 == 13.0);//true
+print(0.001 != 0.001);//false
+print(35 == 35.0);//true
+print(98.0 != 98);//false
+print(true == false);//false
+print(false != true);//true
+print('h' == 'a');//false
+print('H' != 'H');//false
+print("ho" != "Ha");    // true
+print("Ho" != "Ho");    // false

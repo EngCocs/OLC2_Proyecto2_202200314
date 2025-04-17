@@ -327,6 +327,24 @@ public void FMOV(string rd, string rs)
     {
         instructions.Add($"FNEG {rd}, {rs}");
     }
+    public void Set(string condition, string reg)
+    {
+        instructions.Add($"CSET {reg}, {condition}");
+    }
+    public void Cmp(string rs1, string rs2)
+    {
+        instructions.Add($"CMP {rs1}, {rs2}");
+    }
+    public void FCMP(string rs1, string rs2)
+    {
+        instructions.Add($"FCMP {rs1}, {rs2}");
+    }
+    public void CallExternal(string functionName)
+    {
+        stanlib.Use(functionName);
+        instructions.Add($"BL {functionName}");
+    }
+
     public void concatString()
     {
         stanlib.Use("concat_strings"); 
