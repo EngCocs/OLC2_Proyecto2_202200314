@@ -56,3 +56,57 @@ puntos := 0;
 
 	print(puntosDeclaracion);
     print(" ----Este es el fin--------- ");
+
+
+	-----------------------------------------aadf-----------------------------------------------
+	// 3. Operaciones Aritméticas (2 puntos)
+	print("\n==== Operaciones Aritméticas ====");
+	
+
+	print("Suma");
+	resultadoSuma1 := 10 + 5;
+	resultadoSuma2 := 10.5 + 5.5;
+	resultadoSuma3 := 10 + 5.5;
+	resultadoSuma4 := 10.5 + 5;
+
+	print("10 + 5 =", resultadoSuma1);
+	print("10.5 + 5.5 =", resultadoSuma2);
+	print("10 + 5.5 =", resultadoSuma3);
+	print("10.5 + 5 =", resultadoSuma4);
+
+	
+
+	print("\nResta");
+	resultadoResta1 := 10 - 5;
+	resultadoResta2 := 10.5 - 5.5;
+	resultadoResta3 := 10 - 5.5;
+	resultadoResta4 := 10.5 - 5;
+
+	print("10 - 5 =", resultadoResta1);
+	print("10.5 - 5.5 =", resultadoResta2);
+	print("10 - 5.5 =", resultadoResta3);
+	print("10.5 - 5 =", resultadoResta4);
+
+	----------------------------------- oTR forma---------------------------------------------------
+	// 3. Operaciones Aritméticas (2 puntos)
+	print("\n==== Operaciones Aritméticas ====");
+	
+
+	print("Suma");
+	resultadoSuma1 := 7.23 + 12.21;
+	resultadoSuma2 := 10.5 + 5.5;
+	
+
+	print("=", resultadoSuma1);
+	print(" =", resultadoSuma2);
+	
+
+	
+
+	print("\nResta");
+	resultadoResta1 := 54.12 - 4.32;
+	resultadoResta2 := 10.5 - 5.5;
+	
+
+	print(" =", resultadoResta1);
+	print(" =", resultadoResta2);

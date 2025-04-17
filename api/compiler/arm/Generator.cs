@@ -234,7 +234,15 @@ public class ArmGenerator
     }
     public void Div(string rd, string rs1, string rs2)
     {
-        instructions.Add($"DIV {rd}, {rs1}, {rs2}");
+        instructions.Add($"UDIV {rd}, {rs1}, {rs2}"); // División entera sin signo
+    }
+    public void UDiv(string rd, string rs1, string rs2)
+    {
+        instructions.Add($"UDIV {rd}, {rs1}, {rs2}");
+    }
+    public void LdrFloat(string rd, string rs1, int offset=0)
+    {
+        instructions.Add($"LDR {rd}, [{rs1}, #{offset}]");
     }
     //sumaste al registro x0 el valor inmediato 5 
     public void Addi(string rd, string rs1, int imm)
@@ -254,6 +262,7 @@ public class ArmGenerator
     {
         instructions.Add($"LDR {rd}, [{rs1}, #{offset}]");
     }
+    
     public void Mov(string rd, int inm)
 {
     instructions.Add($"MOV {rd}, #{inm}"); // Carga un valor inmediato
@@ -295,6 +304,14 @@ public void FMOV(string rd, string rs)
     public void Scvtf(string rd, string rs)
     {
         instructions.Add($"SCVTF {rd}, {rs}");
+    }
+    public void Cmp(string rs1, int imm)
+    {
+        instructions.Add($"CMP {rs1}, #{imm}");
+    }
+    public void Beq(string label)
+    {
+        instructions.Add($"BEQ {label}");
     }
     public void concatString()
     {

@@ -100,3 +100,99 @@ var c int = 5+(23-2-34);
 print(12.2 - 3.43);
 print(23.21 + 21.6);
 print(c);
+
+------------------------------------- areglar--------------------
+true
+
+
+ entero 
+true
+
+
+1
+ ----Este es el fin--------- 
+
+ ----------------------------- ARREGLAR----------------------------
+ program.s:213: Error: expected a register or register list at operand 1 -- «mov x31,x10»
+program.s:364: Error: expected a register at operand 1 -- «str x31,[SP,#-8]!»
+
+-->Cuando hago muchas pruebas me pasa que de la nada usa registros mayores de 30 como esto:
+aarch64-linux-gnu-as -mcpu=cortex-a57 program.s -o program.o
+program.s: Mensajes del ensamblador:
+program.s:17: Error: expected a register or register list at operand 1 -- «mov x39,x10»
+program.s:183: Error: expected a register at operand 1 -- «str x39,[SP,#-8]!»
+program.s:202: Error: expected a register or register list at operand 1 -- «mov x40,x10»
+program.s:378: Error: expected a register at operand 1 -- «str x40,[SP,#-8]!»
+program.s:401: Error: expected a register or register list at operand 1 -- «mov x41,x10»
+program.s:597: Error: expected a register at operand 1 -- «str x41,[SP,#-8]!»
+program.s:624: Error: expected a register or register list at operand 1 -- «mov x42,x10»
+program.s:690: Error: expected a register at operand 1 -- «str x42,[SP,#-8]!»
+program.s:697: Error: expected a register or register list at operand 1 -- «mov x43,x10»
+program.s:738: Error: expected a register at operand 1 -- «str x43,[SP,#-8]!»
+program.s:777: Error: expected a register or register list at operand 1 -- «mov x44,x10»
+program.s:823: Error: expected a register at operand 1 -- «str x44,[SP,#-8]!»
+program.s:862: Error: expected a register or register list at operand 1 -- «mov x45,x10»
+program.s:898: Error: expected a register at operand 1 -- «str x45,[SP,#-8]!»
+program.s:937: Error: expected a register or register list at operand 1 -- «mov x46,x10»
+program.s:988: Error: expected a register at operand 1 -- «str x46,[SP,#-8]!»
+program.s:1027: Error: expected a register or register list at operand 1 -- «mov x47,x10»
+program.s:1248: Error: expected a register at operand 1 -- «str x47,[SP,#-8]!»
+program.s:1273: Error: expected a register or register list at operand 1 -- «mov x48,x10»
+program.s:1279: Error: expected a register at operand 1 -- «str x48,[SP,#-8]!»
+program.s:1285: Error: expected a register or register list at operand 1 -- «mov x49,x10»
+program.s:1366: Error: expected a register at operand 1 -- «str x49,[SP,#-8]!»
+program.s:1405: Error: expected a register or register list at operand 1 -- «mov x50,x10»
+program.s:1491: Error: expected a register at operand 1 -- «str x50,[SP,#-8]!»
+program.s:1530: Error: expected a register or register list at operand 1 -- «mov x51,x10»
+program.s:1606: Error: expected a register at operand 1 -- «str x51,[SP,#-8]!»
+program.s:1645: Error: expected a register or register list at operand 1 -- «mov x52,x10»
+program.s:1736: Error: expected a register at operand 1 -- «str x52,[SP,#-8]!»
+program.s:1775: Error: expected a register or register list at operand 1 -- «mov x53,x10»
+program.s:1906: Error: expected a register at operand 1 -- «str x53,[SP,#-8]!»
+program.s:1925: Error: expected a register or register list at operand 1 -- «mov x54,x10»
+program.s:2101: Error: expected a register at operand 1 -- «str x54,[SP,#-8]!»
+program.s:2124: Error: expected a register or register list at operand 1 -- «mov x55,x10»
+program.s:2270: Error: expected a register at operand 1 -- «str x55,[SP,#-8]!»
+program.s:2311: Error: expected a register or register list at operand 1 -- «mov x56,x10»
+program.s:2397: Error: expected a register at operand 1 -- «str x56,[SP,#-8]!»
+program.s:2415: Error: expected a register or register list at operand 1 -- «mov x57,x10»
+program.s:2456: Error: expected a register at operand 1 -- «str x57,[SP,#-8]!»
+program.s:2495: Error: expected a register or register list at operand 1 -- «mov x58,x10»
+program.s:2541: Error: expected a register at operand 1 -- «str x58,[SP,#-8]!»
+program.s:2580: Error: expected a register or register list at operand 1 -- «mov x59,x10»
+program.s:2616: Error: expected a register at operand 1 -- «str x59,[SP,#-8]!»
+program.s:2655: Error: expected a register or register list at operand 1 -- «mov x60,x10»
+program.s:2706: Error: expected a register at operand 1 -- «str x60,[SP,#-8]!»
+make: *** [Makefile:13: program.o] Error 1
+
+-->Lo que hago pora solucionarlo es reiniciar mi api de mi bakend y ya usa los registrtos correstos
+
+
+----------------------------- sdfsd-------------------------------------------------------------------
+// 3. Operaciones Aritméticas (2 puntos)
+	print("\n==== Operaciones Aritméticas ====");
+	
+
+	print("Suma");
+	resultadoSuma1 := 10 + 5;
+	resultadoSuma2 := 10.5 + 5.50;
+	resultadoSuma3 := 10 + 5.50;
+	resultadoSuma4 := 10.5 + 5;
+
+	print("10 + 5 =", resultadoSuma1);
+	print("10.5 + 5.5 =", resultadoSuma2);
+	print("10 + 5.5 =", resultadoSuma3);
+	
+
+	
+
+	print("\nResta");
+	resultadoResta1 := 11.122 - 5.23;
+	resultadoResta2 := 10.5 - 5.60;
+	resultadoResta3 := 10 - 5.50;
+	resultadoResta4 := 10.5 - 5;
+
+	print("10 - 5 =", resultadoResta1);
+	print("10.5 - 5.5 =", resultadoResta2);
+	print("10 - 5.5 =", resultadoResta3);
+	print("10.5 - 5 =", resultadoResta4);

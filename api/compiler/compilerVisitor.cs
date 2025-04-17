@@ -280,8 +280,16 @@ public class CompilerVisitor : LanguageBaseVisitor<Object?>
         var (offset, obj) = c.GetObjet(varName);
         c.Mov(Register.X0, offset); // Cargamos la dirección de la variable en x1
         c.Add(Register.X0, Register.SP, Register.X0); // Sumamos el FP para obtener la dirección real
-        c.Ldr(Register.X0, Register.X0); // Cargamos el valor de la variable en x0
-        c.Push(Register.X0); // Hacemos push del valor de la variable en el stack
+        if (obj.Type == StackObjet.StackObjetType.Float)
+    {
+        c.LdrFloat(Register.D0, Register.X0); // Usa LDR d0, [x0]
+        c.FPush(Register.D0);
+    }
+    else
+    {
+        c.Ldr(Register.X0, Register.X0); // Usa LDR x0, [x0]
+        c.Push(Register.X0);
+    }
         var newObjet= c.CloneObjet(obj);
         newObjet.ID= null;
         c.PushObjet(newObjet); // Hacemos push del objeto de la variable en el stack
@@ -323,6 +331,80 @@ public class CompilerVisitor : LanguageBaseVisitor<Object?>
     // VisitMulDiv
     public override Object? VisitMulDiv(LanguageParser.MulDivContext context)
     {
+        c.Comment("MulDiv");
+        string op = context.op.Text;
+        Visit(context.expr(0)); // Visitamos el primer operando
+        Visit(context.expr(1)); // Visitamos el segundo operando
+
+        var right = c.PopObjet(Register.X1);
+        var left = c.PopObjet(Register.X0);
+
+        // --- INT * INT ---
+    if (left.Type == StackObjet.StackObjetType.Int && right.Type == StackObjet.StackObjetType.Int)
+{
+    if (op == "*")
+    {
+        c.Mul("x0", "x0", "x1");
+        c.Push("x0");
+        c.PushObjet(c.IntObject());
+    }
+    else // División con conversión implícita a float
+    {
+        c.Scvtf("d0", "x0");  // convierte numerador a float
+        c.Scvtf("d1", "x1");  // convierte denominador a float
+        c.FDiv("d0", "d0", "d1");
+        c.FPush("d0");
+        c.PushObjet(c.FloatObject());
+    }
+    return null;
+}
+
+    // --- FLOAT * FLOAT ---
+    if (left.Type == StackObjet.StackObjetType.Float && right.Type == StackObjet.StackObjetType.Float)
+    {
+        c.FMOV("d1", "d0"); // d0 = left, d1 = right
+
+        if (op == "*")
+            c.Fmul("d0", "d0", "d1");
+        else
+            c.FDiv("d0", "d0", "d1");
+
+        c.FPush("d0");
+        c.PushObjet(c.FloatObject());
+        return null;
+    }
+
+    // --- INT * FLOAT ---
+    if (left.Type == StackObjet.StackObjetType.Int && right.Type == StackObjet.StackObjetType.Float)
+    {
+        c.FMOV("d1", "d0");         // d1 = float (right)
+        c.Scvtf("d2", "x0");        // d2 = float(int)
+
+        if (op == "*")
+            c.Fmul("d0", "d2", "d1");
+        else
+            c.FDiv("d0", "d2", "d1");
+
+        c.FPush("d0");
+        c.PushObjet(c.FloatObject());
+        return null;
+    }
+
+    // --- FLOAT * INT ---
+    if (left.Type == StackObjet.StackObjetType.Float && right.Type == StackObjet.StackObjetType.Int)
+    {
+        c.FMOV("d1", "d0");         // d1 = float (left)
+        c.Scvtf("d2", "x1");        // d2 = float(int)
+
+        if (op == "*")
+            c.Fmul("d0", "d1", "d2");
+        else
+            c.FDiv("d0", "d1", "d2");
+
+        c.FPush("d0");
+        c.PushObjet(c.FloatObject());
+        return null;
+    }
         return null;
 
     }
@@ -417,8 +499,8 @@ public class CompilerVisitor : LanguageBaseVisitor<Object?>
         c.PushObjet(c.StringObject());
         return null;
     }
-
-        else if (opetarion == "-")
+    // --- STRING + INT ---
+    else if (opetarion == "-")
         {
             c.Sub(Register.X0, Register.X0, Register.X1); // x0= x0 - x1
         }
