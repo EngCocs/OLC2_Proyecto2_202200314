@@ -5,6 +5,9 @@ using System.Text;
 public class CompilerVisitor : LanguageBaseVisitor<Object?>
 {
     public ArmGenerator c = new ArmGenerator();
+    private String? continueLabel = null;
+    private String? breakLabel = null;
+    private String? returnLabel = null;
     private Dictionary<string, int> variables = new ();
     //usamo esto par la posicion de las variables
     private int currentPosition = 0;
@@ -909,12 +912,80 @@ private string UnescapeString(string str)
     // VisitWhileStmt
     public override Object? VisitWhileStmt(LanguageParser.WhileStmtContext context)
     {
+        /*
+        startLabel:
+        if(!condicion) goto endLABEL
+          ..(Cuerpo del while)
+          goto startLABEL
+          endLABEL:
+        */
+        c.Comment("While statement");
+        var startLabel = c.GetLabel();
+        var endLabel = c.GetLabel();
+        var prebvContinueLabel = continueLabel;
+        var prebvBreakLabel = breakLabel;
+        continueLabel = startLabel;
+        breakLabel = endLabel;
+        c.SetLabel(startLabel); // Etiqueta de inicio
+        Visit(context.expr()); // Evaluamos la condición
+        c.PopObjet(Register.X0); // Sacamos el valor de la condición
+        c.Cbz(Register.X0, endLabel); // Si la condición es falsa, saltamos al final
+        Visit(context.stmt()); // Cuerpo del while
+        c.B(startLabel); // Volvemos al inicio
+        c.SetLabel(endLabel); // Etiqueta del final
+        
+        continueLabel = prebvContinueLabel;
+        breakLabel = prebvBreakLabel;
         return null;
     }
 
     // VisitForStmt
     public override Object? VisitForStmt(LanguageParser.ForStmtContext context)
     {
+        /*
+        {
+            ... init
+            startLabel:
+              ...condicion
+            if(!condicion) goto endLABEL
+            ..body
+            increment:
+            ..increment
+            goto startLABEL
+             endLABEL:
+        }  
+        */
+        var startLabel = c.GetLabel();
+        var endLabel = c.GetLabel();
+        var incrementLabel = c.GetLabel();
+        var prebvContinueLabel = continueLabel;
+        var prebvBreakLabel = breakLabel;
+        continueLabel = incrementLabel;
+        breakLabel = endLabel;
+        c.Comment("For statement");
+        c.NewScope();
+        Visit(context.forInit()); // Inicialización
+        c.SetLabel(startLabel); // Etiqueta de inicio
+        Visit(context.expr(0)); // Evaluamos la condición
+        c.PopObjet(Register.X0); // Sacamos el valor de la condición
+        c.Cbz(Register.X0, endLabel); // Si la condición es falsa, saltamos al final
+        Visit(context.stmt()); // Cuerpo del for
+        c.SetLabel(incrementLabel); // Etiqueta de incremento
+        Visit(context.expr(1)); // Incremento
+        c.B(startLabel); // Volvemos al inicio
+        c.SetLabel(endLabel); // Etiqueta del final
+        c.Comment("Fin del for");
+        var bytesToRemove = c.EndScope();
+        if(bytesToRemove > 0)
+        {   
+            c.Comment("Remover " + bytesToRemove + " bytes del stack");
+            c.Mov(Register.X0, bytesToRemove);
+            c.Add(Register.SP, Register.SP, Register.X0); // Ajustamos el stack
+            c.Comment("Fin del for");
+        }
+        continueLabel = prebvContinueLabel;
+        breakLabel = prebvBreakLabel;
+        
         return null;
     }
 
@@ -928,11 +999,24 @@ private string UnescapeString(string str)
     //VisitBreakStmt
     public override Object? VisitBreakStmt(LanguageParser.BreakStmtContext context)
     {
+        c.Comment("Break statement");
+        if (breakLabel != null)
+        {
+            c.B(breakLabel); // Saltamos a la etiqueta de break
+        }
+      
         return null;
     }
     //VisitContinueStmt
     public override Object? VisitContinueStmt(LanguageParser.ContinueStmtContext context)
     {
+        c.Comment("Continue statement");
+        if (continueLabel != null)
+        {
+            c.B(continueLabel); // Saltamos a la etiqueta de continue
+        }
+        
+        
        return null;
     }
     //VisitReturnStmt
