@@ -900,9 +900,74 @@ private string UnescapeString(string str)
     }
 
     // VisitSwitS
-    public override Object? VisitSwitchStmt(LanguageParser.SwitchStmtContext context)
+    public override object? VisitSwitchS(LanguageParser.SwitchSContext context)
+
 {
-    
+    c.Comment("Switch statement");
+
+    var endLabel = c.GetLabel(); // Etiqueta final del switch
+    var caseLabels = new List<string>(); // Etiquetas para cada case
+    var defaultLabel = context.defaultCase() != null ? c.GetLabel() : endLabel;
+
+    // Evaluamos la expresión del switch y guardamos su resultado en el stack
+    Visit(context.expr());
+    c.PopObjet(Register.X0); // x0 contiene el valor a comparar
+    c.Push(Register.X0); // Lo dejamos en el stack para los cases
+
+    // Preparamos etiquetas para cada case
+    foreach (var caseNode in context.switchCase())
+        caseLabels.Add(c.GetLabel());
+
+    // Comparaciones para cada case
+    for (int i = 0; i < context.switchCase().Length; i++)
+    {
+        Visit(context.switchCase()[i].expr()); // Evaluar valor del case
+        c.PopObjet(Register.X1); // x1 = valor del case
+
+        c.Ldr(Register.X0, Register.SP); // x0 = valor del switch original (sin pop)
+        c.Cmp(Register.X0, Register.X1);
+        c.Beq(caseLabels[i]); // Si es igual, ir al cuerpo del case
+    }
+
+    // Si no hubo match, saltar al default (o final si no hay default)
+    c.B(defaultLabel);
+
+    var prevBreakLabel = breakLabel;
+    breakLabel = endLabel; // break dentro del switch salta al final
+    bool broke = false;
+
+    // Ejecutar cuerpo de cada case
+    for (int i = 0; i < context.switchCase().Length; i++)
+{
+    c.SetLabel(caseLabels[i]);
+    broke = false;
+
+    foreach (var stmt in context.switchCase()[i].stmt())
+    {
+        Visit(stmt);
+        if (stmt is LanguageParser.BreakStmtContext)
+            broke = true;
+    }
+
+    if (!broke)
+        c.B(endLabel); // Saltamos si no hubo break
+}
+
+
+    // Cuerpo del default
+    if (context.defaultCase() != null)
+    {
+        c.SetLabel(defaultLabel);
+        foreach (var stmt in context.defaultCase().stmt())
+            Visit(stmt);
+    }
+
+    // Fin del switch
+    c.SetLabel(endLabel);
+    c.Add(Register.SP, Register.SP, 8); // Sacamos el valor del switch (limpieza)
+    c.Comment("Fin del switch");
+
+    breakLabel = prevBreakLabel;
     
     return null;
 }
