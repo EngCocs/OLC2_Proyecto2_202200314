@@ -1139,6 +1139,39 @@ public override Object? VisitArrayAccessExprContext(LanguageParser.ArrayAccessEx
 
 public override Object? VisitForWhileStmt(LanguageParser.ForWhileStmtContext context)
 {
+    c.Comment("For-While statement");
+
+    var startLabel = c.GetLabel();
+    var endLabel = c.GetLabel();
+    var prevContinueLabel = continueLabel;
+    var prevBreakLabel = breakLabel;
+
+    continueLabel = startLabel;
+    breakLabel = endLabel;
+
+    c.NewScope();
+
+    c.SetLabel(startLabel);                 // Etiqueta de inicio
+    Visit(context.expr());                  // Evaluar condición
+    c.PopObjet(Register.X0);               // Sacar resultado de condición
+    c.Cbz(Register.X0, endLabel);          // Si es falso, saltamos al final
+
+    Visit(context.stmt());                 // Cuerpo del bucle
+
+    c.B(startLabel);                       // Volvemos al inicio
+    c.SetLabel(endLabel);                 // Etiqueta de salida
+    c.Comment("Fin del for-while");
+
+    var bytesToRemove = c.EndScope();
+    if (bytesToRemove > 0)
+    {
+        c.Comment($"Remover {bytesToRemove} bytes del stack");
+        c.Mov(Register.X0, bytesToRemove);
+        c.Add(Register.SP, Register.SP, Register.X0);
+    }
+
+    continueLabel = prevContinueLabel;
+    breakLabel = prevBreakLabel;
     return null;
 }
 
