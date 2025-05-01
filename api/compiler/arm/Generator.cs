@@ -4,7 +4,7 @@ using System.Text;
 
 public class StackObjet
 {
-    public enum StackObjetType {Int,Float, String , Bool, Char, Void}
+    public enum StackObjetType {Int,Float, String , Bool, Char, Void,Nil}
     public StackObjetType Type { get; set; }
     public int Length { get; set; }
     public int Depth { get; set; }
@@ -20,6 +20,16 @@ public class ArmGenerator
     private readonly StandardLibrary stanlib = new StandardLibrary();
     
     private int Depth= 0;
+    private int labelCounter = 0;
+
+    public String GetLabel()
+    {
+        return $"label_{labelCounter++}";
+    }
+    public void SetLabel(string label)
+    {
+        instructions.Add($"{label}:");
+    }
 
     //-----------operacionde con el stack-----------------
     public void PushObjet(StackObjet obj)
@@ -51,7 +61,7 @@ public class ArmGenerator
             case StackObjet.StackObjetType.String:
                 List<byte> stringArray = Utils.StringToBytesArrays((string)value);
 
-    string tempRegister = Utils.GetTempRegister(); // ✅ Registro válido
+    string tempRegister = Utils.GetTempRegister(); 
     Mov(tempRegister, Register.HP); // tempRegister = inicio del string (heap)
 
     foreach (var charCode in stringArray)
@@ -64,7 +74,7 @@ public class ArmGenerator
     }
 
     Push(tempRegister); // guardamos la dirección inicial
-    Utils.ReleaseTempRegister(tempRegister); // ✅ lo liberamos
+    Utils.ReleaseTempRegister(tempRegister);
     break;
             case StackObjet.StackObjetType.Bool:
                 // Representamos false como 0 y true como 1.
@@ -79,6 +89,12 @@ public class ArmGenerator
                 break;
             case StackObjet.StackObjetType.Void:
                 //logica para void
+                break;
+            case StackObjet.StackObjetType.Nil:
+                // Representamos `nil` como un cero en el registro x0
+                Comment("Pushing nil as 0");
+                Mov(Register.X0, 0);
+                Push(Register.X0);
                 break;
         }
         PushObjet(obj);
@@ -357,6 +373,15 @@ public void FMOV(string rd, string rs)
     public void Eor(string rd, string rs1, string rs2)
     {
         instructions.Add($"EOR {rd}, {rs1}, {rs2}");
+    }
+    public void Cbz(string rs, string label)
+    {
+        instructions.Add($"CBZ {rs}, {label}");
+    }
+
+    public void B(string label)
+    {
+        instructions.Add($"B {label}");
     }
 
 

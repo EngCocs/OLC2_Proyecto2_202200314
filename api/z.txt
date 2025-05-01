@@ -122,3 +122,5 @@
 
 	
 	print("OK Opcionalidad del punto y coma: correcto");
+
+	// -- go run main.go--

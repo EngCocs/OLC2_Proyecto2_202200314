@@ -567,7 +567,7 @@ public class CompilerVisitor : LanguageBaseVisitor<Object?>
     // --- FLOAT vs FLOAT ---
     if (left.Type == StackObjet.StackObjetType.Float && right.Type == StackObjet.StackObjetType.Float)
     {
-        c.FMOV("d1", "x1");
+        c.FMOV("d1", "x1");// float right
         c.FMOV("d0", "x0");
         c.FCMP("d0", "d1");
         c.Set(RelationToCond(op), "x0");
@@ -855,8 +855,43 @@ private string UnescapeString(string str)
 
     // VisitIfStmt
     public override Object? VisitIfStmt(LanguageParser.IfStmtContext context)
-    {
-        
+    {   
+        c.Comment("If statement");
+        Visit(context.expr()); // Evaluamos la condición
+        c.PopObjet(Register.X0); // Sacamos el valor de la condición
+
+        /*
+        1.SOLO ES UN IF, no hay else
+        if(!condicion) goto endLABEL
+          ..(Cuerpo del if)
+          endLABEL:
+        2. IF ELSE
+        if(!condicion) goto elseLABEL
+          ..(Cuerpo del if)
+          goto endLABEL
+          elseLABEL:
+          ..(Cuerpo del else)
+          endLABEL:
+        */
+        var hasElse = context.stmt().Length > 1;
+        if(hasElse)
+        {
+           var elseLabel = c.GetLabel();
+           var endLabel = c.GetLabel();
+           c.Cbz(Register.X0, elseLabel); // Si la condición es falsa, saltamos al else
+           Visit(context.stmt(0)); // Cuerpo del if
+            c.B(endLabel); // Saltamos al final
+            c.SetLabel(elseLabel); // Etiqueta del else
+            Visit(context.stmt(1)); // Cuerpo del else
+            c.SetLabel(endLabel); // Etiqueta del final
+        }
+        else
+        {
+            var endLabel = c.GetLabel();
+            c.Cbz(Register.X0, endLabel); // Si la condición es falsa, saltamos al final
+            Visit(context.stmt(0)); // Cuerpo del if
+            c.SetLabel(endLabel); // Etiqueta del final
+        }
 
         return null;
     }
@@ -976,7 +1011,9 @@ private string UnescapeString(string str)
 //nil
  public override Object? VisitNil(LanguageParser.NilContext context)
 {
-    // Por ejemplo, se retorna VoidValue o se podría definir NilValue.
+    c.Comment("Valor nil");
+    var nilObj = new StackObjet { Type = StackObjet.StackObjetType.Nil };
+    c.PushConstant(nilObj, 0);
     return null;
 }
 
