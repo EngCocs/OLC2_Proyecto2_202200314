@@ -905,56 +905,45 @@ private string UnescapeString(string str)
 {
     c.Comment("Switch statement");
 
-    var endLabel = c.GetLabel(); // Etiqueta final del switch
-    var caseLabels = new List<string>(); // Etiquetas para cada case
+    var endLabel = c.GetLabel();
+    var caseLabels = new List<string>();
     var defaultLabel = context.defaultCase() != null ? c.GetLabel() : endLabel;
 
-    // Evaluamos la expresión del switch y guardamos su resultado en el stack
     Visit(context.expr());
-    c.PopObjet(Register.X0); // x0 contiene el valor a comparar
-    c.Push(Register.X0); // Lo dejamos en el stack para los cases
+    c.PopObjet("x20"); //  Valor del switch se guarda fuera del stack
 
-    // Preparamos etiquetas para cada case
     foreach (var caseNode in context.switchCase())
         caseLabels.Add(c.GetLabel());
 
-    // Comparaciones para cada case
     for (int i = 0; i < context.switchCase().Length; i++)
     {
-        Visit(context.switchCase()[i].expr()); // Evaluar valor del case
-        c.PopObjet(Register.X1); // x1 = valor del case
-
-        c.Ldr(Register.X0, Register.SP); // x0 = valor del switch original (sin pop)
-        c.Cmp(Register.X0, Register.X1);
-        c.Beq(caseLabels[i]); // Si es igual, ir al cuerpo del case
+        Visit(context.switchCase()[i].expr());
+        c.PopObjet("x1");
+        c.Cmp("x20", "x1"); //  Comparación directa
+        c.Beq(caseLabels[i]);
     }
 
-    // Si no hubo match, saltar al default (o final si no hay default)
     c.B(defaultLabel);
 
     var prevBreakLabel = breakLabel;
-    breakLabel = endLabel; // break dentro del switch salta al final
-    bool broke = false;
+    breakLabel = endLabel;
 
-    // Ejecutar cuerpo de cada case
     for (int i = 0; i < context.switchCase().Length; i++)
-{
-    c.SetLabel(caseLabels[i]);
-    broke = false;
-
-    foreach (var stmt in context.switchCase()[i].stmt())
     {
-        Visit(stmt);
-        if (stmt is LanguageParser.BreakStmtContext)
-            broke = true;
+        c.SetLabel(caseLabels[i]);
+        bool broke = false;
+
+        foreach (var stmt in context.switchCase()[i].stmt())
+        {
+            Visit(stmt);
+            if (stmt is LanguageParser.BreakStmtContext)
+                broke = true;
+        }
+
+        if (!broke)
+            c.B(endLabel);
     }
 
-    if (!broke)
-        c.B(endLabel); // Saltamos si no hubo break
-}
-
-
-    // Cuerpo del default
     if (context.defaultCase() != null)
     {
         c.SetLabel(defaultLabel);
@@ -962,13 +951,10 @@ private string UnescapeString(string str)
             Visit(stmt);
     }
 
-    // Fin del switch
     c.SetLabel(endLabel);
-    c.Add(Register.SP, Register.SP, 8); // Sacamos el valor del switch (limpieza)
     c.Comment("Fin del switch");
-
     breakLabel = prevBreakLabel;
-    
+
     return null;
 }
 
@@ -1247,11 +1233,47 @@ public override Object? VisitForRangeStmt(LanguageParser.ForRangeStmtContext con
 
 public override Object? VisitPostIncrement(LanguageParser.PostIncrementContext context)
 {
+    if (context.expr() is LanguageParser.IdentifierContext idCtx)
+    {
+        string id = idCtx.GetText();
+        var (offset, obj) = c.GetObjet(id);
+
+        if (obj.Type != StackObjet.StackObjetType.Int)
+            throw new Exception("Solo se puede aplicar ++ a enteros.");
+
+        c.Comment($"Post-incremento de variable '{id}'");
+        c.Mov("x0", offset);
+        c.Add("x0", "sp", "x0");      // Dirección de la variable
+        c.Ldr("x1", "x0");            // x1 = valor actual
+        c.Add("x1", "x1", "1");       // x1 = valor + 1
+        c.Str("x1", "x0");            // Guardamos de nuevo
+
+       
+    }
     return null;
 }
 
 public override Object? VisitPostDecrement(LanguageParser.PostDecrementContext context)
 {
+    if (context.expr() is LanguageParser.IdentifierContext idCtx)
+    {
+        string id = idCtx.GetText();
+        var (offset, obj) = c.GetObjet(id);
+
+        if (obj.Type != StackObjet.StackObjetType.Int)
+            throw new Exception("Solo se puede aplicar -- a enteros.");
+
+        c.Comment($"Post-decremento de variable '{id}'");
+        c.Mov("x0", offset);
+        c.Add("x0", "sp", "x0");      // Dirección de la variable
+        c.Ldr("x1", "x0");            // x1 = valor actual
+        c.Push("x1");                 // Devolvemos el valor original
+        c.Sub("x1", "x1", "1");       // x1 = valor - 1
+        c.Str("x1", "x0");            // Guardamos de nuevo
+        
+        
+    }
+
    return null;
 }
 
