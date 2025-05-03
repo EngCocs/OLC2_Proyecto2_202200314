@@ -3,110 +3,42 @@ antlr4 -Dlanguage=CSharp -o analyzer -package analyzer -visitor -no-listener gra
 
 
 -------------------------------var---------------------
-a := 120;
+case StackObjet.StackObjetType.String:
+    List<byte> stringArray = Utils.StringToBytesArrays((string)value);
+    string tempRegister = Utils.GetTempRegister(); 
 
+    Mov(tempRegister, Register.HP); // inicio del string
+
+    foreach (var charCode in stringArray)
+    {
+        Comment($"Pusing char {charCode}");
+        Mov("w0", charCode);
+        Strb("w0", Register.HP);
+        Add(Register.HP, Register.HP, 1);  // avanza 1 byte por caracter
+    }
+
+    Push(tempRegister); // solo guarda la dirección
+    // NO avances otra vez el HP — ya lo hiciste en el foreach
+
+    Utils.ReleaseTempRegister(tempRegister);
+    break;
+
+public void PrintLiteral(string text)
 {
-    a := 3;
-    a = 99+31;
-    print(a);
+    List<byte> bytes = Utils.StringToBytesArrays(text);
+    string tempReg = Utils.GetTempRegister();
+
+    Mov(tempReg, Register.HP); // dirección inicial
+
+    foreach (var b in bytes)
+    {
+        Mov("w0", b);
+        Strb("w0", Register.HP);
+        Add(Register.HP, Register.HP, 1); //  Avanza correctamente
+    }
+
+    Mov("x0", tempReg);
+    PrintStringRaw("x0");
+
+    Utils.ReleaseTempRegister(tempReg);
 }
-print(a);
-
--------------------------------------------------------------------
-puntos := 0;
-	puntosDeclaracion := 0;
-	var entero int = 42;
-	print( entero);
-	
-	 {
-		puntosDeclaracion = puntosDeclaracion + 1;
-		
-	}
-	 {
-		puntosDeclaracion = puntosDeclaracion + 1;
-		
-	}
-	 {
-		puntosDeclaracion = puntosDeclaracion - 1;
-		
-	} 
-
-	print(puntosDeclaracion);
---------------------------------------------
-puntos := 0;
-	puntosDeclaracion := 0;
-	var hola bool = true;
-    print(hola);
-    print(" entero ");
-    print(hola);
-	
-	 {
-		puntosDeclaracion = puntosDeclaracion + 1;
-       
-		
-	}
-	 {
-		puntosDeclaracion = puntosDeclaracion + 1;
-		
-	}
-	 {
-		puntosDeclaracion = puntosDeclaracion - 1;
-		
-	} 
-
-	print(puntosDeclaracion);
-    print(" ----Este es el fin--------- ");
-
-
-	-----------------------------------------aadf-----------------------------------------------
-	// 3. Operaciones Aritméticas (2 puntos)
-	print("\n==== Operaciones Aritméticas ====");
-	
-
-	print("Suma");
-	resultadoSuma1 := 10 + 5;
-	resultadoSuma2 := 10.5 + 5.5;
-	resultadoSuma3 := 10 + 5.5;
-	resultadoSuma4 := 10.5 + 5;
-
-	print("10 + 5 =", resultadoSuma1);
-	print("10.5 + 5.5 =", resultadoSuma2);
-	print("10 + 5.5 =", resultadoSuma3);
-	print("10.5 + 5 =", resultadoSuma4);
-
-	
-
-	print("\nResta");
-	resultadoResta1 := 10 - 5;
-	resultadoResta2 := 10.5 - 5.5;
-	resultadoResta3 := 10 - 5.5;
-	resultadoResta4 := 10.5 - 5;
-
-	print("10 - 5 =", resultadoResta1);
-	print("10.5 - 5.5 =", resultadoResta2);
-	print("10 - 5.5 =", resultadoResta3);
-	print("10.5 - 5 =", resultadoResta4);
-
-	----------------------------------- oTR forma---------------------------------------------------
-	// 3. Operaciones Aritméticas (2 puntos)
-	print("\n==== Operaciones Aritméticas ====");
-	
-
-	print("Suma");
-	resultadoSuma1 := 7.23 + 12.21;
-	resultadoSuma2 := 10.5 + 5.5;
-	
-
-	print("=", resultadoSuma1);
-	print(" =", resultadoSuma2);
-	
-
-	
-
-	print("\nResta");
-	resultadoResta1 := 54.12 - 4.32;
-	resultadoResta2 := 10.5 - 5.5;
-	
-
-	print(" =", resultadoResta1);
-	print(" =", resultadoResta2);

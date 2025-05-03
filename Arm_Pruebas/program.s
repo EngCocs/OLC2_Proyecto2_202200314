@@ -5,6 +5,7 @@ heap: .space 4096
 .global _start
 _start:
   adr x10, heap
+// Bloque especial: func main()
 // Constant : 0
 MOV x0, #0
 STR x0, [SP, #-8]!
@@ -7920,10 +7921,10 @@ CBZ x0, label_28
 MOV x0, #0
 STR x0, [SP, #-8]!
 // Declaración variable implícita 'j' almacenada en el stack.
-// String: a
+// String:  
 MOV x11, x10
-// Pusing char 97
-MOV w0, #97
+// Pusing char 32
+MOV w0, #32
 STRB w0, [x10]
 MOV x0, #1
 ADD x10, x10, x0
@@ -8009,16 +8010,12 @@ CBZ x0, label_31
 // Bloque de código
 // Asignación a variable: fila
 // AddSub
-// String: 
-MOV x12, x10
-// Pusing char 0
-MOV w0, #0
-STRB w0, [x10]
-MOV x0, #1
-ADD x10, x10, x0
-STR x12, [SP, #-8]!
+MOV x0, #0
+ADD x0, sp, x0
+LDR x0, [x0, #0]
+STR x0, [SP, #-8]!
 // String: *
-MOV x13, x10
+MOV x12, x10
 // Pusing char 42
 MOV w0, #42
 STRB w0, [x10]
@@ -8029,7 +8026,7 @@ MOV w0, #0
 STRB w0, [x10]
 MOV x0, #1
 ADD x10, x10, x0
-STR x13, [SP, #-8]!
+STR x12, [SP, #-8]!
 LDR x1, [SP], #8
 LDR x0, [SP], #8
 BL concat_strings
@@ -8046,16 +8043,12 @@ label_31:
 // Bloque de código
 // Asignación a variable: fila
 // AddSub
-// String: 
-MOV x14, x10
-// Pusing char 0
-MOV w0, #0
-STRB w0, [x10]
-MOV x0, #1
-ADD x10, x10, x0
-STR x14, [SP, #-8]!
+MOV x0, #0
+ADD x0, sp, x0
+LDR x0, [x0, #0]
+STR x0, [SP, #-8]!
 // String:  
-MOV x15, x10
+MOV x13, x10
 // Pusing char 32
 MOV w0, #32
 STRB w0, [x10]
@@ -8066,7 +8059,7 @@ MOV w0, #0
 STRB w0, [x10]
 MOV x0, #1
 ADD x10, x10, x0
-STR x15, [SP, #-8]!
+STR x13, [SP, #-8]!
 LDR x1, [SP], #8
 LDR x0, [SP], #8
 BL concat_strings
@@ -8151,13 +8144,13 @@ label_28:
 // Fin del for-while
 // Print statement
 // String: 
-MOV x9, x10
+MOV x14, x10
 // Pusing char 0
 MOV w0, #0
 STRB w0, [x10]
 MOV x0, #1
 ADD x10, x10, x0
-STR x9, [SP, #-8]!
+STR x14, [SP, #-8]!
 LDR x0, [SP], #8
 MOV X0, x0
 BL print_string_raw
@@ -8213,7 +8206,7 @@ STR x0, [SP, #-8]!
 LDR x0, [SP], #8
 // Print statement
 // String: OK For como while anidado: correcto
-MOV x10, x10
+MOV x15, x10
 // Pusing char 79
 MOV w0, #79
 STRB w0, [x10]
@@ -8394,7 +8387,7 @@ MOV w0, #0
 STRB w0, [x10]
 MOV x0, #1
 ADD x10, x10, x0
-STR x10, [SP, #-8]!
+STR x15, [SP, #-8]!
 LDR x0, [SP], #8
 MOV X0, x0
 BL print_string_raw
@@ -8416,7 +8409,7 @@ label_33:
 // Bloque de código
 // Print statement
 // String: X For como while anidado: incorrecto
-MOV x11, x10
+MOV x9, x10
 // Pusing char 88
 MOV w0, #88
 STRB w0, [x10]
@@ -8602,7 +8595,7 @@ MOV w0, #0
 STRB w0, [x10]
 MOV x0, #1
 ADD x10, x10, x0
-STR x11, [SP, #-8]!
+STR x9, [SP, #-8]!
 LDR x0, [SP], #8
 MOV X0, x0
 BL print_string_raw
@@ -8622,7 +8615,7 @@ BL print_string_raw
 label_34:
 // Print statement
 // String: \n==== For Clásico ====
-MOV x12, x10
+MOV x10, x10
 // Pusing char 10
 MOV w0, #10
 STRB w0, [x10]
@@ -8738,7 +8731,7 @@ MOV w0, #0
 STRB w0, [x10]
 MOV x0, #1
 ADD x10, x10, x0
-STR x12, [SP, #-8]!
+STR x10, [SP, #-8]!
 LDR x0, [SP], #8
 MOV X0, x0
 BL print_string_raw
@@ -8761,7 +8754,7 @@ STR x0, [SP, #-8]!
 // Declaración variable implícita 'puntosForClasico' almacenada en el stack.
 // Print statement
 // String: For clásico simple
-MOV x13, x10
+MOV x11, x10
 // Pusing char 70
 MOV w0, #70
 STRB w0, [x10]
@@ -8857,7 +8850,7 @@ MOV w0, #0
 STRB w0, [x10]
 MOV x0, #1
 ADD x10, x10, x0
-STR x13, [SP, #-8]!
+STR x11, [SP, #-8]!
 LDR x0, [SP], #8
 MOV X0, x0
 BL print_string_raw
@@ -8909,7 +8902,7 @@ CBZ x0, label_36
 // Bloque de código
 // Print statement
 // String: i =
-MOV x14, x10
+MOV x12, x10
 // Pusing char 105
 MOV w0, #105
 STRB w0, [x10]
@@ -8930,7 +8923,7 @@ MOV w0, #0
 STRB w0, [x10]
 MOV x0, #1
 ADD x10, x10, x0
-STR x14, [SP, #-8]!
+STR x12, [SP, #-8]!
 LDR x0, [SP], #8
 MOV X0, x0
 BL print_string_raw
@@ -9041,7 +9034,7 @@ STR x0, [SP, #-8]!
 LDR x0, [SP], #8
 // Print statement
 // String: OK For clásico simple: correcto
-MOV x15, x10
+MOV x13, x10
 // Pusing char 79
 MOV w0, #79
 STRB w0, [x10]
@@ -9202,7 +9195,7 @@ MOV w0, #0
 STRB w0, [x10]
 MOV x0, #1
 ADD x10, x10, x0
-STR x15, [SP, #-8]!
+STR x13, [SP, #-8]!
 LDR x0, [SP], #8
 MOV X0, x0
 BL print_string_raw
@@ -9224,7 +9217,7 @@ label_38:
 // Bloque de código
 // Print statement
 // String: X For clásico simple: incorrecto
-MOV x9, x10
+MOV x14, x10
 // Pusing char 88
 MOV w0, #88
 STRB w0, [x10]
@@ -9390,7 +9383,7 @@ MOV w0, #0
 STRB w0, [x10]
 MOV x0, #1
 ADD x10, x10, x0
-STR x9, [SP, #-8]!
+STR x14, [SP, #-8]!
 LDR x0, [SP], #8
 MOV X0, x0
 BL print_string_raw
@@ -9410,7 +9403,7 @@ BL print_string_raw
 label_39:
 // Print statement
 // String: \nFor clásico anidado (tabla de multiplicar)
-MOV x10, x10
+MOV x15, x10
 // Pusing char 10
 MOV w0, #10
 STRB w0, [x10]
@@ -9631,7 +9624,7 @@ MOV w0, #0
 STRB w0, [x10]
 MOV x0, #1
 ADD x10, x10, x0
-STR x10, [SP, #-8]!
+STR x15, [SP, #-8]!
 LDR x0, [SP], #8
 MOV X0, x0
 BL print_string_raw
@@ -9650,7 +9643,7 @@ MOV X0, x0
 BL print_string_raw
 // Print statement
 // String: \n\n###Validacion Manual
-MOV x11, x10
+MOV x9, x10
 // Pusing char 10
 MOV w0, #10
 STRB w0, [x10]
@@ -9766,7 +9759,7 @@ MOV w0, #0
 STRB w0, [x10]
 MOV x0, #1
 ADD x10, x10, x0
-STR x11, [SP, #-8]!
+STR x9, [SP, #-8]!
 LDR x0, [SP], #8
 MOV X0, x0
 BL print_string_raw
@@ -9849,7 +9842,7 @@ MOV x0, x9
 MOV X0, x0
 BL print_string_raw
 // String: x
-MOV x12, x10
+MOV x10, x10
 // Pusing char 120
 MOV w0, #120
 STRB w0, [x10]
@@ -9860,7 +9853,7 @@ MOV w0, #0
 STRB w0, [x10]
 MOV x0, #1
 ADD x10, x10, x0
-STR x12, [SP, #-8]!
+STR x10, [SP, #-8]!
 LDR x0, [SP], #8
 MOV X0, x0
 BL print_string_raw
@@ -9898,7 +9891,7 @@ MOV x0, x9
 MOV X0, x0
 BL print_string_raw
 // String: =
-MOV x13, x10
+MOV x11, x10
 // Pusing char 61
 MOV w0, #61
 STRB w0, [x10]
@@ -9909,7 +9902,7 @@ MOV w0, #0
 STRB w0, [x10]
 MOV x0, #1
 ADD x10, x10, x0
-STR x13, [SP, #-8]!
+STR x11, [SP, #-8]!
 LDR x0, [SP], #8
 MOV X0, x0
 BL print_string_raw
@@ -9971,7 +9964,7 @@ ADD sp, sp, x0
 // Fin del for
 // Print statement
 // String: --
-MOV x14, x10
+MOV x12, x10
 // Pusing char 45
 MOV w0, #45
 STRB w0, [x10]
@@ -9987,7 +9980,7 @@ MOV w0, #0
 STRB w0, [x10]
 MOV x0, #1
 ADD x10, x10, x0
-STR x14, [SP, #-8]!
+STR x12, [SP, #-8]!
 LDR x0, [SP], #8
 MOV X0, x0
 BL print_string_raw
@@ -10020,13 +10013,13 @@ ADD sp, sp, x0
 // Fin del for
 // Print statement
 // String: 
-MOV x15, x10
+MOV x13, x10
 // Pusing char 0
 MOV w0, #0
 STRB w0, [x10]
 MOV x0, #1
 ADD x10, x10, x0
-STR x15, [SP, #-8]!
+STR x13, [SP, #-8]!
 LDR x0, [SP], #8
 MOV X0, x0
 BL print_string_raw
@@ -10065,7 +10058,7 @@ STR x0, [SP, #-8]!
 LDR x0, [SP], #8
 // Print statement
 // String: OK For clásico anidado: correcto
-MOV x9, x10
+MOV x14, x10
 // Pusing char 79
 MOV w0, #79
 STRB w0, [x10]
@@ -10231,7 +10224,7 @@ MOV w0, #0
 STRB w0, [x10]
 MOV x0, #1
 ADD x10, x10, x0
-STR x9, [SP, #-8]!
+STR x14, [SP, #-8]!
 LDR x0, [SP], #8
 MOV X0, x0
 BL print_string_raw
@@ -10250,7 +10243,7 @@ MOV X0, x0
 BL print_string_raw
 // Print statement
 // String: \n==== Switch/Case ====
-MOV x10, x10
+MOV x15, x10
 // Pusing char 10
 MOV w0, #10
 STRB w0, [x10]
@@ -10366,7 +10359,7 @@ MOV w0, #0
 STRB w0, [x10]
 MOV x0, #1
 ADD x10, x10, x0
-STR x10, [SP, #-8]!
+STR x15, [SP, #-8]!
 LDR x0, [SP], #8
 MOV X0, x0
 BL print_string_raw
@@ -10389,7 +10382,7 @@ STR x0, [SP, #-8]!
 // Declaración variable implícita 'puntosSwitch' almacenada en el stack.
 // Print statement
 // String: \n\n###Validacion Manual
-MOV x11, x10
+MOV x9, x10
 // Pusing char 10
 MOV w0, #10
 STRB w0, [x10]
@@ -10505,7 +10498,7 @@ MOV w0, #0
 STRB w0, [x10]
 MOV x0, #1
 ADD x10, x10, x0
-STR x11, [SP, #-8]!
+STR x9, [SP, #-8]!
 LDR x0, [SP], #8
 MOV X0, x0
 BL print_string_raw
@@ -10524,7 +10517,7 @@ MOV X0, x0
 BL print_string_raw
 // Print statement
 // String: Switch simple
-MOV x12, x10
+MOV x10, x10
 // Pusing char 83
 MOV w0, #83
 STRB w0, [x10]
@@ -10595,7 +10588,7 @@ MOV w0, #0
 STRB w0, [x10]
 MOV x0, #1
 ADD x10, x10, x0
-STR x12, [SP, #-8]!
+STR x10, [SP, #-8]!
 LDR x0, [SP], #8
 MOV X0, x0
 BL print_string_raw
@@ -10668,7 +10661,7 @@ B label_47
 label_48:
 // Print statement
 // String: Lunes
-MOV x13, x10
+MOV x11, x10
 // Pusing char 76
 MOV w0, #76
 STRB w0, [x10]
@@ -10699,7 +10692,7 @@ MOV w0, #0
 STRB w0, [x10]
 MOV x0, #1
 ADD x10, x10, x0
-STR x13, [SP, #-8]!
+STR x11, [SP, #-8]!
 LDR x0, [SP], #8
 MOV X0, x0
 BL print_string_raw
@@ -10740,7 +10733,7 @@ B label_46
 label_49:
 // Print statement
 // String: Martes
-MOV x14, x10
+MOV x12, x10
 // Pusing char 77
 MOV w0, #77
 STRB w0, [x10]
@@ -10776,7 +10769,7 @@ MOV w0, #0
 STRB w0, [x10]
 MOV x0, #1
 ADD x10, x10, x0
-STR x14, [SP, #-8]!
+STR x12, [SP, #-8]!
 LDR x0, [SP], #8
 MOV X0, x0
 BL print_string_raw
@@ -10797,7 +10790,7 @@ B label_46
 label_50:
 // Print statement
 // String: Miércoles
-MOV x15, x10
+MOV x13, x10
 // Pusing char 77
 MOV w0, #77
 STRB w0, [x10]
@@ -10848,7 +10841,7 @@ MOV w0, #0
 STRB w0, [x10]
 MOV x0, #1
 ADD x10, x10, x0
-STR x15, [SP, #-8]!
+STR x13, [SP, #-8]!
 LDR x0, [SP], #8
 MOV X0, x0
 BL print_string_raw
@@ -10869,7 +10862,7 @@ B label_46
 label_51:
 // Print statement
 // String: Jueves
-MOV x9, x10
+MOV x14, x10
 // Pusing char 74
 MOV w0, #74
 STRB w0, [x10]
@@ -10905,7 +10898,7 @@ MOV w0, #0
 STRB w0, [x10]
 MOV x0, #1
 ADD x10, x10, x0
-STR x9, [SP, #-8]!
+STR x14, [SP, #-8]!
 LDR x0, [SP], #8
 MOV X0, x0
 BL print_string_raw
@@ -10926,7 +10919,7 @@ B label_46
 label_52:
 // Print statement
 // String: Viernes
-MOV x10, x10
+MOV x15, x10
 // Pusing char 86
 MOV w0, #86
 STRB w0, [x10]
@@ -10967,7 +10960,7 @@ MOV w0, #0
 STRB w0, [x10]
 MOV x0, #1
 ADD x10, x10, x0
-STR x10, [SP, #-8]!
+STR x15, [SP, #-8]!
 LDR x0, [SP], #8
 MOV X0, x0
 BL print_string_raw
@@ -10988,7 +10981,7 @@ B label_46
 label_53:
 // Print statement
 // String: Sábado
-MOV x11, x10
+MOV x9, x10
 // Pusing char 83
 MOV w0, #83
 STRB w0, [x10]
@@ -11024,7 +11017,7 @@ MOV w0, #0
 STRB w0, [x10]
 MOV x0, #1
 ADD x10, x10, x0
-STR x11, [SP, #-8]!
+STR x9, [SP, #-8]!
 LDR x0, [SP], #8
 MOV X0, x0
 BL print_string_raw
@@ -11045,7 +11038,7 @@ B label_46
 label_54:
 // Print statement
 // String: Domingo
-MOV x12, x10
+MOV x10, x10
 // Pusing char 68
 MOV w0, #68
 STRB w0, [x10]
@@ -11086,7 +11079,7 @@ MOV w0, #0
 STRB w0, [x10]
 MOV x0, #1
 ADD x10, x10, x0
-STR x12, [SP, #-8]!
+STR x10, [SP, #-8]!
 LDR x0, [SP], #8
 MOV X0, x0
 BL print_string_raw
@@ -11107,7 +11100,7 @@ B label_46
 label_47:
 // Print statement
 // String: Día inválido
-MOV x13, x10
+MOV x11, x10
 // Pusing char 68
 MOV w0, #68
 STRB w0, [x10]
@@ -11173,7 +11166,7 @@ MOV w0, #0
 STRB w0, [x10]
 MOV x0, #1
 ADD x10, x10, x0
-STR x13, [SP, #-8]!
+STR x11, [SP, #-8]!
 LDR x0, [SP], #8
 MOV X0, x0
 BL print_string_raw
@@ -11194,7 +11187,7 @@ label_46:
 // Fin del switch
 // Print statement
 // String: \nSwitch con default
-MOV x14, x10
+MOV x12, x10
 // Pusing char 10
 MOV w0, #10
 STRB w0, [x10]
@@ -11295,7 +11288,7 @@ MOV w0, #0
 STRB w0, [x10]
 MOV x0, #1
 ADD x10, x10, x0
-STR x14, [SP, #-8]!
+STR x12, [SP, #-8]!
 LDR x0, [SP], #8
 MOV X0, x0
 BL print_string_raw
@@ -11338,7 +11331,7 @@ B label_56
 label_57:
 // Print statement
 // String: No se debería imprimir
-MOV x15, x10
+MOV x13, x10
 // Pusing char 78
 MOV w0, #78
 STRB w0, [x10]
@@ -11454,7 +11447,7 @@ MOV w0, #0
 STRB w0, [x10]
 MOV x0, #1
 ADD x10, x10, x0
-STR x15, [SP, #-8]!
+STR x13, [SP, #-8]!
 LDR x0, [SP], #8
 MOV X0, x0
 BL print_string_raw
@@ -11475,7 +11468,7 @@ B label_55
 label_58:
 // Print statement
 // String: No se debería imprimir
-MOV x9, x10
+MOV x14, x10
 // Pusing char 78
 MOV w0, #78
 STRB w0, [x10]
@@ -11591,7 +11584,7 @@ MOV w0, #0
 STRB w0, [x10]
 MOV x0, #1
 ADD x10, x10, x0
-STR x9, [SP, #-8]!
+STR x14, [SP, #-8]!
 LDR x0, [SP], #8
 MOV X0, x0
 BL print_string_raw
@@ -11612,7 +11605,7 @@ B label_55
 label_56:
 // Print statement
 // String: Número no reconocido, se ejecuta default
-MOV x10, x10
+MOV x15, x10
 // Pusing char 78
 MOV w0, #78
 STRB w0, [x10]
@@ -11818,7 +11811,7 @@ MOV w0, #0
 STRB w0, [x10]
 MOV x0, #1
 ADD x10, x10, x0
-STR x10, [SP, #-8]!
+STR x15, [SP, #-8]!
 LDR x0, [SP], #8
 MOV X0, x0
 BL print_string_raw
@@ -11859,7 +11852,7 @@ label_55:
 // Fin del switch
 // Print statement
 // String: \nSwitch con break explícito
-MOV x11, x10
+MOV x9, x10
 // Pusing char 10
 MOV w0, #10
 STRB w0, [x10]
@@ -12000,7 +11993,7 @@ MOV w0, #0
 STRB w0, [x10]
 MOV x0, #1
 ADD x10, x10, x0
-STR x11, [SP, #-8]!
+STR x9, [SP, #-8]!
 LDR x0, [SP], #8
 MOV X0, x0
 BL print_string_raw
@@ -12049,7 +12042,7 @@ B label_59
 label_60:
 // Print statement
 // String: No se debería imprimir
-MOV x12, x10
+MOV x10, x10
 // Pusing char 78
 MOV w0, #78
 STRB w0, [x10]
@@ -12165,7 +12158,7 @@ MOV w0, #0
 STRB w0, [x10]
 MOV x0, #1
 ADD x10, x10, x0
-STR x12, [SP, #-8]!
+STR x10, [SP, #-8]!
 LDR x0, [SP], #8
 MOV X0, x0
 BL print_string_raw
@@ -12186,7 +12179,7 @@ B label_59
 label_61:
 // Print statement
 // String: Caso 2 - Se ejecuta este y debe detenerse
-MOV x13, x10
+MOV x11, x10
 // Pusing char 67
 MOV w0, #67
 STRB w0, [x10]
@@ -12397,7 +12390,7 @@ MOV w0, #0
 STRB w0, [x10]
 MOV x0, #1
 ADD x10, x10, x0
-STR x13, [SP, #-8]!
+STR x11, [SP, #-8]!
 LDR x0, [SP], #8
 MOV X0, x0
 BL print_string_raw
@@ -12438,7 +12431,7 @@ LDR x0, [SP], #8
 B label_59
 // Print statement
 // String: No debería ejecutarse si el break funciona
-MOV x14, x10
+MOV x12, x10
 // Pusing char 78
 MOV w0, #78
 STRB w0, [x10]
@@ -12654,7 +12647,7 @@ MOV w0, #0
 STRB w0, [x10]
 MOV x0, #1
 ADD x10, x10, x0
-STR x14, [SP, #-8]!
+STR x12, [SP, #-8]!
 LDR x0, [SP], #8
 MOV X0, x0
 BL print_string_raw
@@ -12694,7 +12687,7 @@ LDR x0, [SP], #8
 label_62:
 // Print statement
 // String: No se debería imprimir
-MOV x15, x10
+MOV x13, x10
 // Pusing char 78
 MOV w0, #78
 STRB w0, [x10]
@@ -12810,7 +12803,7 @@ MOV w0, #0
 STRB w0, [x10]
 MOV x0, #1
 ADD x10, x10, x0
-STR x15, [SP, #-8]!
+STR x13, [SP, #-8]!
 LDR x0, [SP], #8
 MOV X0, x0
 BL print_string_raw
@@ -12832,13 +12825,13 @@ label_59:
 // Fin del switch
 // Print statement
 // String: 
-MOV x9, x10
+MOV x14, x10
 // Pusing char 0
 MOV w0, #0
 STRB w0, [x10]
 MOV x0, #1
 ADD x10, x10, x0
-STR x9, [SP, #-8]!
+STR x14, [SP, #-8]!
 LDR x0, [SP], #8
 MOV X0, x0
 BL print_string_raw
@@ -12857,7 +12850,7 @@ MOV X0, x0
 BL print_string_raw
 // Print statement
 // String: \n==== Break ====
-MOV x10, x10
+MOV x15, x10
 // Pusing char 10
 MOV w0, #10
 STRB w0, [x10]
@@ -12943,7 +12936,7 @@ MOV w0, #0
 STRB w0, [x10]
 MOV x0, #1
 ADD x10, x10, x0
-STR x10, [SP, #-8]!
+STR x15, [SP, #-8]!
 LDR x0, [SP], #8
 MOV X0, x0
 BL print_string_raw
@@ -12966,7 +12959,7 @@ STR x0, [SP, #-8]!
 // Declaración variable implícita 'puntosBreak' almacenada en el stack.
 // Print statement
 // String: Break en for infinito
-MOV x11, x10
+MOV x9, x10
 // Pusing char 66
 MOV w0, #66
 STRB w0, [x10]
@@ -13077,7 +13070,7 @@ MOV w0, #0
 STRB w0, [x10]
 MOV x0, #1
 ADD x10, x10, x0
-STR x11, [SP, #-8]!
+STR x9, [SP, #-8]!
 LDR x0, [SP], #8
 MOV X0, x0
 BL print_string_raw
@@ -13119,7 +13112,7 @@ CBZ x0, label_64
 // Bloque de código
 // Print statement
 // String: contador =
-MOV x12, x10
+MOV x10, x10
 // Pusing char 99
 MOV w0, #99
 STRB w0, [x10]
@@ -13175,7 +13168,7 @@ MOV w0, #0
 STRB w0, [x10]
 MOV x0, #1
 ADD x10, x10, x0
-STR x12, [SP, #-8]!
+STR x10, [SP, #-8]!
 LDR x0, [SP], #8
 MOV X0, x0
 BL print_string_raw
@@ -13315,7 +13308,7 @@ STR x0, [SP, #-8]!
 LDR x0, [SP], #8
 // Print statement
 // String: OK Break en for infinito: correcto
-MOV x13, x10
+MOV x11, x10
 // Pusing char 79
 MOV w0, #79
 STRB w0, [x10]
@@ -13491,7 +13484,7 @@ MOV w0, #0
 STRB w0, [x10]
 MOV x0, #1
 ADD x10, x10, x0
-STR x13, [SP, #-8]!
+STR x11, [SP, #-8]!
 LDR x0, [SP], #8
 MOV X0, x0
 BL print_string_raw
@@ -13513,7 +13506,7 @@ label_66:
 // Bloque de código
 // Print statement
 // String: X Break en for infinito: incorrecto
-MOV x14, x10
+MOV x12, x10
 // Pusing char 88
 MOV w0, #88
 STRB w0, [x10]
@@ -13694,7 +13687,7 @@ MOV w0, #0
 STRB w0, [x10]
 MOV x0, #1
 ADD x10, x10, x0
-STR x14, [SP, #-8]!
+STR x12, [SP, #-8]!
 LDR x0, [SP], #8
 MOV X0, x0
 BL print_string_raw
@@ -13714,7 +13707,7 @@ BL print_string_raw
 label_67:
 // Print statement
 // String: \nBreak en for clásico
-MOV x15, x10
+MOV x13, x10
 // Pusing char 10
 MOV w0, #10
 STRB w0, [x10]
@@ -13825,7 +13818,7 @@ MOV w0, #0
 STRB w0, [x10]
 MOV x0, #1
 ADD x10, x10, x0
-STR x15, [SP, #-8]!
+STR x13, [SP, #-8]!
 LDR x0, [SP], #8
 MOV X0, x0
 BL print_string_raw
@@ -13877,7 +13870,7 @@ CBZ x0, label_69
 // Bloque de código
 // Print statement
 // String: i =
-MOV x9, x10
+MOV x14, x10
 // Pusing char 105
 MOV w0, #105
 STRB w0, [x10]
@@ -13898,7 +13891,7 @@ MOV w0, #0
 STRB w0, [x10]
 MOV x0, #1
 ADD x10, x10, x0
-STR x9, [SP, #-8]!
+STR x14, [SP, #-8]!
 LDR x0, [SP], #8
 MOV X0, x0
 BL print_string_raw
@@ -14029,7 +14022,7 @@ STR x0, [SP, #-8]!
 LDR x0, [SP], #8
 // Print statement
 // String: OK Break en for clásico: correcto
-MOV x10, x10
+MOV x15, x10
 // Pusing char 79
 MOV w0, #79
 STRB w0, [x10]
@@ -14200,7 +14193,7 @@ MOV w0, #0
 STRB w0, [x10]
 MOV x0, #1
 ADD x10, x10, x0
-STR x10, [SP, #-8]!
+STR x15, [SP, #-8]!
 LDR x0, [SP], #8
 MOV X0, x0
 BL print_string_raw
@@ -14222,7 +14215,7 @@ label_72:
 // Bloque de código
 // Print statement
 // String: X Break en for clásico: incorrecto
-MOV x11, x10
+MOV x9, x10
 // Pusing char 88
 MOV w0, #88
 STRB w0, [x10]
@@ -14398,7 +14391,7 @@ MOV w0, #0
 STRB w0, [x10]
 MOV x0, #1
 ADD x10, x10, x0
-STR x11, [SP, #-8]!
+STR x9, [SP, #-8]!
 LDR x0, [SP], #8
 MOV X0, x0
 BL print_string_raw
@@ -14418,7 +14411,7 @@ BL print_string_raw
 label_73:
 // Print statement
 // String: \n==== Continue ====
-MOV x12, x10
+MOV x10, x10
 // Pusing char 10
 MOV w0, #10
 STRB w0, [x10]
@@ -14519,7 +14512,7 @@ MOV w0, #0
 STRB w0, [x10]
 MOV x0, #1
 ADD x10, x10, x0
-STR x12, [SP, #-8]!
+STR x10, [SP, #-8]!
 LDR x0, [SP], #8
 MOV X0, x0
 BL print_string_raw
@@ -14542,7 +14535,7 @@ STR x0, [SP, #-8]!
 // Declaración variable implícita 'puntosContinue' almacenada en el stack.
 // Print statement
 // String: Continue en for tipo while
-MOV x13, x10
+MOV x11, x10
 // Pusing char 67
 MOV w0, #67
 STRB w0, [x10]
@@ -14678,7 +14671,7 @@ MOV w0, #0
 STRB w0, [x10]
 MOV x0, #1
 ADD x10, x10, x0
-STR x13, [SP, #-8]!
+STR x11, [SP, #-8]!
 LDR x0, [SP], #8
 MOV X0, x0
 BL print_string_raw
@@ -14804,7 +14797,7 @@ label_75:
 // Fin del for-while
 // Print statement
 // String: Números impares:
-MOV x14, x10
+MOV x12, x10
 // Pusing char 78
 MOV w0, #78
 STRB w0, [x10]
@@ -14890,7 +14883,7 @@ MOV w0, #0
 STRB w0, [x10]
 MOV x0, #1
 ADD x10, x10, x0
-STR x14, [SP, #-8]!
+STR x12, [SP, #-8]!
 LDR x0, [SP], #8
 MOV X0, x0
 BL print_string_raw
@@ -14966,7 +14959,7 @@ STR x0, [SP, #-8]!
 LDR x0, [SP], #8
 // Print statement
 // String: OK Continue en for tipo while: correcto
-MOV x15, x10
+MOV x13, x10
 // Pusing char 79
 MOV w0, #79
 STRB w0, [x10]
@@ -15167,7 +15160,7 @@ MOV w0, #0
 STRB w0, [x10]
 MOV x0, #1
 ADD x10, x10, x0
-STR x15, [SP, #-8]!
+STR x13, [SP, #-8]!
 LDR x0, [SP], #8
 MOV X0, x0
 BL print_string_raw
@@ -15189,7 +15182,7 @@ label_77:
 // Bloque de código
 // Print statement
 // String: X Continue en for tipo while: incorrecto
-MOV x9, x10
+MOV x14, x10
 // Pusing char 88
 MOV w0, #88
 STRB w0, [x10]
@@ -15395,7 +15388,7 @@ MOV w0, #0
 STRB w0, [x10]
 MOV x0, #1
 ADD x10, x10, x0
-STR x9, [SP, #-8]!
+STR x14, [SP, #-8]!
 LDR x0, [SP], #8
 MOV X0, x0
 BL print_string_raw
@@ -15415,7 +15408,7 @@ BL print_string_raw
 label_78:
 // Print statement
 // String: \nContinue en for clásico
-MOV x10, x10
+MOV x15, x10
 // Pusing char 10
 MOV w0, #10
 STRB w0, [x10]
@@ -15541,7 +15534,7 @@ MOV w0, #0
 STRB w0, [x10]
 MOV x0, #1
 ADD x10, x10, x0
-STR x10, [SP, #-8]!
+STR x15, [SP, #-8]!
 LDR x0, [SP], #8
 MOV X0, x0
 BL print_string_raw
@@ -15651,7 +15644,7 @@ ADD sp, sp, x0
 // Fin del for
 // Print statement
 // String: Números pares:
-MOV x11, x10
+MOV x9, x10
 // Pusing char 78
 MOV w0, #78
 STRB w0, [x10]
@@ -15727,7 +15720,7 @@ MOV w0, #0
 STRB w0, [x10]
 MOV x0, #1
 ADD x10, x10, x0
-STR x11, [SP, #-8]!
+STR x9, [SP, #-8]!
 LDR x0, [SP], #8
 MOV X0, x0
 BL print_string_raw
@@ -15803,7 +15796,7 @@ STR x0, [SP, #-8]!
 LDR x0, [SP], #8
 // Print statement
 // String: OK Continue en for clásico: correcto
-MOV x12, x10
+MOV x10, x10
 // Pusing char 79
 MOV w0, #79
 STRB w0, [x10]
@@ -15989,7 +15982,7 @@ MOV w0, #0
 STRB w0, [x10]
 MOV x0, #1
 ADD x10, x10, x0
-STR x12, [SP, #-8]!
+STR x10, [SP, #-8]!
 LDR x0, [SP], #8
 MOV X0, x0
 BL print_string_raw
@@ -16011,7 +16004,7 @@ label_83:
 // Bloque de código
 // Print statement
 // String: X Continue en for clásico: incorrecto
-MOV x13, x10
+MOV x11, x10
 // Pusing char 88
 MOV w0, #88
 STRB w0, [x10]
@@ -16202,7 +16195,7 @@ MOV w0, #0
 STRB w0, [x10]
 MOV x0, #1
 ADD x10, x10, x0
-STR x13, [SP, #-8]!
+STR x11, [SP, #-8]!
 LDR x0, [SP], #8
 MOV X0, x0
 BL print_string_raw
@@ -16288,7 +16281,7 @@ STR x0, [SP, #-8]!
 LDR x0, [SP], #8
 // Print statement
 // String: \n=== Tabla de Resultados ===
-MOV x14, x10
+MOV x12, x10
 // Pusing char 10
 MOV w0, #10
 STRB w0, [x10]
@@ -16434,7 +16427,7 @@ MOV w0, #0
 STRB w0, [x10]
 MOV x0, #1
 ADD x10, x10, x0
-STR x14, [SP, #-8]!
+STR x12, [SP, #-8]!
 LDR x0, [SP], #8
 MOV X0, x0
 BL print_string_raw
@@ -16453,7 +16446,7 @@ MOV X0, x0
 BL print_string_raw
 // Print statement
 // String: +--------------------------+--------+-------+
-MOV x15, x10
+MOV x13, x10
 // Pusing char 43
 MOV w0, #43
 STRB w0, [x10]
@@ -16684,7 +16677,7 @@ MOV w0, #0
 STRB w0, [x10]
 MOV x0, #1
 ADD x10, x10, x0
-STR x15, [SP, #-8]!
+STR x13, [SP, #-8]!
 LDR x0, [SP], #8
 MOV X0, x0
 BL print_string_raw
@@ -16703,7 +16696,7 @@ MOV X0, x0
 BL print_string_raw
 // Print statement
 // String: | Característica           | Puntos | Total |
-MOV x9, x10
+MOV x14, x10
 // Pusing char 124
 MOV w0, #124
 STRB w0, [x10]
@@ -16934,7 +16927,7 @@ MOV w0, #0
 STRB w0, [x10]
 MOV x0, #1
 ADD x10, x10, x0
-STR x9, [SP, #-8]!
+STR x14, [SP, #-8]!
 LDR x0, [SP], #8
 MOV X0, x0
 BL print_string_raw
@@ -16953,7 +16946,7 @@ MOV X0, x0
 BL print_string_raw
 // Print statement
 // String: +--------------------------+--------+-------+
-MOV x10, x10
+MOV x15, x10
 // Pusing char 43
 MOV w0, #43
 STRB w0, [x10]
@@ -17184,7 +17177,7 @@ MOV w0, #0
 STRB w0, [x10]
 MOV x0, #1
 ADD x10, x10, x0
-STR x10, [SP, #-8]!
+STR x15, [SP, #-8]!
 LDR x0, [SP], #8
 MOV X0, x0
 BL print_string_raw
@@ -17203,7 +17196,7 @@ MOV X0, x0
 BL print_string_raw
 // Print statement
 // String: | Manejo de entornos       | 
-MOV x11, x10
+MOV x9, x10
 // Pusing char 124
 MOV w0, #124
 STRB w0, [x10]
@@ -17354,7 +17347,7 @@ MOV w0, #0
 STRB w0, [x10]
 MOV x0, #1
 ADD x10, x10, x0
-STR x11, [SP, #-8]!
+STR x9, [SP, #-8]!
 LDR x0, [SP], #8
 MOV X0, x0
 BL print_string_raw
@@ -17392,7 +17385,7 @@ MOV x0, x9
 MOV X0, x0
 BL print_string_raw
 // String:     | 3     |
-MOV x12, x10
+MOV x10, x10
 // Pusing char 32
 MOV w0, #32
 STRB w0, [x10]
@@ -17463,7 +17456,7 @@ MOV w0, #0
 STRB w0, [x10]
 MOV x0, #1
 ADD x10, x10, x0
-STR x12, [SP, #-8]!
+STR x10, [SP, #-8]!
 LDR x0, [SP], #8
 MOV X0, x0
 BL print_string_raw
@@ -17482,7 +17475,7 @@ MOV X0, x0
 BL print_string_raw
 // Print statement
 // String: | If / Else                | 
-MOV x13, x10
+MOV x11, x10
 // Pusing char 124
 MOV w0, #124
 STRB w0, [x10]
@@ -17633,7 +17626,7 @@ MOV w0, #0
 STRB w0, [x10]
 MOV x0, #1
 ADD x10, x10, x0
-STR x13, [SP, #-8]!
+STR x11, [SP, #-8]!
 LDR x0, [SP], #8
 MOV X0, x0
 BL print_string_raw
@@ -17671,7 +17664,7 @@ MOV x0, x9
 MOV X0, x0
 BL print_string_raw
 // String:     | 3     |
-MOV x14, x10
+MOV x12, x10
 // Pusing char 32
 MOV w0, #32
 STRB w0, [x10]
@@ -17742,7 +17735,7 @@ MOV w0, #0
 STRB w0, [x10]
 MOV x0, #1
 ADD x10, x10, x0
-STR x14, [SP, #-8]!
+STR x12, [SP, #-8]!
 LDR x0, [SP], #8
 MOV X0, x0
 BL print_string_raw
@@ -17761,7 +17754,7 @@ MOV X0, x0
 BL print_string_raw
 // Print statement
 // String: | For Tipo While           | 
-MOV x15, x10
+MOV x13, x10
 // Pusing char 124
 MOV w0, #124
 STRB w0, [x10]
@@ -17912,7 +17905,7 @@ MOV w0, #0
 STRB w0, [x10]
 MOV x0, #1
 ADD x10, x10, x0
-STR x15, [SP, #-8]!
+STR x13, [SP, #-8]!
 LDR x0, [SP], #8
 MOV X0, x0
 BL print_string_raw
@@ -17950,7 +17943,7 @@ MOV x0, x9
 MOV X0, x0
 BL print_string_raw
 // String:     | 4     |
-MOV x9, x10
+MOV x14, x10
 // Pusing char 32
 MOV w0, #32
 STRB w0, [x10]
@@ -18021,7 +18014,7 @@ MOV w0, #0
 STRB w0, [x10]
 MOV x0, #1
 ADD x10, x10, x0
-STR x9, [SP, #-8]!
+STR x14, [SP, #-8]!
 LDR x0, [SP], #8
 MOV X0, x0
 BL print_string_raw
@@ -18040,7 +18033,7 @@ MOV X0, x0
 BL print_string_raw
 // Print statement
 // String: | For Clásico              | 
-MOV x10, x10
+MOV x15, x10
 // Pusing char 124
 MOV w0, #124
 STRB w0, [x10]
@@ -18191,7 +18184,7 @@ MOV w0, #0
 STRB w0, [x10]
 MOV x0, #1
 ADD x10, x10, x0
-STR x10, [SP, #-8]!
+STR x15, [SP, #-8]!
 LDR x0, [SP], #8
 MOV X0, x0
 BL print_string_raw
@@ -18229,7 +18222,7 @@ MOV x0, x9
 MOV X0, x0
 BL print_string_raw
 // String:     | 3     |
-MOV x11, x10
+MOV x9, x10
 // Pusing char 32
 MOV w0, #32
 STRB w0, [x10]
@@ -18300,7 +18293,7 @@ MOV w0, #0
 STRB w0, [x10]
 MOV x0, #1
 ADD x10, x10, x0
-STR x11, [SP, #-8]!
+STR x9, [SP, #-8]!
 LDR x0, [SP], #8
 MOV X0, x0
 BL print_string_raw
@@ -18319,7 +18312,7 @@ MOV X0, x0
 BL print_string_raw
 // Print statement
 // String: | Switch/Case              | 
-MOV x12, x10
+MOV x10, x10
 // Pusing char 124
 MOV w0, #124
 STRB w0, [x10]
@@ -18470,7 +18463,7 @@ MOV w0, #0
 STRB w0, [x10]
 MOV x0, #1
 ADD x10, x10, x0
-STR x12, [SP, #-8]!
+STR x10, [SP, #-8]!
 LDR x0, [SP], #8
 MOV X0, x0
 BL print_string_raw
@@ -18508,7 +18501,7 @@ MOV x0, x9
 MOV X0, x0
 BL print_string_raw
 // String:     | 3     |
-MOV x13, x10
+MOV x11, x10
 // Pusing char 32
 MOV w0, #32
 STRB w0, [x10]
@@ -18579,7 +18572,7 @@ MOV w0, #0
 STRB w0, [x10]
 MOV x0, #1
 ADD x10, x10, x0
-STR x13, [SP, #-8]!
+STR x11, [SP, #-8]!
 LDR x0, [SP], #8
 MOV X0, x0
 BL print_string_raw
@@ -18598,7 +18591,7 @@ MOV X0, x0
 BL print_string_raw
 // Print statement
 // String: | Break                    | 
-MOV x14, x10
+MOV x12, x10
 // Pusing char 124
 MOV w0, #124
 STRB w0, [x10]
@@ -18749,7 +18742,7 @@ MOV w0, #0
 STRB w0, [x10]
 MOV x0, #1
 ADD x10, x10, x0
-STR x14, [SP, #-8]!
+STR x12, [SP, #-8]!
 LDR x0, [SP], #8
 MOV X0, x0
 BL print_string_raw
@@ -18787,7 +18780,7 @@ MOV x0, x9
 MOV X0, x0
 BL print_string_raw
 // String:     | 3     |
-MOV x15, x10
+MOV x13, x10
 // Pusing char 32
 MOV w0, #32
 STRB w0, [x10]
@@ -18858,7 +18851,7 @@ MOV w0, #0
 STRB w0, [x10]
 MOV x0, #1
 ADD x10, x10, x0
-STR x15, [SP, #-8]!
+STR x13, [SP, #-8]!
 LDR x0, [SP], #8
 MOV X0, x0
 BL print_string_raw
@@ -18877,7 +18870,7 @@ MOV X0, x0
 BL print_string_raw
 // Print statement
 // String: | Continue                 | 
-MOV x9, x10
+MOV x14, x10
 // Pusing char 124
 MOV w0, #124
 STRB w0, [x10]
@@ -19028,7 +19021,7 @@ MOV w0, #0
 STRB w0, [x10]
 MOV x0, #1
 ADD x10, x10, x0
-STR x9, [SP, #-8]!
+STR x14, [SP, #-8]!
 LDR x0, [SP], #8
 MOV X0, x0
 BL print_string_raw
@@ -19066,7 +19059,7 @@ MOV x0, x9
 MOV X0, x0
 BL print_string_raw
 // String:     | 3     |
-MOV x10, x10
+MOV x15, x10
 // Pusing char 32
 MOV w0, #32
 STRB w0, [x10]
@@ -19137,7 +19130,7 @@ MOV w0, #0
 STRB w0, [x10]
 MOV x0, #1
 ADD x10, x10, x0
-STR x10, [SP, #-8]!
+STR x15, [SP, #-8]!
 LDR x0, [SP], #8
 MOV X0, x0
 BL print_string_raw
@@ -19156,7 +19149,7 @@ MOV X0, x0
 BL print_string_raw
 // Print statement
 // String: +--------------------------+--------+-------+
-MOV x11, x10
+MOV x9, x10
 // Pusing char 43
 MOV w0, #43
 STRB w0, [x10]
@@ -19387,7 +19380,7 @@ MOV w0, #0
 STRB w0, [x10]
 MOV x0, #1
 ADD x10, x10, x0
-STR x11, [SP, #-8]!
+STR x9, [SP, #-8]!
 LDR x0, [SP], #8
 MOV X0, x0
 BL print_string_raw
@@ -19406,7 +19399,7 @@ MOV X0, x0
 BL print_string_raw
 // Print statement
 // String: | TOTAL                    | 
-MOV x12, x10
+MOV x10, x10
 // Pusing char 124
 MOV w0, #124
 STRB w0, [x10]
@@ -19557,7 +19550,7 @@ MOV w0, #0
 STRB w0, [x10]
 MOV x0, #1
 ADD x10, x10, x0
-STR x12, [SP, #-8]!
+STR x10, [SP, #-8]!
 LDR x0, [SP], #8
 MOV X0, x0
 BL print_string_raw
@@ -19595,7 +19588,7 @@ MOV x0, x9
 MOV X0, x0
 BL print_string_raw
 // String:    | 25    |
-MOV x13, x10
+MOV x11, x10
 // Pusing char 32
 MOV w0, #32
 STRB w0, [x10]
@@ -19661,7 +19654,7 @@ MOV w0, #0
 STRB w0, [x10]
 MOV x0, #1
 ADD x10, x10, x0
-STR x13, [SP, #-8]!
+STR x11, [SP, #-8]!
 LDR x0, [SP], #8
 MOV X0, x0
 BL print_string_raw
@@ -19680,7 +19673,7 @@ MOV X0, x0
 BL print_string_raw
 // Print statement
 // String: +--------------------------+--------+-------+
-MOV x14, x10
+MOV x12, x10
 // Pusing char 43
 MOV w0, #43
 STRB w0, [x10]
@@ -19911,7 +19904,7 @@ MOV w0, #0
 STRB w0, [x10]
 MOV x0, #1
 ADD x10, x10, x0
-STR x14, [SP, #-8]!
+STR x12, [SP, #-8]!
 LDR x0, [SP], #8
 MOV X0, x0
 BL print_string_raw
@@ -20092,5 +20085,13 @@ end_str2:
     ldp x19, x20, [sp], #16
     ldp x29, x30, [sp], #16
     ret
-    
+
+
+
+
+
+
+
+
+
     

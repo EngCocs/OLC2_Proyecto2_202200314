@@ -7,6 +7,8 @@ public class StackObjet
     public enum StackObjetType {Int,Float, String , Bool, Char, Void,Nil}
     public StackObjetType Type { get; set; }
     public int Length { get; set; }
+
+    public int  Offset { get; set; }
     public int Depth { get; set; }
     public string? ID { get; set; }
    
@@ -16,6 +18,8 @@ public class StackObjet
 public class ArmGenerator
 {
     private List<StackObjet> stack = new List<StackObjet>();
+    public List<string> funcInstrucions = new List<string>();
+    public List<string> Instrucciones = new List<string>();
     private readonly List<string> instructions = new List<string>();
     private readonly StandardLibrary stanlib = new StandardLibrary();
     
@@ -107,6 +111,17 @@ public class ArmGenerator
 
         Pop(rd);
         return obj;
+    }
+    public void PopObjet()
+    {
+        try
+        {
+            stack.RemoveAt(stack.Count - 1);
+        }
+        catch (System.Exception)
+        {
+            throw new Exception("No hay objetos en el stack para eliminar.");
+        }
     }
 
     public StackObjet IntObject(){
@@ -383,8 +398,20 @@ public void FMOV(string rd, string rs)
     {
         instructions.Add($"B {label}");
     }
+    public void Br(string label)
+    {
+        instructions.Add($"BR {label}");
+    }
+    public void Bl(string label)
+    {
+        instructions.Add($"BL {label}");
+    }
 
-
+    public void Adr(string rd, string label)
+    {
+        instructions.Add($"ADR {rd}, {label}");
+    }
+    
     public void concatString()
     {
         stanlib.Use("concat_strings"); 
@@ -543,5 +570,9 @@ public void PrintCharRaw(string rs)
         throw new NotImplementedException();
     }
 
-    
+    public StackObjet GetFrameLocal(int index)
+    {
+        var obj = stack.Where(o => o.Type == StackObjet.StackObjetType.Int).ToList()[index];
+        return obj;
+    }
 }

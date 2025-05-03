@@ -54,7 +54,7 @@ public class LanguageParser extends Parser {
 			null, "'var'", "'='", "';'", "':='", "'type'", "'struct'", "'{'", "'}'", 
 			"'int'", "'float64'", "'string'", "'bool'", "'rune'", "'['", "']'", "'class'", 
 			"'func'", "'('", "')'", "','", "'slices'", "'.'", "'Index'", "'append'", 
-			"'len'", "'strings'", "'Join'", "'print'", "'if'", "'else'", "'while'", 
+			"'len'", "'strings'", "'Join'", "'fmt.Println'", "'if'", "'else'", "'while'", 
 			"'for'", "'range'", "'break'", "'continue'", "'return'", "'-'", "'!'", 
 			"'*'", "'/'", "'%'", "'+'", "'>'", "'<'", "'>='", "'<='", "'=='", "'!='", 
 			"'&&'", "'||'", "'nil'", "'new'", "'++'", "'--'", "':'", "'switch'", 
@@ -135,14 +135,6 @@ public class LanguageParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_program; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).enterProgram(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).exitProgram(this);
-		}
 	}
 
 	public final ProgramContext program() throws RecognitionException {
@@ -197,14 +189,6 @@ public class LanguageParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_dcl; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).enterDcl(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).exitDcl(this);
-		}
 	}
 
 	public final DclContext dcl() throws RecognitionException {
@@ -270,14 +254,6 @@ public class LanguageParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_varDcl; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).enterVarDcl(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).exitVarDcl(this);
-		}
 	}
 
 	public final VarDclContext varDcl() throws RecognitionException {
@@ -334,14 +310,6 @@ public class LanguageParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_explicitVarDeclWithInit; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).enterExplicitVarDeclWithInit(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).exitExplicitVarDeclWithInit(this);
-		}
 	}
 
 	public final ExplicitVarDeclWithInitContext explicitVarDeclWithInit() throws RecognitionException {
@@ -385,14 +353,6 @@ public class LanguageParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_explicitVarDeclWithoutInit; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).enterExplicitVarDeclWithoutInit(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).exitExplicitVarDeclWithoutInit(this);
-		}
 	}
 
 	public final ExplicitVarDeclWithoutInitContext explicitVarDeclWithoutInit() throws RecognitionException {
@@ -432,14 +392,6 @@ public class LanguageParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_implicitVarDecl; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).enterImplicitVarDecl(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).exitImplicitVarDecl(this);
-		}
 	}
 
 	public final ImplicitVarDeclContext implicitVarDecl() throws RecognitionException {
@@ -482,14 +434,6 @@ public class LanguageParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_typeDcl; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).enterTypeDcl(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).exitTypeDcl(this);
-		}
 	}
 
 	public final TypeDclContext typeDcl() throws RecognitionException {
@@ -546,14 +490,6 @@ public class LanguageParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_structField; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).enterStructField(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).exitStructField(this);
-		}
 	}
 
 	public final StructFieldContext structField() throws RecognitionException {
@@ -602,14 +538,6 @@ public class LanguageParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_typeSpecifier; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).enterTypeSpecifier(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).exitTypeSpecifier(this);
-		}
 	}
 
 	public final TypeSpecifierContext typeSpecifier() throws RecognitionException {
@@ -660,14 +588,6 @@ public class LanguageParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_baseType; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).enterBaseType(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).exitBaseType(this);
-		}
 	}
 
 	public final BaseTypeContext baseType() throws RecognitionException {
@@ -709,14 +629,6 @@ public class LanguageParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_sliceType; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).enterSliceType(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).exitSliceType(this);
-		}
 	}
 
 	public final SliceTypeContext sliceType() throws RecognitionException {
@@ -770,14 +682,6 @@ public class LanguageParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_classDcl; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).enterClassDcl(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).exitClassDcl(this);
-		}
 	}
 
 	public final ClassDclContext classDcl() throws RecognitionException {
@@ -834,14 +738,6 @@ public class LanguageParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_classBody; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).enterClassBody(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).exitClassBody(this);
-		}
 	}
 
 	public final ClassBodyContext classBody() throws RecognitionException {
@@ -903,14 +799,6 @@ public class LanguageParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_funcDcl; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).enterFuncDcl(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).exitFuncDcl(this);
-		}
 	}
 
 	public final FuncDclContext funcDcl() throws RecognitionException {
@@ -1003,14 +891,6 @@ public class LanguageParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_receiverParam; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).enterReceiverParam(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).exitReceiverParam(this);
-		}
 	}
 
 	public final ReceiverParamContext receiverParam() throws RecognitionException {
@@ -1046,14 +926,6 @@ public class LanguageParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_param; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).enterParam(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).exitParam(this);
-		}
 	}
 
 	public final ParamContext param() throws RecognitionException {
@@ -1091,14 +963,6 @@ public class LanguageParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_params; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).enterParams(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).exitParams(this);
-		}
 	}
 
 	public final ParamsContext params() throws RecognitionException {
@@ -1151,14 +1015,6 @@ public class LanguageParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_sliceLiteral; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).enterSliceLiteral(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).exitSliceLiteral(this);
-		}
 	}
 
 	public final SliceLiteralContext sliceLiteral() throws RecognitionException {
@@ -1213,14 +1069,6 @@ public class LanguageParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_multiSliceLiteral; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).enterMultiSliceLiteral(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).exitMultiSliceLiteral(this);
-		}
 	}
 
 	public final MultiSliceLiteralContext multiSliceLiteral() throws RecognitionException {
@@ -1275,14 +1123,6 @@ public class LanguageParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_multiSliceRows; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).enterMultiSliceRows(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).exitMultiSliceRows(this);
-		}
 	}
 
 	public final MultiSliceRowsContext multiSliceRows() throws RecognitionException {
@@ -1332,14 +1172,6 @@ public class LanguageParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_multiSliceRow; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).enterMultiSliceRow(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).exitMultiSliceRow(this);
-		}
 	}
 
 	public final MultiSliceRowContext multiSliceRow() throws RecognitionException {
@@ -1388,14 +1220,6 @@ public class LanguageParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_exprList; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).enterExprList(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).exitExprList(this);
-		}
 	}
 
 	public final ExprListContext exprList() throws RecognitionException {
@@ -1454,14 +1278,6 @@ public class LanguageParser extends Parser {
 			return getRuleContext(ExprContext.class,0);
 		}
 		public SliceLenContext(SliceFunctionCallContext ctx) { copyFrom(ctx); }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).enterSliceLen(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).exitSliceLen(this);
-		}
 	}
 	@SuppressWarnings("CheckReturnValue")
 	public static class SliceIndexContext extends SliceFunctionCallContext {
@@ -1472,14 +1288,6 @@ public class LanguageParser extends Parser {
 			return getRuleContext(ExprContext.class,i);
 		}
 		public SliceIndexContext(SliceFunctionCallContext ctx) { copyFrom(ctx); }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).enterSliceIndex(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).exitSliceIndex(this);
-		}
 	}
 	@SuppressWarnings("CheckReturnValue")
 	public static class SliceAppendContext extends SliceFunctionCallContext {
@@ -1490,14 +1298,6 @@ public class LanguageParser extends Parser {
 			return getRuleContext(ExprContext.class,i);
 		}
 		public SliceAppendContext(SliceFunctionCallContext ctx) { copyFrom(ctx); }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).enterSliceAppend(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).exitSliceAppend(this);
-		}
 	}
 
 	public final SliceFunctionCallContext sliceFunctionCall() throws RecognitionException {
@@ -1597,14 +1397,6 @@ public class LanguageParser extends Parser {
 			return getRuleContext(ExprContext.class,i);
 		}
 		public StringJoinContext(StringFunctionCallContext ctx) { copyFrom(ctx); }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).enterStringJoin(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).exitStringJoin(this);
-		}
 	}
 
 	public final StringFunctionCallContext stringFunctionCall() throws RecognitionException {
@@ -1661,14 +1453,6 @@ public class LanguageParser extends Parser {
 			return getRuleContext(SwitchSContext.class,0);
 		}
 		public SwitchStmtContext(StmtContext ctx) { copyFrom(ctx); }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).enterSwitchStmt(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).exitSwitchStmt(this);
-		}
 	}
 	@SuppressWarnings("CheckReturnValue")
 	public static class PrintStmtContext extends StmtContext {
@@ -1679,14 +1463,6 @@ public class LanguageParser extends Parser {
 			return getRuleContext(ExprContext.class,i);
 		}
 		public PrintStmtContext(StmtContext ctx) { copyFrom(ctx); }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).enterPrintStmt(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).exitPrintStmt(this);
-		}
 	}
 	@SuppressWarnings("CheckReturnValue")
 	public static class BlockStmtContext extends StmtContext {
@@ -1697,14 +1473,6 @@ public class LanguageParser extends Parser {
 			return getRuleContext(DclContext.class,i);
 		}
 		public BlockStmtContext(StmtContext ctx) { copyFrom(ctx); }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).enterBlockStmt(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).exitBlockStmt(this);
-		}
 	}
 	@SuppressWarnings("CheckReturnValue")
 	public static class ForRangeStmtContext extends StmtContext {
@@ -1719,14 +1487,6 @@ public class LanguageParser extends Parser {
 			return getRuleContext(StmtContext.class,0);
 		}
 		public ForRangeStmtContext(StmtContext ctx) { copyFrom(ctx); }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).enterForRangeStmt(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).exitForRangeStmt(this);
-		}
 	}
 	@SuppressWarnings("CheckReturnValue")
 	public static class ForWhileStmtContext extends StmtContext {
@@ -1737,26 +1497,10 @@ public class LanguageParser extends Parser {
 			return getRuleContext(StmtContext.class,0);
 		}
 		public ForWhileStmtContext(StmtContext ctx) { copyFrom(ctx); }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).enterForWhileStmt(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).exitForWhileStmt(this);
-		}
 	}
 	@SuppressWarnings("CheckReturnValue")
 	public static class ContinueStmtContext extends StmtContext {
 		public ContinueStmtContext(StmtContext ctx) { copyFrom(ctx); }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).enterContinueStmt(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).exitContinueStmt(this);
-		}
 	}
 	@SuppressWarnings("CheckReturnValue")
 	public static class IfStmtContext extends StmtContext {
@@ -1770,14 +1514,6 @@ public class LanguageParser extends Parser {
 			return getRuleContext(StmtContext.class,i);
 		}
 		public IfStmtContext(StmtContext ctx) { copyFrom(ctx); }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).enterIfStmt(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).exitIfStmt(this);
-		}
 	}
 	@SuppressWarnings("CheckReturnValue")
 	public static class ExprStmtContext extends StmtContext {
@@ -1785,14 +1521,6 @@ public class LanguageParser extends Parser {
 			return getRuleContext(ExprContext.class,0);
 		}
 		public ExprStmtContext(StmtContext ctx) { copyFrom(ctx); }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).enterExprStmt(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).exitExprStmt(this);
-		}
 	}
 	@SuppressWarnings("CheckReturnValue")
 	public static class WhileStmtContext extends StmtContext {
@@ -1803,26 +1531,10 @@ public class LanguageParser extends Parser {
 			return getRuleContext(StmtContext.class,0);
 		}
 		public WhileStmtContext(StmtContext ctx) { copyFrom(ctx); }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).enterWhileStmt(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).exitWhileStmt(this);
-		}
 	}
 	@SuppressWarnings("CheckReturnValue")
 	public static class BreakStmtContext extends StmtContext {
 		public BreakStmtContext(StmtContext ctx) { copyFrom(ctx); }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).enterBreakStmt(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).exitBreakStmt(this);
-		}
 	}
 	@SuppressWarnings("CheckReturnValue")
 	public static class VarDeclStmtContext extends StmtContext {
@@ -1830,14 +1542,6 @@ public class LanguageParser extends Parser {
 			return getRuleContext(VarDclContext.class,0);
 		}
 		public VarDeclStmtContext(StmtContext ctx) { copyFrom(ctx); }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).enterVarDeclStmt(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).exitVarDeclStmt(this);
-		}
 	}
 	@SuppressWarnings("CheckReturnValue")
 	public static class ForStmtContext extends StmtContext {
@@ -1854,14 +1558,6 @@ public class LanguageParser extends Parser {
 			return getRuleContext(StmtContext.class,0);
 		}
 		public ForStmtContext(StmtContext ctx) { copyFrom(ctx); }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).enterForStmt(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).exitForStmt(this);
-		}
 	}
 	@SuppressWarnings("CheckReturnValue")
 	public static class ReturnStmtContext extends StmtContext {
@@ -1869,14 +1565,6 @@ public class LanguageParser extends Parser {
 			return getRuleContext(ExprContext.class,0);
 		}
 		public ReturnStmtContext(StmtContext ctx) { copyFrom(ctx); }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).enterReturnStmt(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).exitReturnStmt(this);
-		}
 	}
 
 	public final StmtContext stmt() throws RecognitionException {
@@ -2142,14 +1830,6 @@ public class LanguageParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_forInit; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).enterForInit(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).exitForInit(this);
-		}
 	}
 
 	public final ForInitContext forInit() throws RecognitionException {
@@ -2207,14 +1887,6 @@ public class LanguageParser extends Parser {
 			return getRuleContext(StructLiteralFieldsContext.class,0);
 		}
 		public StructLiteralContext(ExprContext ctx) { copyFrom(ctx); }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).enterStructLiteral(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).exitStructLiteral(this);
-		}
 	}
 	@SuppressWarnings("CheckReturnValue")
 	public static class CalleeContext extends ExprContext {
@@ -2228,14 +1900,6 @@ public class LanguageParser extends Parser {
 			return getRuleContext(CallContext.class,i);
 		}
 		public CalleeContext(ExprContext ctx) { copyFrom(ctx); }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).enterCallee(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).exitCallee(this);
-		}
 	}
 	@SuppressWarnings("CheckReturnValue")
 	public static class NewContext extends ExprContext {
@@ -2244,14 +1908,6 @@ public class LanguageParser extends Parser {
 			return getRuleContext(ArgsContext.class,0);
 		}
 		public NewContext(ExprContext ctx) { copyFrom(ctx); }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).enterNew(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).exitNew(this);
-		}
 	}
 	@SuppressWarnings("CheckReturnValue")
 	public static class MulDivContext extends ExprContext {
@@ -2263,14 +1919,6 @@ public class LanguageParser extends Parser {
 			return getRuleContext(ExprContext.class,i);
 		}
 		public MulDivContext(ExprContext ctx) { copyFrom(ctx); }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).enterMulDiv(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).exitMulDiv(this);
-		}
 	}
 	@SuppressWarnings("CheckReturnValue")
 	public static class ParensContext extends ExprContext {
@@ -2278,14 +1926,6 @@ public class LanguageParser extends Parser {
 			return getRuleContext(ExprContext.class,0);
 		}
 		public ParensContext(ExprContext ctx) { copyFrom(ctx); }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).enterParens(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).exitParens(this);
-		}
 	}
 	@SuppressWarnings("CheckReturnValue")
 	public static class StringFuncCallContext extends ExprContext {
@@ -2293,14 +1933,6 @@ public class LanguageParser extends Parser {
 			return getRuleContext(StringFunctionCallContext.class,0);
 		}
 		public StringFuncCallContext(ExprContext ctx) { copyFrom(ctx); }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).enterStringFuncCall(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).exitStringFuncCall(this);
-		}
 	}
 	@SuppressWarnings("CheckReturnValue")
 	public static class LogicalContext extends ExprContext {
@@ -2312,53 +1944,21 @@ public class LanguageParser extends Parser {
 			return getRuleContext(ExprContext.class,i);
 		}
 		public LogicalContext(ExprContext ctx) { copyFrom(ctx); }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).enterLogical(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).exitLogical(this);
-		}
 	}
 	@SuppressWarnings("CheckReturnValue")
 	public static class StringContext extends ExprContext {
 		public TerminalNode STRING() { return getToken(LanguageParser.STRING, 0); }
 		public StringContext(ExprContext ctx) { copyFrom(ctx); }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).enterString(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).exitString(this);
-		}
 	}
 	@SuppressWarnings("CheckReturnValue")
 	public static class IntContext extends ExprContext {
 		public TerminalNode INT() { return getToken(LanguageParser.INT, 0); }
 		public IntContext(ExprContext ctx) { copyFrom(ctx); }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).enterInt(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).exitInt(this);
-		}
 	}
 	@SuppressWarnings("CheckReturnValue")
 	public static class IdentifierContext extends ExprContext {
 		public TerminalNode ID() { return getToken(LanguageParser.ID, 0); }
 		public IdentifierContext(ExprContext ctx) { copyFrom(ctx); }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).enterIdentifier(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).exitIdentifier(this);
-		}
 	}
 	@SuppressWarnings("CheckReturnValue")
 	public static class ArrayAccessExprContextContext extends ExprContext {
@@ -2369,14 +1969,6 @@ public class LanguageParser extends Parser {
 			return getRuleContext(ExprContext.class,i);
 		}
 		public ArrayAccessExprContextContext(ExprContext ctx) { copyFrom(ctx); }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).enterArrayAccessExprContext(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).exitArrayAccessExprContext(this);
-		}
 	}
 	@SuppressWarnings("CheckReturnValue")
 	public static class RelationalSContext extends ExprContext {
@@ -2388,14 +1980,6 @@ public class LanguageParser extends Parser {
 			return getRuleContext(ExprContext.class,i);
 		}
 		public RelationalSContext(ExprContext ctx) { copyFrom(ctx); }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).enterRelationalS(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).exitRelationalS(this);
-		}
 	}
 	@SuppressWarnings("CheckReturnValue")
 	public static class EqualityContext extends ExprContext {
@@ -2407,14 +1991,6 @@ public class LanguageParser extends Parser {
 			return getRuleContext(ExprContext.class,i);
 		}
 		public EqualityContext(ExprContext ctx) { copyFrom(ctx); }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).enterEquality(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).exitEquality(this);
-		}
 	}
 	@SuppressWarnings("CheckReturnValue")
 	public static class PostIncrementContext extends ExprContext {
@@ -2422,27 +1998,11 @@ public class LanguageParser extends Parser {
 			return getRuleContext(ExprContext.class,0);
 		}
 		public PostIncrementContext(ExprContext ctx) { copyFrom(ctx); }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).enterPostIncrement(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).exitPostIncrement(this);
-		}
 	}
 	@SuppressWarnings("CheckReturnValue")
 	public static class BooleanContext extends ExprContext {
 		public TerminalNode BOOL() { return getToken(LanguageParser.BOOL, 0); }
 		public BooleanContext(ExprContext ctx) { copyFrom(ctx); }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).enterBoolean(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).exitBoolean(this);
-		}
 	}
 	@SuppressWarnings("CheckReturnValue")
 	public static class SliceFuncCallContext extends ExprContext {
@@ -2450,14 +2010,6 @@ public class LanguageParser extends Parser {
 			return getRuleContext(SliceFunctionCallContext.class,0);
 		}
 		public SliceFuncCallContext(ExprContext ctx) { copyFrom(ctx); }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).enterSliceFuncCall(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).exitSliceFuncCall(this);
-		}
 	}
 	@SuppressWarnings("CheckReturnValue")
 	public static class SliceLiteralExprContext extends ExprContext {
@@ -2465,14 +2017,6 @@ public class LanguageParser extends Parser {
 			return getRuleContext(SliceLiteralContext.class,0);
 		}
 		public SliceLiteralExprContext(ExprContext ctx) { copyFrom(ctx); }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).enterSliceLiteralExpr(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).exitSliceLiteralExpr(this);
-		}
 	}
 	@SuppressWarnings("CheckReturnValue")
 	public static class AddSubContext extends ExprContext {
@@ -2484,14 +2028,6 @@ public class LanguageParser extends Parser {
 			return getRuleContext(ExprContext.class,i);
 		}
 		public AddSubContext(ExprContext ctx) { copyFrom(ctx); }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).enterAddSub(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).exitAddSub(this);
-		}
 	}
 	@SuppressWarnings("CheckReturnValue")
 	public static class PostDecrementContext extends ExprContext {
@@ -2499,39 +2035,15 @@ public class LanguageParser extends Parser {
 			return getRuleContext(ExprContext.class,0);
 		}
 		public PostDecrementContext(ExprContext ctx) { copyFrom(ctx); }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).enterPostDecrement(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).exitPostDecrement(this);
-		}
 	}
 	@SuppressWarnings("CheckReturnValue")
 	public static class NilContext extends ExprContext {
 		public NilContext(ExprContext ctx) { copyFrom(ctx); }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).enterNil(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).exitNil(this);
-		}
 	}
 	@SuppressWarnings("CheckReturnValue")
 	public static class FloatContext extends ExprContext {
 		public TerminalNode FLOAT() { return getToken(LanguageParser.FLOAT, 0); }
 		public FloatContext(ExprContext ctx) { copyFrom(ctx); }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).enterFloat(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).exitFloat(this);
-		}
 	}
 	@SuppressWarnings("CheckReturnValue")
 	public static class NotContext extends ExprContext {
@@ -2539,14 +2051,6 @@ public class LanguageParser extends Parser {
 			return getRuleContext(ExprContext.class,0);
 		}
 		public NotContext(ExprContext ctx) { copyFrom(ctx); }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).enterNot(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).exitNot(this);
-		}
 	}
 	@SuppressWarnings("CheckReturnValue")
 	public static class MultiSliceLiteralExprContext extends ExprContext {
@@ -2554,14 +2058,6 @@ public class LanguageParser extends Parser {
 			return getRuleContext(MultiSliceLiteralContext.class,0);
 		}
 		public MultiSliceLiteralExprContext(ExprContext ctx) { copyFrom(ctx); }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).enterMultiSliceLiteralExpr(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).exitMultiSliceLiteralExpr(this);
-		}
 	}
 	@SuppressWarnings("CheckReturnValue")
 	public static class AssignContext extends ExprContext {
@@ -2572,14 +2068,6 @@ public class LanguageParser extends Parser {
 			return getRuleContext(ExprContext.class,i);
 		}
 		public AssignContext(ExprContext ctx) { copyFrom(ctx); }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).enterAssign(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).exitAssign(this);
-		}
 	}
 	@SuppressWarnings("CheckReturnValue")
 	public static class NegateContext extends ExprContext {
@@ -2587,27 +2075,11 @@ public class LanguageParser extends Parser {
 			return getRuleContext(ExprContext.class,0);
 		}
 		public NegateContext(ExprContext ctx) { copyFrom(ctx); }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).enterNegate(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).exitNegate(this);
-		}
 	}
 	@SuppressWarnings("CheckReturnValue")
 	public static class RuneContext extends ExprContext {
 		public TerminalNode RUNE() { return getToken(LanguageParser.RUNE, 0); }
 		public RuneContext(ExprContext ctx) { copyFrom(ctx); }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).enterRune(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).exitRune(this);
-		}
 	}
 
 	public final ExprContext expr() throws RecognitionException {
@@ -3036,14 +2508,6 @@ public class LanguageParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_structLiteralFields; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).enterStructLiteralFields(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).exitStructLiteralFields(this);
-		}
 	}
 
 	public final StructLiteralFieldsContext structLiteralFields() throws RecognitionException {
@@ -3107,14 +2571,6 @@ public class LanguageParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_structLiteralField; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).enterStructLiteralField(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).exitStructLiteralField(this);
-		}
 	}
 
 	public final StructLiteralFieldContext structLiteralField() throws RecognitionException {
@@ -3160,27 +2616,11 @@ public class LanguageParser extends Parser {
 			return getRuleContext(ArgsContext.class,0);
 		}
 		public FuncCallContext(CallContext ctx) { copyFrom(ctx); }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).enterFuncCall(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).exitFuncCall(this);
-		}
 	}
 	@SuppressWarnings("CheckReturnValue")
 	public static class GetContext extends CallContext {
 		public TerminalNode ID() { return getToken(LanguageParser.ID, 0); }
 		public GetContext(CallContext ctx) { copyFrom(ctx); }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).enterGet(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).exitGet(this);
-		}
 	}
 
 	public final CallContext call() throws RecognitionException {
@@ -3248,14 +2688,6 @@ public class LanguageParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_args; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).enterArgs(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).exitArgs(this);
-		}
 	}
 
 	public final ArgsContext args() throws RecognitionException {
@@ -3314,14 +2746,6 @@ public class LanguageParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_switchS; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).enterSwitchS(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).exitSwitchS(this);
-		}
 	}
 
 	public final SwitchSContext switchS() throws RecognitionException {
@@ -3391,14 +2815,6 @@ public class LanguageParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_switchCase; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).enterSwitchCase(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).exitSwitchCase(this);
-		}
 	}
 
 	public final SwitchCaseContext switchCase() throws RecognitionException {
@@ -3453,14 +2869,6 @@ public class LanguageParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_defaultCase; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).enterDefaultCase(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).exitDefaultCase(this);
-		}
 	}
 
 	public final DefaultCaseContext defaultCase() throws RecognitionException {

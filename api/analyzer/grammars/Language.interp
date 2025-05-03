@@ -27,7 +27,7 @@ null
 'len'
 'strings'
 'Join'
-'print'
+'fmt.Println'
 'if'
 'else'
 'while'

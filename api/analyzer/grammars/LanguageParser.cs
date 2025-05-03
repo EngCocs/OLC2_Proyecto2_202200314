@@ -71,7 +71,7 @@ public partial class LanguageParser : Parser {
 		null, "'var'", "'='", "';'", "':='", "'type'", "'struct'", "'{'", "'}'", 
 		"'int'", "'float64'", "'string'", "'bool'", "'rune'", "'['", "']'", "'class'", 
 		"'func'", "'('", "')'", "','", "'slices'", "'.'", "'Index'", "'append'", 
-		"'len'", "'strings'", "'Join'", "'print'", "'if'", "'else'", "'while'", 
+		"'len'", "'strings'", "'Join'", "'fmt.Println'", "'if'", "'else'", "'while'", 
 		"'for'", "'range'", "'break'", "'continue'", "'return'", "'-'", "'!'", 
 		"'*'", "'/'", "'%'", "'+'", "'>'", "'<'", "'>='", "'<='", "'=='", "'!='", 
 		"'&&'", "'||'", "'nil'", "'new'", "'++'", "'--'", "':'", "'switch'", "'case'", 

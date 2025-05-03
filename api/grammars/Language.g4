@@ -63,7 +63,7 @@ stringFunctionCall
 
 stmt: 
 	expr ';'								# ExprStmt
-	| 'print' '(' expr (',' expr)* ')' ';'				# PrintStmt
+	| 'fmt.Println' '(' expr (',' expr)* ')' ';'				# PrintStmt
 	| '{' dcl* '}'							# BlockStmt
 	| 'if' '(' expr ')' stmt ('else' stmt)?	# IfStmt
 	| 'while' '(' expr ')' stmt				# WhileStmt

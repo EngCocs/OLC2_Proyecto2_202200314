@@ -114,6 +114,12 @@ export default function Home() {
       console.error(err);
     }
   };
+  const handleCopyOutput = () => {
+    navigator.clipboard.writeText(output)
+      .then(() => alert('Código copiado al portapapeles '))
+      .catch(err => alert('Error al copiar: ' + err));
+  };
+  
 
   return (
     <div className="relative min-h-screen py-2">
@@ -218,11 +224,22 @@ export default function Home() {
           </div>
         )}
         {output && (
-          <div className="mt-4 flex flex-col items-center">
-            <h2 className="text-xl font-semibold">Output:</h2>
-            <pre className="bg-gray-800 text-white p-4 rounded">{output}</pre>
-          </div>
-        )}
+  <div className="mt-4 flex flex-col items-center w-full px-4">
+    <div className="flex items-center justify-between w-full max-w-4xl mb-2">
+      <h2 className="text-xl font-semibold text-white">Output:</h2>
+      <button 
+        onClick={handleCopyOutput}
+        className="bg-blue-600 hover:bg-blue-400 text-white px-3 py-1 rounded text-sm"
+      >
+        Copiar
+      </button>
+    </div>
+    <pre className="bg-gray-800 text-white p-4 rounded w-full max-w-4xl overflow-x-auto whitespace-pre-wrap">
+      {output}
+    </pre>
+  </div>
+)}
+
         {/* Si se obtuvo AST, se muestra debajo */}
         {ast && (
           <div className="mt-4 w-full flex justify-center ">
